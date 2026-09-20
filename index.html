@@ -34,8 +34,8 @@
     }
 
     .navbar-brand {
-      font-size: 1.5rem;
-      letter-spacing: 1px;
+      font-size: 1.4rem;
+      letter-spacing: 0.5px;
       color: var(--sun-yellow) !important;
       text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
     }
@@ -109,11 +109,13 @@
 </head>
 <body>
 
-<!-- Navbar Tema Laut -->
+<!-- Navbar dengan Logo Baru -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container-fluid px-4">
-    <a class="navbar-brand fw-bold" href="javascript:void(0)" onclick="showPage('dashboard')">
-      <i class="fa-solid fa-water me-2"></i>Sulam Jaring 2026
+    <a class="navbar-brand fw-bold d-flex align-items-center" href="javascript:void(0)" onclick="showPage('dashboard')">
+      <!-- Ubah 'logo.png' dengan nama file atau URL gambar logo Anda -->
+      <img src="logo.png" alt="Logo Sulam Jaring" width="38" height="38" class="me-2 rounded-circle bg-white p-1">
+      Sulam Jaring 2026
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
@@ -136,7 +138,7 @@
     <div id="view-dashboard" class="page-view active-view">
       <div class="text-center py-5 animasi-turun">
         <div class="mb-4">
-          <i class="fa-solid fa-anchor fa-3x text-info"></i>
+          <img src="logo.png" alt="Logo" width="90" height="90" class="rounded-circle shadow p-2 bg-white mb-2">
         </div>
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
         <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h3>
@@ -259,7 +261,7 @@
       </div>
     </div>
 
-    <!-- Halaman Utama Tabel Rekap (Digabung dengan Tombol Pilihan Panitia / Maba) -->
+    <!-- Halaman Utama Tabel Rekap -->
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
         <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi</h2>
@@ -363,7 +365,7 @@
 
 <script>
   // ⚠️ Ganti URL ini dengan URL Web App Apps Script Anda yang berakhiran /exec
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymy7stN_8u4yutStZjrN4W-7o1KFUN5sHjHMGiKHx75H6wfi8sOQi_MTmCGFKCQEYD/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
   const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": [
