@@ -175,7 +175,7 @@
               <div class="card-body">
                 <i class="fa-solid fa-user-shield fa-3x text-primary mb-3"></i>
                 <h3 class="fw-bold text-primary">Absensi Panitia</h3>
-                <p class="text-muted small mt-2">Untuk Panitia Acara (Kedatangan & Kepulangan).</p>
+                <p class="text-muted small mt-2">Untuk Panitia Acara (Berdasarkan Pilihan Divisi).</p>
               </div>
             </div>
           </div>
@@ -230,18 +230,39 @@
               <label class="fw-bold">Tanggal</label>
               <input type="date" id="tgl-absen" class="form-control" required>
             </div>
-            <!-- Kolompok hanya muncul jika kategori Maba -->
+            
+            <!-- Kolompok (untuk Maba) -->
             <div class="col-md-6 mb-3" id="wrapper-kelompok">
               <label class="fw-bold">Pilih Nama Kelompok</label>
               <select id="select-kelompok-absen" class="form-control border-info">
                 <option value="">-- Pilih Kelompok --</option>
               </select>
             </div>
+
+            <!-- Divisi (untuk Panitia) -->
+            <div class="col-md-6 mb-3" id="wrapper-divisi" style="display: none;">
+              <label class="fw-bold">Pilih Divisi Panitia</label>
+              <select id="select-divisi-absen" class="form-control border-info">
+                <option value="">-- Pilih Divisi --</option>
+                <option value="BPI">BPI</option>
+                <option value="Divisi Keamanan">Divisi Keamanan</option>
+                <option value="Divisi Kestari">Divisi Kestari</option>
+                <option value="Divisi Korlap">Divisi Korlap</option>
+                <option value="Divisi Humas">Divisi Humas</option>
+                <option value="Divisi Konsumsi">Divisi Konsumsi</option>
+                <option value="Divisi PDD">Divisi PDD</option>
+                <option value="Divisi Acara">Divisi Acara</option>
+                <option value="Divisi Kesehatan">Divisi Kesehatan</option>
+                <option value="Divisi Daspon">Divisi Daspon</option>
+                <option value="Divisi Perkap">Divisi Perkap</option>
+                <option value="Divisi PK">Divisi PK</option>
+              </select>
+            </div>
           </div>
 
           <div class="row mb-3">
-            <div class="col-md-6 mb-3">
-              <label class="fw-bold" id="label-id-pengenal">NIM Mahasiswa</label>
+            <div class="col-md-6 mb-3" id="wrapper-nim">
+              <label class="fw-bold">NIM Mahasiswa</label>
               <input type="text" id="input-nim" class="form-control border-info" placeholder="Contoh: 2026001" required>
             </div>
             <div class="col-md-6 mb-3">
@@ -285,14 +306,34 @@
           <div class="col-md-4 mb-2">
             <select id="select-kategori-rekap" class="form-control border-info" onchange="gantiKategoriRekap()">
               <option value="Maba">Rekap Maba (Kelompok)</option>
-              <option value="Panitia">Rekap Panitia</option>
+              <option value="Panitia">Rekap Panitia (Divisi)</option>
             </select>
           </div>
+          
           <div class="col-md-4 mb-2" id="wrapper-rekap-kelompok">
             <select id="select-kelompok-rekap" class="form-control border-info">
               <option value="">Pilih Kelompok...</option>
             </select>
           </div>
+
+          <div class="col-md-4 mb-2" id="wrapper-rekap-divisi" style="display: none;">
+            <select id="select-divisi-rekap" class="form-control border-info">
+              <option value="">Pilih Divisi...</option>
+              <option value="BPI">BPI</option>
+              <option value="Divisi Keamanan">Divisi Keamanan</option>
+              <option value="Divisi Kestari">Divisi Kestari</option>
+              <option value="Divisi Korlap">Divisi Korlap</option>
+              <option value="Divisi Humas">Divisi Humas</option>
+              <option value="Divisi Konsumsi">Divisi Konsumsi</option>
+              <option value="Divisi PDD">Divisi PDD</option>
+              <option value="Divisi Acara">Divisi Acara</option>
+              <option value="Divisi Kesehatan">Divisi Kesehatan</option>
+              <option value="Divisi Daspon">Divisi Daspon</option>
+              <option value="Divisi Perkap">Divisi Perkap</option>
+              <option value="Divisi PK">Divisi PK</option>
+            </select>
+          </div>
+
           <div class="col-md-4 mb-2">
             <button class="btn btn-primary w-100 fw-bold shadow-sm" onclick="loadRekap()" style="background-color: var(--ocean-teal);">Tampilkan Data Rekap</button>
           </div>
@@ -312,7 +353,7 @@
               </tr>
             </thead>
             <tbody id="table-rekap">
-              <tr><td colspan="8" class="text-muted">Silakan pilih kategori/kelompok lalu klik Tampilkan Data.</td></tr>
+              <tr><td colspan="8" class="text-muted">Silakan pilih kategori/kelompok/divisi lalu klik Tampilkan Data.</td></tr>
             </tbody>
           </table>
         </div>
@@ -496,23 +537,36 @@
     jenisAbsenAktif = jenis;
     document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} (${kategoriAbsenAktif})`;
     
-    // Atur tampilan form berdasarkan kategori (Maba vs Panitia)
     let wrapperKelompok = document.getElementById('wrapper-kelompok');
     let selectKelompok = document.getElementById('select-kelompok-absen');
-    let labelId = document.getElementById('label-id-pengenal');
+    let wrapperDivisi = document.getElementById('wrapper-divisi');
+    let selectDivisi = document.getElementById('select-divisi-absen');
+    let wrapperNim = document.getElementById('wrapper-nim');
     let inputNim = document.getElementById('input-nim');
 
     if (kategoriAbsenAktif === 'Maba') {
       wrapperKelompok.style.display = 'block';
       selectKelompok.required = true;
-      labelId.innerText = "NIM Mahasiswa";
+      wrapperDivisi.style.display = 'none';
+      selectDivisi.required = false;
+      selectDivisi.value = "";
+      
+      wrapperNim.style.display = 'block';
+      inputNim.required = true;
+      document.querySelector('#wrapper-nim label').innerText = "NIM Mahasiswa";
       inputNim.placeholder = "Contoh: 2026001";
     } else {
       wrapperKelompok.style.display = 'none';
       selectKelompok.required = false;
       selectKelompok.value = "";
-      labelId.innerText = "ID / NIP / Nomor Anggota Panitia";
-      inputNim.placeholder = "Contoh: PAN001";
+      
+      wrapperDivisi.style.display = 'block';
+      selectDivisi.required = true;
+
+      // Sembunyikan input NIM/ID karena diganti pilihan divisi
+      wrapperNim.style.display = 'none';
+      inputNim.required = false;
+      inputNim.value = "-"; 
     }
 
     showPage('form-absen');
@@ -521,14 +575,17 @@
   function gantiKategoriRekap() {
     let kat = document.getElementById('select-kategori-rekap').value;
     let wrapperKelompokRekap = document.getElementById('wrapper-rekap-kelompok');
+    let wrapperDivisiRekap = document.getElementById('wrapper-rekap-divisi');
     let thId = document.getElementById('th-id');
 
     if (kat === 'Maba') {
       wrapperKelompokRekap.style.display = 'block';
+      wrapperDivisiRekap.style.display = 'none';
       thId.innerText = "NIM";
     } else {
       wrapperKelompokRekap.style.display = 'none';
-      thId.innerText = "ID Panitia";
+      wrapperDivisiRekap.style.display = 'block';
+      thId.innerText = "Divisi";
     }
   }
 
@@ -571,8 +628,17 @@
     btn.innerText = `Mengunggah Data & Foto (${kategoriAbsenAktif} - ${jenisAbsenAktif})... Mohon Tunggu`;
 
     let tgl = document.getElementById('tgl-absen').value;
-    let idKel = kategoriAbsenAktif === 'Maba' ? document.getElementById('select-kelompok-absen').value : 'PANITIA';
-    let nim = document.getElementById('input-nim').value;
+    let idKel = "";
+    let nim = "";
+    
+    if (kategoriAbsenAktif === 'Maba') {
+      idKel = document.getElementById('select-kelompok-absen').value;
+      nim = document.getElementById('input-nim').value;
+    } else {
+      idKel = "PANITIA_" + document.getElementById('select-divisi-absen').value;
+      nim = document.getElementById('select-divisi-absen').value; // Menyimpan nama divisi di kolom NIM/ID pada sheet
+    }
+
     let nama = document.getElementById('input-nama').value;
     let status = document.querySelector('input[name="status_absen"]:checked').value;
 
@@ -606,6 +672,7 @@
         document.getElementById('input-nim').value = '';
         document.getElementById('input-nama').value = '';
         document.getElementById('select-kelompok-absen').value = '';
+        document.getElementById('select-divisi-absen').value = '';
         fileInput.value = ''; 
         showPage('dashboard');
       })
@@ -621,9 +688,16 @@
 
   function loadRekap() {
     let kat = document.getElementById('select-kategori-rekap').value;
-    let idKel = kat === 'Maba' ? document.getElementById('select-kelompok-rekap').value : 'PANITIA';
-    
-    if(kat === 'Maba' && !idKel) return alert('Pilih kelompok terlebih dahulu!');
+    let idKel = "";
+
+    if (kat === 'Maba') {
+      idKel = document.getElementById('select-kelompok-rekap').value;
+      if(!idKel) return alert('Pilih kelompok terlebih dahulu!');
+    } else {
+      let divisiVal = document.getElementById('select-divisi-rekap').value;
+      if(!divisiVal) return alert('Pilih divisi terlebih dahulu!');
+      idKel = "PANITIA_" + divisiVal;
+    }
 
     document.getElementById('table-rekap').innerHTML = '<tr><td colspan="8"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
 
