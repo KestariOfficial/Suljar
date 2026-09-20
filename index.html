@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Absensi Sulam Jaring 2026</title>
+  <title>Absensi & Rekap Sulam Jaring 2026</title>
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -77,21 +77,6 @@
       100% { transform: translateY(0) scale(1); opacity: 1; }
     }
 
-    .card-kelompok {
-      border: none;
-      border-radius: 15px;
-      transition: all 0.4s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      overflow: hidden;
-      background: white;
-      cursor: pointer;
-    }
-
-    .card-kelompok:hover {
-      transform: translateY(-8px) scale(1.03);
-      box-shadow: 0 12px 25px rgba(0, 180, 216, 0.4);
-    }
-
     .card-absen-option {
       border: 2px solid var(--ocean-aqua);
       border-radius: 15px;
@@ -121,9 +106,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-table me-1"></i> Tabel Rekap Panitia</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap-panitia" href="javascript:void(0)" onclick="cekSandiRekap('panitia')"><i class="fa-solid fa-table me-1"></i> Rekap Panitia</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap-maba" href="javascript:void(0)" onclick="cekSandiRekap('maba')"><i class="fa-solid fa-table-cells me-1"></i> Rekap Maba</a></li>
       </ul>
     </div>
   </div>
@@ -139,43 +124,34 @@
           <i class="fa-solid fa-anchor fa-3x text-info"></i>
         </div>
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
-        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Panitia Pemanfaatan Sumber Daya Perikanan 2026</h3>
+        <h3 class="text-secondary fw-normal mb-4">Situs Absensi Terpadu Panitia & Maba Pemanfaatan Sumber Daya Perikanan 2026</h3>
         <hr class="w-25 mx-auto border-info border-3 opacity-75">
-        <p class="text-muted mt-3">Silakan pilih menu di atas untuk mengisi absensi atau melihat tabel rekapitulasi panitia secara real-time.</p>
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melakukan absensi kedatangan/kepulangan atau melihat tabel rekapitulasi.</p>
       </div>
     </div>
 
-    <!-- Kelompok Maba -->
-    <div id="view-kelompok" class="page-view">
-      <div class="animasi-turun">
-        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
-        <p class="text-muted mb-4">Klik pada salah satu kartu kelompok di bawah untuk melihat profil deskripsi dan bentuk organisme!</p>
-        <div class="row g-4" id="grid-kelompok"></div>
-      </div>
-    </div>
-
-    <!-- Menu Utama Absen -->
+    <!-- Pilihan Jalur Masuk (Absen Panitia atau Maba) -->
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi Panitia</h2>
-        <p class="text-muted text-center mb-4">Silakan pilih sesi kehadiran atau kepulangan rapat Anda.</p>
+        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
+        <p class="text-muted text-center mb-4">Silakan pilih status jalur masuk Anda.</p>
         
         <div class="row justify-content-center g-4 mt-3">
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kedatangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihJalur('Panitia')">
               <div class="card-body">
-                <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
-                <h3 class="fw-bold text-success">Absen Kedatangan</h3>
-                <p class="text-muted small mt-2">Catat kehadiran awal (H) & Wajib Foto.</p>
+                <i class="fa-solid fa-user-shield fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold text-primary">Absen Panitia</h3>
+                <p class="text-muted small mt-2">Untuk Badan Pengurus Inti & Seluruh Divisi Panitia.</p>
               </div>
             </div>
           </div>
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kepulangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihJalur('Maba')">
               <div class="card-body">
-                <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
-                <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
-                <p class="text-muted small mt-2">Catat kepulangan akhir (S) & Tanpa Foto.</p>
+                <i class="fa-solid fa-user-graduate fa-3x text-success mb-3"></i>
+                <h3 class="fw-bold text-success">Absen Maba</h3>
+                <p class="text-muted small mt-2">Untuk Mahasiswa Baru per Kelompok (Ulva - Montipora).</p>
               </div>
             </div>
           </div>
@@ -183,16 +159,48 @@
       </div>
     </div>
 
-    <!-- Formulir Absen Panitia -->
-    <div id="view-form-absen" class="page-view">
+    <!-- Pilihan Sesi (Kedatangan / Kepulangan) -->
+    <div id="view-sesi" class="page-view">
       <div class="animasi-turun">
         <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
           <i class="fa-solid fa-arrow-left me-1"></i> Kembali
         </button>
-        <h2 class="fw-bold mb-2" id="judul-form-absen" style="color: var(--ocean-deep);">Formulir Absensi Panitia</h2>
-        <p class="text-muted mb-4">Pilih divisi Anda, lalu pilih nama Anda dari daftar yang tersedia.</p>
+        <h2 class="fw-bold mb-2 text-center" id="judul-sesi" style="color: var(--ocean-deep);">Pilih Sesi Kehadiran</h2>
+        <p class="text-muted text-center mb-4">Pilih apakah ini sesi kedatangan atau kepulangan.</p>
         
-        <form id="form-absen-panitia" onsubmit="event.preventDefault(); submitAbsenPanitia();">
+        <div class="row justify-content-center g-4 mt-3">
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormulir('Kedatangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
+                <h3 class="fw-bold text-success">Absen Kedatangan (H)</h3>
+                <p class="text-muted small mt-2">Catat kehadiran awal & Wajib Unggah Foto.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormulir('Kepulangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold text-primary">Absen Kepulangan (S)</h3>
+                <p class="text-muted small mt-2">Catat kepulangan akhir & Tanpa Foto.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulir Absensi Utama (Dinamis Panitia / Maba) -->
+    <div id="view-form" class="page-view">
+      <div class="animasi-turun">
+        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('sesi')">
+          <i class="fa-solid fa-arrow-left me-1"></i> Kembali
+        </button>
+        <h2 class="fw-bold mb-2" id="judul-formulir" style="color: var(--ocean-deep);">Formulir Absensi</h2>
+        <p class="text-muted mb-4">Lengkapi data di bawah ini.</p>
+        
+        <form id="form-absensi" onsubmit="event.preventDefault(); kirimDataAbsen();">
           <div class="row mb-3">
             <div class="col-md-6 mb-3">
               <label class="fw-bold">Tanggal</label>
@@ -200,44 +208,43 @@
             </div>
             
             <div class="col-md-6 mb-3">
-              <label class="fw-bold">Pilih Divisi</label>
-              <select id="select-divisi-absen" class="form-control border-info" onchange="updateDaftarNama()" required>
-                <option value="">-- Pilih Divisi --</option>
+              <label class="fw-bold" id="label-kategori-pilih">Pilih Kategori</label>
+              <select id="select-kategori" class="form-control border-info" onchange="updateDaftarNamaAnggota()" required>
+                <option value="">-- Pilih Kategori Terlebih Dahulu --</option>
               </select>
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-12 mb-3">
-              <label class="fw-bold">Pilih Nama Panitia</label>
-              <select id="select-nama-panitia" class="form-control border-info" required>
-                <option value="">-- Pilih Divisi Terlebih Dahulu --</option>
+              <label class="fw-bold">Pilih Nama Lengkap</label>
+              <select id="select-nama" class="form-control border-info" required>
+                <option value="">-- Pilih Kategori Terlebih Dahulu --</option>
               </select>
             </div>
           </div>
 
-          <!-- Bagian Upload Foto (Hanya muncul saat Kedatangan) -->
           <div class="mb-4" id="wrapper-foto">
             <label class="fw-bold">Unggah Bukti Foto / TTD Kehadiran (Wajib):</label>
             <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment">
             <small class="text-muted">Ambil foto menggunakan kamera HP.</small>
           </div>
 
-          <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-simpan-absen" style="background: linear-gradient(135deg, #2e8b57, #3cb371);">Kirim Absensi Sekarang</button>
+          <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-kirim">Kirim Absensi Sekarang</button>
         </form>
       </div>
     </div>
 
-    <!-- Tampilan Tabel Rekap Panitia Tiap Divisi -->
-    <div id="view-rekap" class="page-view">
+    <!-- Tampilan Tabel Rekap Panitia -->
+    <div id="view-rekap-panitia" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi Panitia</h2>
-        <p class="text-muted text-center mb-4">Pilih divisi di bawah ini untuk melihat huruf H (Kedatangan) dan S (Kepulangan) secara real-time.</p>
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekap Presensi Panitia</h2>
+        <p class="text-muted text-center mb-4">Pilih divisi panitia untuk melihat huruf H (Kedatangan) dan S (Kepulangan).</p>
         
         <div class="row justify-content-center mb-4">
           <div class="col-md-6">
-            <select id="select-divisi-rekap" class="form-control border-info fw-bold text-center" onchange="muatTabelRekapDivisi()">
-              <option value="">-- Pilih Divisi untuk Melihat Tabel --</option>
+            <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia()">
+              <option value="">-- Pilih Divisi Panitia --</option>
             </select>
           </div>
         </div>
@@ -253,8 +260,41 @@
                 <th style="width: 10%;">BUKTI</th>
               </tr>
             </thead>
-            <tbody id="tabel-rekap-body">
-              <tr><td colspan="5" class="text-muted">Silakan pilih divisi terlebih dahulu di atas.</td></tr>
+            <tbody id="tabel-rekap-panitia-body">
+              <tr><td colspan="5" class="text-muted">Silakan pilih divisi di atas.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tampilan Tabel Rekap Maba -->
+    <div id="view-rekap-maba" class="page-view">
+      <div class="animasi-turun">
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table-cells me-2"></i>Tabel Rekap Presensi Maba</h2>
+        <p class="text-muted text-center mb-4">Pilih kelompok Maba untuk melihat huruf H (Kedatangan) dan S (Kepulangan).</p>
+        
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-6">
+            <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba()">
+              <option value="">-- Pilih Kelompok Maba --</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-responsive bg-white p-3 rounded shadow-sm border">
+          <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark" style="background-color: var(--ocean-deep);">
+              <tr>
+                <th style="width: 8%;">NO</th>
+                <th class="text-start" style="width: 42%;">NAMA MAHASISWA BARU</th>
+                <th style="width: 20%;">KEDATANGAN</th>
+                <th style="width: 20%;">KEPULANGAN</th>
+                <th style="width: 10%;">BUKTI</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-rekap-maba-body">
+              <tr><td colspan="5" class="text-muted">Silakan pilih kelompok di atas.</td></tr>
             </tbody>
           </table>
         </div>
@@ -264,42 +304,12 @@
   </div>
 </div>
 
-<!-- Modal Detail Kelompok Maba -->
-<div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-      <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal));">
-        <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4 bg-light">
-        <div class="text-center mb-3">
-          <div id="modalIconContainer" class="display-5 text-info mb-2"></div>
-        </div>
-        <div class="mb-3">
-          <h6 class="text-primary fw-bold text-uppercase small"><i class="fa-solid fa-book-open me-1"></i> Karakteristik & Bentuk Asli</h6>
-          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.6;"></p>
-        </div>
-        <hr class="text-muted">
-        <div>
-          <h6 class="text-success fw-bold text-uppercase small"><i class="fa-solid fa-lightbulb me-1"></i> Fun Fact (Fakta Unik)</h6>
-          <div class="p-3 rounded bg-white border-start border-4 border-success shadow-sm">
-            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.5;"></p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer bg-white border-0">
-        <button type="button" class="btn btn-secondary px-4 fw-bold rounded-pill" data-bs-dismiss="modal">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   // ⚠️ Ganti URL ini dengan URL Web App Apps Script Anda yang berakhiran /exec
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycby0GVeOarwGBdfTRzyt9lKnmNYNReJ0qkdWfub0iDqk6IMJKA7mbRTRHAZTD1jTL3Lh/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
-  const dataPanitiaDivisi = {
+  // Data Lengkap Panitia[cite: 3]
+  const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": [
       "AHMAD CHOIRUL ANAM", "ULIL ABSHOR ASHIDIQ", "SYIFA SETYA WAHYUNINGTYAS", 
       "ARFAN ARDIANTA ROHMAN", "LUTHFIYAH ROBI’ATUL ADAWI", "FIRYAL MECCA SUTRISNO"
@@ -371,85 +381,94 @@
     ]
   };
 
-  const daftarKelompokMaba = [
-    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva kelompok selada laut.", funFact: "Kaya vitamin!" },
-    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia lamun pesisir.", funFact: "Menyerap blue carbon!" },
-    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus lamun pita.", funFact: "Bunga jantan mengapung." },
-    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina alga cokelat.", funFact: "Permukaan dilapisi kalsium." },
-    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa alga hijau.", funFact: "Satu sel raksasa!" },
-    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora karang batu.", funFact: "Pertumbuhan tercepat!" },
-    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia karang piringan.", funFact: "Dapat merayap di pasir." },
-    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia karang mangkuk.", funFact: "Berburu malam hari." },
-    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites karang masif.", funFact: "Hidup ribuan tahun." },
-    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora lembaran tipis.", funFact: "Bentuk fleksibel." }
-  ];
+  // Data Lengkap Maba Berdasarkan PDF Resmi[cite: 6]
+  const dataMaba = {
+    "Kelompok 1 (ULVA)": [
+      "Ivonne Chandra M. (PK)", "WAFIYYUDDIN ABI GA IL", "RHASYA YUDHISTIRA PRAYITNO", "KEISYA ZAHRA ARIZKA", "VINOLIA ROSA AZZAREL", "ΜΟΚΗ. ARKAN ALI FAHRI", "ALEXANDER DAFA ANDRIANO", "KARIN DYARUM WIRATAMA", "WARDAH ASH-SHOFIA K.", "RAMA KHAFIDZI PUTRA", "AGIS JALAUDDIN PRATAMA", "NARAYA FUAIZATUS SADWANI", "NESA ALDA KIRANA", "EDWARD SANJAYA S.", "MUCHAMAD RIDWAN ARIFIAN", "AMANDA ABIGAIL"
+    ],
+    "Kelompok 2 (THALASSIA)": [
+      "Moh. Ali Akbar A. (PK)", "YONIF RAMA SEPTA P. A.", "REYHAN RAMADHAN ASHARI", "FARADILLA RAHMAN", "AIFA PUTRI HERMITA", "MUHAMMAD ILHAM Z.", "ALI IMRON", "GHEA PUSPA SARI", "ARWATHALA ALINZA R.", "MUKHAMMAD FAHRUL U.", "MOCHAMAD RAFIDIN R.", "MAYA PUSPITA SARI", "NASYA AZIZAH", "MUHAMMAD ISHAMUDDIN", "KHANSA MAHIRA RAMONOV", "MAULIDINA BILQIES"
+    ],
+    "Kelompok 3 (ENHALUS)": [
+      "Safira Nurul Aini D. K. (PK)", "MARTOGI SIMBOLON", "MUHAMMAD FAUZAN", "AULIYA FIRDA RAHMADANI", "NARARYA DANISWORO S.", "SABIAN AHNAF", "MOCHAMMAD AQIL SYAFIQ", "HASNA INAS SADIRA", "DIARA ARLA CARENTHA", "AHMAD CHAIZUL ITMA AL R.", "TRI BINTANG SUNARYO", "KAYLA VADIA KAMAL", "M. ANELKA PRATAMA", "MUHAMMAD ARYADA HATTA M.", "NURINAYAH", "AZAHRA AULIAH"
+    ],
+    "Kelompok 4 (PADINA)": [
+      "M. Afsal Habibie (PK)", "MUHAMMAD MAULIDIN ALFARIZY", "ARKANUL GHILBAN", "OSSYTA LITUNDZIRA WAHYUNIA", "ANGGITA AULIATUZZAHRA", "DENI ADRIAN MAULINA", "SATRYA BAGUS HARDINATA P.", "INFIRUL ANISA AULIA", "CALLISTA ARINDA SUTEDJO", "NURROHMAN", "CHELSYA PATRICIA SIRINGO R.", "AZFA LAILA", "ACHDAN ARIQ MUSTHAFA", "ADNAN WIBOWO SAPOTRO", "DEFFANGGA REFACELLO", "JASMINE NURYANA"
+    ],
+    "Kelompok 5 (CAULERPA)": [
+      "Nurdeya (PK)", "FARIS MAULANA IBRAHIM", "MUHAMMAD CHABIB AZZAKY", "GRISELDA RAVINA ZAHIRA", "CLEONA PATRICA", "AKBARI NUR FATAH", "MARTINUS PURNAMA JAYA A.", "SHAFAA DHIYA FATHIIN", "PRINCESS RADINKA LUANN K. T.", "PASHA ABDULLAH KURNIAWAN", "AGIS JALAUDDIN PRATAMA", "NURILLAILAZAHRANI AURORA", "ZULFA BINTAH SHADIQY", "ARISTAMA AHMAD MALIKI", "NOOR INTAN RAMDHANI", "SAINT CORDIAZ G."
+    ],
+    "Kelompok 6 (ACROPORA)": [
+      "Pandu Al Ikhsan B. (PK)", "EL-TSANA EMIR MUHAMMAD", "MOKHAMMAD FARDINAN FAQIH A. T.", "NAYSILLA AS-ZAHRA A. R.", "NAURAH AQILAH MAYLAF A.", "THORIQ AZIZY", "MOHAMMAD NAUFAL RHESA M.", "NATALIA PURWANDANI", "ULA FADLIYA LUTFIANTONI", "CLEVER SYAH JAHAN IBO W.", "MOHAMMAD IZYAN ALFARISY", "CHRISTINA OLIVIA FEBRIANA", "AZITAQORIN", "MUHAMAD FATIH F.", "KEYZA AZIZAH FIRMANSYAH", "MARSYA ALIATU R."
+    ],
+    "Kelompok 7 (FUNGIA)": [
+      "Ayshatul Husna (PK)", "MOHAMMAD AMRI MAULANA S.", "ALIF AUM SHANTY", "MUTIARA SALWA", "BILQIS NAURA MAHARANI", "M. NAUFAL IVANO FADHIL", "MUHAMMAD RAGHIB MUSAYYAD A.", "NADIN AINAN FASYA", "CHILA PUTRI AZZAHRA", "FARIL TEGAR SATRIA W.A", "ABDUSSATTAR SARPHI R", "AISSHABELLA BAROKAH R.", "BADRUDIN TIANOTAK", "IBNATY ZALVA RAFEYLA", "ZAKIYATUL ANISAH", "SHINTYA NUR INDAH H."
+    ],
+    "Kelompok 8 (FAVIA)": [
+      "Alfan Ridho Fadillah (PK)", "MUHAMMAD RAFI SALIM", "MUHAMMAD ZIDANE MAULANA A.", "ADILA SEPTIANA RAMADHFAUZ", "ABDUL JABBAR MAHMUDI", "MOHAMMAD NABIL EL SHIRAZY", "DHINI AULIA RAHMAWATI", "MUTIA KHAIRIYAH ARYANTO", "AHMED NAILAN AMANI", "KEYSAL FACHRI", "NURLAILIAH SALSABELLA", "RIZCA SYAFIRA", "NAJIB 'AALY AL FATH", "AZKA AZIZI ALMUBAROK", "SALMA ZAHIROH", "UMI HANIK"
+    ],
+    "Kelompok 9 (PORITES)": [
+      "Helena Tri Yarfa O. (PK)", "NAUFAL ZAKKY ANDITA PUTRA", "RAFFANDA CHICCO PUTRA A.", "NASYAWA BALQIS AISYI", "MUHAMMAD AKBAR RIZQULLAH P.", "SIFA AULIA MUNAWAROH", "MUTIARA RIZKY FADIYAH", "SATRIA DAFA PRATAMA", "PARIJ RAHAYU SIDIK", "ARNAN THANIA MAURA P", "SALSABILLA PUTRI SYIFA", "MUHAMMAD FADLAN P.", "ATIKAH ZAHRAH", "DZAKWAN HANIF", "AKHMAD AKBAR YASSAR E.", "ALYA APRILIA"
+    ],
+    "Kelompok 10 (MONTIPORA)": [
+      "M. Rizal Kurniawan (PK)", "VARELO MAULANA MAGRIBI", "MUCHAMMAD ATTA ZAIDAN A.", "EVELLYN HASVA AISAH ANWAR", "VINO FEBRIAN YUDISTIRA", "KYLA ELIZA KUSUMAWARDANI", "ELVIORA NAVRATILOVA REVIANTI", "DANASTRI AYOM DAMASTUTI", "AULIA ANNAH DHIYAH", "RAMOS IMANUEL M.", "RAMZI RAYMIJAD", "VIORENTINA CINDY CANTIKAP.", "NOVITA ADELIA PUTRI EFFENDI", "ADRE AHMAD MAULANA", "RIDHO FAIZAL HAFIDZ"
+    ]
+  };
 
+  let jalurAktif = "Panitia"; // "Panitia" atau "Maba"
   let jenisAbsenAktif = "Kedatangan";
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
-    inisialisasiDropdownDivisi();
-    inisialisasiKelompokMaba();
+    inisialisasiDropdownRekap();
   });
 
-  function inisialisasiDropdownDivisi() {
-    let opsiHTML = '<option value="">-- Pilih Divisi --</option>';
-    for (let divisi in dataPanitiaDivisi) {
-      opsiHTML += `<option value="${divisi}">${divisi}</option>`;
+  function inisialisasiDropdownRekap() {
+    let opsiPanitia = '<option value="">-- Pilih Divisi Panitia --</option>';
+    for (let div in dataPanitia) {
+      opsiPanitia += `<option value="${div}">${div}</option>`;
     }
-    document.getElementById('select-divisi-absen').innerHTML = opsiHTML;
-    document.getElementById('select-divisi-rekap').innerHTML = opsiHTML;
-  }
+    document.getElementById('select-rekap-divisi').innerHTML = opsiPanitia;
 
-  function updateDaftarNama() {
-    let divisiPilih = document.getElementById('select-divisi-absen').value;
-    let selectNama = document.getElementById('select-nama-panitia');
-    
-    if (!divisiPilih) {
-      selectNama.innerHTML = '<option value="">-- Pilih Divisi Terlebih Dahulu --</option>';
-      return;
+    let opsiMaba = '<option value="">-- Pilih Kelompok Maba --</option>';
+    for (let kel in dataMaba) {
+      opsiMaba += `<option value="${kel}">${kel}</option>`;
     }
-
-    let listNama = dataPanitiaDivisi[divisiPilih];
-    let namaHTML = '<option value="">-- Pilih Nama Anda --</option>';
-    listNama.forEach(nama => {
-      namaHTML += `<option value="${nama}">${nama}</option>`;
-    });
-    selectNama.innerHTML = namaHTML;
+    document.getElementById('select-rekap-kelompok').innerHTML = opsiMaba;
   }
 
-  function inisialisasiKelompokMaba() {
-    let htmlCards = '';
-    daftarKelompokMaba.forEach((k) => {
-      htmlCards += `
-        <div class="col-md-4 col-sm-6">
-          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;">
-            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-              <div class="mb-3"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
-              <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
-            </div>
-          </div>
-        </div>
-      `;
-    });
-    document.getElementById('grid-kelompok').innerHTML = htmlCards;
+  function pilihJalur(jalur) {
+    jalurAktif = jalur;
+    showPage('sesi');
+    document.getElementById('judul-sesi').innerText = `Pilih Sesi Kehadiran (${jalur})`;
   }
 
-  function cekSandiRekap() {
-    let sandi = prompt("Masukkan sandi rahasia untuk membuka Tabel Rekap:");
-    if (sandi === "GSM2026") {
-      showPage('rekap');
-    } else if (sandi !== null) {
-      alert("Sandi salah!");
-    }
-  }
-
-  function bukaFormAbsen(jenis) {
+  function bukaFormulir(jenis) {
     jenisAbsenAktif = jenis;
-    document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} Panitia`;
+    document.getElementById('judul-formulir').innerText = `Formulir Absen ${jenis} (${jalurAktif})`;
     
+    let labelKat = document.getElementById('label-kategori-pilih');
+    let selectKat = document.getElementById('select-kategori');
     let wrapperFoto = document.getElementById('wrapper-foto');
     let inputFoto = document.getElementById('input-foto');
+
+    if (jalurAktif === 'Panitia') {
+      labelKat.innerText = "Pilih Divisi Panitia";
+      let html = '<option value="">-- Pilih Divisi --</option>';
+      for (let div in dataPanitia) {
+        html += `<option value="${div}">${div}</option>`;
+      }
+      selectKat.innerHTML = html;
+    } else {
+      labelKat.innerText = "Pilih Kelompok Maba";
+      let html = '<option value="">-- Pilih Kelompok --</option>';
+      for (let kel in dataMaba) {
+        html += `<option value="${kel}">${kel}</option>`;
+      }
+      selectKat.innerHTML = html;
+    }
+
+    document.getElementById('select-nama').innerHTML = '<option value="">-- Pilih Kategori Terlebih Dahulu --</option>';
 
     if (jenis === 'Kepulangan') {
       wrapperFoto.style.display = 'none';
@@ -459,7 +478,24 @@
       inputFoto.required = true;
     }
 
-    showPage('form-absen');
+    showPage('form');
+  }
+
+  function updateDaftarNamaAnggota() {
+    let kategoriPilih = document.getElementById('select-kategori').value;
+    let selectNama = document.getElementById('select-nama');
+    
+    if (!kategoriPilih) {
+      selectNama.innerHTML = '<option value="">-- Pilih Kategori Terlebih Dahulu --</option>';
+      return;
+    }
+
+    let listNama = (jalurAktif === 'Panitia') ? dataPanitia[kategoriPilih] : dataMaba[kategoriPilih];
+    let namaHTML = '<option value="">-- Pilih Nama Anda --</option>';
+    listNama.forEach(nama => {
+      namaHTML += `<option value="${nama}">${nama}</option>`;
+    });
+    selectNama.innerHTML = namaHTML;
   }
 
   function showPage(pageId) {
@@ -467,36 +503,50 @@
     document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
     
     let targetPage = document.getElementById('view-' + pageId);
-    let targetNav = document.getElementById('nav-' + (pageId === 'form-absen' ? 'absen' : pageId));
+    let targetNav = document.getElementById('nav-' + pageId);
     
     if(targetPage) targetPage.classList.add('active-view');
     if(targetNav) targetNav.classList.add('active');
   }
 
-  function submitAbsenPanitia() {
+  function cekSandiRekap(tipe) {
+    let sandi = prompt("Masukkan sandi rahasia untuk membuka Rekap:");
+    if (sandi === "GSM2026") {
+      if (tipe === 'panitia') {
+        showPage('rekap-panitia');
+      } else {
+        showPage('rekap-maba');
+      }
+    } else if (sandi !== null) {
+      alert("Sandi salah!");
+    }
+  }
+
+  function kirimDataAbsen() {
     let fileInput = document.getElementById('input-foto');
-    let divisi = document.getElementById('select-divisi-absen').value;
-    let nama = document.getElementById('select-nama-panitia').value;
+    let kategori = document.getElementById('select-kategori').value;
+    let nama = document.getElementById('select-nama').value;
     let tgl = document.getElementById('tgl-absen').value;
 
     if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) {
-      return alert('Silakan unggah foto/bukti kehadiran terlebih dahulu!');
+      return alert('Silakan unggah foto bukti terlebih dahulu!');
     }
 
-    let btn = document.getElementById('btn-simpan-absen');
+    let btn = document.getElementById('btn-kirim');
     btn.disabled = true;
     btn.innerText = `Mengirim Absen ${jenisAbsenAktif}... Mohon Tunggu`;
 
-    let kirimData = (base64Foto = "") => {
+    let kirimPayload = (base64Foto = "") => {
+      let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
       let payload = {
         action: "saveAttendance",
         tgl: tgl,
-        nim: divisi,
+        nim: kategori,
         nama: nama,
-        idKel: "PANITIA_" + divisi,
-        status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S', // H untuk Kedatangan, S untuk Kepulangan
+        idKel: prefix + kategori,
+        status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
         base64Foto: base64Foto,
-        jenisAbsen: `Panitia_${jenisAbsenAktif}`
+        jenisAbsen: `${jalurAktif}_${jenisAbsenAktif}`
       };
 
       fetch(SCRIPT_URL, {
@@ -506,12 +556,9 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        alert(`Absen ${jenisAbsenAktif} atas nama ${nama} berhasil dikirim!`);
+        alert(`Absen ${jenisAbsenAktif} (${jalurAktif}) atas nama ${nama} berhasil dikirim!`);
         btn.disabled = false;
         btn.innerText = "Kirim Absensi Sekarang";
-        document.getElementById('select-divisi-absen').value = '';
-        document.getElementById('select-nama-panitia').innerHTML = '<option value="">-- Pilih Divisi Terlebih Dahulu --</option>';
-        fileInput.value = '';
         showPage('dashboard');
       })
       .catch(err => {
@@ -525,67 +572,72 @@
     if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
       let reader = new FileReader();
       reader.onload = function(e) {
-        kirimData(e.target.result);
+        kirimPayload(e.target.result);
       };
       reader.readAsDataURL(fileInput.files[0]);
     } else {
-      kirimData("");
+      kirimPayload("");
     }
   }
 
-  async function muatTabelRekapDivisi() {
-    let divisi = document.getElementById('select-divisi-rekap').value;
-    let tbody = document.getElementById('tabel-rekap-body');
-    
-    if (!divisi) {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-muted">Silakan pilih divisi terlebih dahulu.</td></tr>';
-      return;
-    }
+  async function muatRekapPanitia() {
+    let divisi = document.getElementById('select-rekap-divisi').value;
+    let tbody = document.getElementById('tabel-rekap-panitia-body');
+    if (!divisi) return;
 
-    tbody.innerHTML = '<tr><td colspan="5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
-
+    tbody.innerHTML = '<tr><td colspan="5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat...</td></tr>';
     try {
-      let response = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
-      let dataRes = await response.json();
-
-      let daftarNama = dataPanitiaDivisi[divisi] || [];
+      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
+      let dataRes = await res.json();
+      let daftar = dataPanitia[divisi] || [];
       let html = '';
 
-      daftarNama.forEach((namaPanitia, index) => {
+      daftar.forEach((namaPanitia, index) => {
         let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaPanitia.toString().trim().toUpperCase());
-        
-        let tampilH = '-';
-        let tampilS = '-';
-        let linkBukti = '-';
+        let h = '-', s = '-', bukti = '-';
 
         records.forEach(rec => {
-          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().trim() : "";
-          
-          if (jenis.includes("Kedatangan") || jenis.includes("Panitia_Kedatangan") || rec.status === "H") {
-            tampilH = '<strong class="text-success fs-5">H</strong>';
-          }
-          if (jenis.includes("Kepulangan") || jenis.includes("Panitia_Kepulangan") || rec.status === "S") {
-            tampilS = '<strong class="text-primary fs-5">S</strong>';
-          }
-          if (rec.foto && rec.foto.length > 0 && rec.foto[0] !== "") {
-            linkBukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
-          }
+          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString() : "";
+          if (jenis.includes("Kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
+          if (jenis.includes("Kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
+          if (rec.foto && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
         });
 
-        html += `
-          <tr>
-            <td>${index + 1}</td>
-            <td class="text-start fw-bold">${namaPanitia}</td>
-            <td>${tampilH}</td>
-            <td>${tampilS}</td>
-            <td>${linkBukti}</td>
-          </tr>
-        `;
+        html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaPanitia}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
       });
-
       tbody.innerHTML = html;
     } catch (e) {
-      console.error(e);
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat rekap.</td></tr>';
+    }
+  }
+
+  async function muatRekapMaba() {
+    let kelompok = document.getElementById('select-rekap-kelompok').value;
+    let tbody = document.getElementById('tabel-rekap-maba-body');
+    if (!kelompok) return;
+
+    tbody.innerHTML = '<tr><td colspan="5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat...</td></tr>';
+    try {
+      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=MABA_${kelompok}`);
+      let dataRes = await res.json();
+      let daftar = dataMaba[kelompok] || [];
+      let html = '';
+
+      daftar.forEach((namaMaba, index) => {
+        let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaMaba.toString().trim().toUpperCase());
+        let h = '-', s = '-', bukti = '-';
+
+        records.forEach(rec => {
+          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString() : "";
+          if (jenis.includes("Kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
+          if (jenis.includes("Kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
+          if (rec.foto && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+        });
+
+        html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaMaba}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
+      });
+      tbody.innerHTML = html;
+    } catch (e) {
       tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat rekap.</td></tr>';
     }
   }
