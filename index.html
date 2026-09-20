@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Absensi Sulam Jaring 2026</title>
+  <base target="_top">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --ocean-deep: #003366;
+      --ocean-teal: #007791;
+      --ocean-aqua: #00b4d8;
+      --ocean-sand: #f4e8c1;
+      --coral-pink: #ff6b6b;
+      --sun-yellow: #ffd166;
+    }
+
+    body { 
+      padding-top: 90px; 
+      background-image: linear-gradient(rgba(0, 51, 102, 0.75), rgba(0, 119, 145, 0.75)), url('foto.jpg');
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+      min-height: 100vh;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    .navbar {
+      background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)) !important;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      border-bottom: 3px solid var(--ocean-aqua);
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      color: var(--sun-yellow) !important;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+
+    .nav-link {
+      color: #fff !important;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      border-radius: 20px;
+      padding: 8px 15px !important;
+      margin: 0 3px;
+    }
+
+    .nav-link:hover, .nav-link.active {
+      background-color: var(--ocean-aqua);
+      color: var(--ocean-deep) !important;
+      transform: translateY(-2px);
+    }
+
+    .content-wrapper {
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 35px;
+      margin-bottom: 40px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 2px solid var(--ocean-aqua);
+    }
+
+    .page-view { display: none; }
+    .active-view { display: block; }
+    
+    .animasi-turun {
+      animation: waveIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+      opacity: 0;
+    }
+
+    @keyframes waveIn {
+      0% { transform: translateY(-50px) scale(0.95); opacity: 0; }
+      100% { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .card-kelompok {
+      border: none;
+      border-radius: 15px;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background: white;
+      cursor: pointer;
+    }
+
+    .card-kelompok:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 25px rgba(0, 180, 216, 0.4);
+    }
+
+    .card-absen-option {
+      border: 2px solid var(--ocean-aqua);
+      border-radius: 15px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      background: white;
+    }
+
+    .card-absen-option:hover {
+      background-color: #e0f7fa;
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar Tema Laut -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand fw-bold" href="javascript:void(0)" onclick="showPage('dashboard')">
+      <i class="fa-solid fa-water me-2"></i>Sulam Jaring 2026
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-chart-pie me-1"></i> Rekap</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container">
+  <div class="content-wrapper">
+    
+    <!-- Dashboard -->
+    <div id="view-dashboard" class="page-view active-view">
+      <div class="text-center py-5 animasi-turun">
+        <div class="mb-4">
+          <i class="fa-solid fa-anchor fa-3x text-info"></i>
+        </div>
+        <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
+        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Kelompok Pemanfaatan Sumber Daya Perikanan 2026</h3>
+        <hr class="w-25 mx-auto border-info border-3 opacity-75">
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi, atau melihat rekap data.</p>
+      </div>
+    </div>
+
+    <!-- Kelompok -->
+    <div id="view-kelompok" class="page-view">
+      <div class="animasi-turun">
+        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok</h2>
+        <p class="text-muted mb-4">Klik pada salah satu kartu kelompok di bawah untuk melihat profil deskripsi, bentuk asli organisme, dan <em>fun fact</em> menarik!</p>
+        <div class="row g-4" id="grid-kelompok"></div>
+      </div>
+    </div>
+
+    <!-- Menu Pilihan Absen -->
+    <div id="view-absen" class="page-view">
+      <div class="animasi-turun">
+        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Pilih Jenis Absensi</h2>
+        <p class="text-muted text-center mb-4">Silakan pilih jenis absensi yang ingin Anda lakukan hari ini.</p>
+        
+        <div class="row justify-content-center g-4 mt-3">
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kedatangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
+                <h3 class="fw-bold text-success">Absen Kedatangan</h3>
+                <p class="text-muted small mt-2">Lakukan absensi saat memulai kegiatan atau tiba di lokasi.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kepulangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
+                <p class="text-muted small mt-2">Lakukan absensi saat menyelesaikan kegiatan atau pulang.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulir Absen -->
+    <div id="view-form-absen" class="page-view">
+      <div class="animasi-turun">
+        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
+          <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Pilihan Absen
+        </button>
+        <h2 class="fw-bold mb-2" id="judul-form-absen" style="color: var(--ocean-deep);">Formulir Absensi</h2>
+        <p class="text-muted mb-4">Masukkan data kehadiran Anda dengan lengkap dan benar.</p>
+        
+        <form id="form-absen-mandiri" onsubmit="event.preventDefault(); submitAbsenMandiri();">
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label class="fw-bold">Tanggal</label>
+              <input type="date" id="tgl-absen" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="fw-bold">Pilih Nama Kelompok</label>
+              <select id="select-kelompok-absen" class="form-control border-info" required>
+                <option value="">-- Pilih Kelompok --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6 mb-3">
+              <label class="fw-bold">NIM Mahasiswa</label>
+              <input type="number" id="input-nim" class="form-control border-info" placeholder="Contoh: 2026001" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="fw-bold">Nama Lengkap</label>
+              <input type="text" id="input-nama" class="form-control border-info" placeholder="Nama Lengkap" required>
+            </div>
+          </div>
+
+          <div class="mb-4 border border-info p-3 rounded bg-light">
+            <label class="fw-bold d-block mb-2 text-primary">Keterangan Kehadiran:</label>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status_absen" value="H" checked required>
+              <label class="form-check-label text-success fw-bold">Hadir (H)</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status_absen" value="I">
+              <label class="form-check-label text-info fw-bold">Izin (I)</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="status_absen" value="S">
+              <label class="form-check-label text-warning fw-bold">Sakit (S)</label>
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label class="fw-bold">Unggah Bukti Foto (Wajib):</label>
+            <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment" required>
+            <small class="text-muted">Gunakan kamera HP atau pilih dari galeri.</small>
+          </div>
+
+          <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-simpan-absen" style="background: linear-gradient(135deg, #2e8b57, #3cb371);">Kirim Absensi Sekarang</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Rekap -->
+    <div id="view-rekap" class="page-view">
+      <div class="animasi-turun">
+        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Rekapitulasi Absen</h2>
+        <div class="row mb-3 mt-3">
+          <div class="col-md-6 mb-2">
+            <select id="select-kelompok-rekap" class="form-control border-info">
+              <option value="">Pilih Kelompok...</option>
+            </select>
+          </div>
+          <div class="col-md-6 mb-2">
+            <button class="btn btn-primary w-100 fw-bold shadow-sm" onclick="loadRekap()" style="background-color: var(--ocean-teal);">Tampilkan Data Rekap</button>
+          </div>
+        </div>
+        <div class="table-responsive mt-4">
+          <table class="table table-striped table-bordered text-center align-middle shadow-sm">
+            <thead class="table-dark" style="background-color: var(--ocean-deep);">
+              <tr>
+                <th>NIM</th>
+                <th>Nama Mahasiswa</th>
+                <th class="text-success">H</th>
+                <th class="text-info">I</th>
+                <th class="text-warning">S</th>
+                <th>A</th>
+                <th>Bukti Foto</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="table-rekap">
+              <tr><td colspan="8" class="text-muted">Silakan pilih kelompok lalu klik Tampilkan Data.</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal Pop-up Deskripsi & Fun Fact Kelompok -->
+<div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+      <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal));">
+        <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 bg-light">
+        <div class="text-center mb-3">
+          <div id="modalIconContainer" class="display-5 text-info mb-2"></div>
+        </div>
+        <div class="mb-3">
+          <h6 class="text-primary fw-bold text-uppercase small"><i class="fa-solid fa-book-open me-1"></i> Karakteristik & Bentuk Asli</h6>
+          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.6;"></p>
+        </div>
+        <hr class="text-muted">
+        <div>
+          <h6 class="text-success fw-bold text-uppercase small"><i class="fa-solid fa-lightbulb me-1"></i> Fun Fact (Fakta Unik)</h6>
+          <div class="p-3 rounded bg-white border-start border-4 border-success shadow-sm">
+            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.5;"></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-white border-0">
+        <button type="button" class="btn btn-secondary px-4 fw-bold rounded-pill" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Data lengkap dengan ikon spesifik yang menyerupai bentuk asli tiap kelompok (Alga, Lamun, Karang)
+  const daftarKelompok = [
+    { 
+      nama: "ULVA", 
+      color: "#2ecc71", 
+      icon: "fa-seedling", 
+      desc: "Ulva menggambarkan kelompok yang terinspirasi dari selada laut, sejenis alga hijau berbentuk lembaran tipis bergelombang yang tumbuh subur dan menjadi salah satu produsen primer penting di perairan dangkal serta ekosistem pesisir.", 
+      funFact: "Tahukah kamu? Beberapa jenis Ulva (selada laut) dapat dikonsumsi oleh manusia karena kaya akan vitamin dan mineral, serta sering dijadikan bahan makanan tradisional di berbagai belahan dunia!" 
+    },
+    { 
+      nama: "THALASSIA", 
+      color: "#1abc9c", 
+      icon: "fa-water", 
+      desc: "Thalassia merepresentasikan kelompok yang dinamai dari tumbuhan lamun pesisir berdaun pipih panjang, yang berperan besar dalam menjaga kestabilan substrat dasar laut serta menjadi habitat asuhan bagi berbagai biota perairan.", 
+      funFact: "Tahukah kamu? Padang lamun Thalassia mampu menyerap karbon dari atmosfer (dikenal sebagai blue carbon) jauh lebih cepat dan efisien dibandingkan hutan daratan biasa!" 
+    },
+    { 
+      nama: "ENHALUS", 
+      color: "#3498db", 
+      icon: "fa-feather", 
+      desc: "Enhalus mengambil nama dari spesies lamun berdaun pita panjang menyerupai pita kokoh berbulur hitam di pangkalnya, melambangkan ketahanan dan fungsi ekologis yang vital di zona intertidal dan perairan dangkal.", 
+      funFact: "Tahukah kamu? Enhalus acoroides memiliki bunga jantan yang bisa 'melepaskan diri' dari tanaman dan mengapung di permukaan air untuk menemukan bunga betina demi melakukan penyerbukan bawah air!" 
+    },
+    { 
+      nama: "PADINA", 
+      color: "#e67e22", 
+      icon: "fa-fan", 
+      desc: "Padina diadaptasi dari bentuk alga cokelat unik menyerupai kipas kecil bergaris konsentris yang menghiasi ekosistem pesisir dengan keindahan struktur morfologinya.", 
+      funFact: "Tahukah kamu? Permukaan thallus alga Padina sering kali dilapisi oleh endapan kalsium karbonat (kapur), membuat teksturnya terasa keras dan menyerupai kerang mini yang rapuh." 
+    },
+    { 
+      nama: "CAULERPA", 
+      color: "#27ae60", 
+      icon: "fa-grapes", 
+      desc: "Caulerpa mencerminkan karakteristik alga hijau dengan bentuk menjalar mirip bulu ayam atau butiran anggur laut, melambangkan keanekaragaman hayati nabati yang melimpah dan bernilai tinggi di perairan tropis.", 
+      funFact: "Tahukah kamu? Meskipun bentuknya menyerupai tanaman tingkat tinggi yang kompleks, seluruh tubuh alga Caulerpa sebenarnya hanya terdiri dari satu sel raksasa dengan banyak inti sel di dalamnya!" 
+    },
+    { 
+      nama: "ACROPORA", 
+      color: "#e74c3c", 
+      icon: "fa-tree", 
+      desc: "Acropora melambangkan kelompok karang batu berwujud bercabang menyerupai pepohonan mini di bawah laut sebagai pembentuk utama ekosistem terumbu karang pelindung ribuan biota.", 
+      funFact: "Tahukah kamu? Karang Acropora memiliki pertumbuhan tercepat di antara jenis karang batu lainnya, mampu memanjang hingga belasan sentimeter dalam waktu hanya satu tahun!" 
+    },
+    { 
+      nama: "FUNGIA", 
+      color: "#9b59b6", 
+      desc: "Fungia terinspirasi dari karang soliter berbentuk piringan bundar menyerupai jamur (mushroom coral), menggambarkan keunikan individu karang tunggal yang tangguh berdiri sendiri di dasar perairan terumbu.", 
+      funFact: "Tahukah kamu? Berbeda dengan kebanyakan karang lain yang hidup menempel mati di satu tempat, karang Fungia muda dapat bergerak merayap secara perlahan di atas pasir untuk mencari posisi hidup yang ideal!" 
+    },
+    { 
+      nama: "FAVIA", 
+      color: "#16a085", 
+      desc: "Favia dinamai dari koloni karang masif dengan mangkuk polip rapat berdinding tebal menyerupai sarang lebah atau permukaan berbintik teratur.", 
+      funFact: "Tahukah kamu? Pada malam hari, polip-polip karang Favia akan menjulurkan tentakel penangkapnya yang panjang ke luar untuk berburu mangsa mikroskopis di kolom air." 
+    },
+    { 
+      nama: "PORITES", 
+      color: "#d35400", 
+      desc: "Porites merujuk pada jenis karang masif berbentuk kubah besar menyerupai batu besar kekuningan yang dikenal sangat kuat, kokoh, dan berumur panjang dalam membangun struktur terumbu.", 
+      funFact: "Tahukah kamu? Beberapa koloni karang besar Porites dapat hidup hingga ratusan bahkan ribuan tahun, menjadikannya 'perekam sejarah' perubahan iklim purba lewat lapisan kerangka batunya." 
+    },
+    { 
+      nama: "MONTIPORA", 
+      color: "#2980b9", 
+      icon: "fa-layer-group", 
+      desc: "Montipora merepresentasikan kelompok karang berkoloni lembaran tipis bertingkat (foliose) atau mengerak (encrusting) yang dinamis dalam memperluas habitat di bawah permukaan laut.", 
+      funFact: "Tahukah kamu? Karang Montipora sangat fleksibel dalam hal bentuk pertumbuhan; spesies yang sama bisa tumbuh menjadi bentuk lembaran tipis di tempat teduh, atau menjadi tonjolan tebal di area berombak kuat!" 
+    }
+  ];
+
+  let jenisAbsenAktif = "Kedatangan";
+
+  document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById('tgl-absen').valueAsDate = new Date();
+    inisialisasiKelompok();
+  });
+
+  function inisialisasiKelompok() {
+    let htmlDropdown = '<option value="">-- Pilih Kelompok --</option>';
+    let htmlCards = '';
+
+    daftarKelompok.forEach((k) => {
+      htmlDropdown += `<option value="${k.nama}">${k.nama}</option>`;
+      // Gunakan ikon kustom yang sesuai bentuk aslinya
+      let iconClass = k.icon || "fa-water";
+      htmlCards += `
+        <div class="col-md-4 col-sm-6">
+          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;" onclick="tampilkanDetailKelompok('${k.nama}')">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3">
+                <i class="fa-solid ${iconClass} fa-2x" style="color: ${k.color};"></i>
+              </div>
+              <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
+              <small class="text-muted mt-2"><i class="fa-solid fa-circle-info me-1"></i> Klik untuk info bentuk & fun fact</small>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+
+    document.getElementById('select-kelompok-absen').innerHTML = htmlDropdown;
+    document.getElementById('select-kelompok-rekap').innerHTML = htmlDropdown;
+    document.getElementById('grid-kelompok').innerHTML = htmlCards;
+  }
+
+  // Fungsi menampilkan Modal Info, Bentuk Asli & Fun Fact Kelompok
+  function tampilkanDetailKelompok(namaKelompok) {
+    let kelompokData = daftarKelompok.find(item => item.nama === namaKelompok);
+    if (kelompokData) {
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>Kelompok ${kelompokData.nama}`;
+      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${kelompokData.icon || 'fa-water'}" style="color: ${kelompokData.color};"></i>`;
+      document.getElementById('modalDesc').innerText = kelompokData.desc;
+      document.getElementById('modalFunFact').innerText = kelompokData.funFact;
+      
+      let myModal = new bootstrap.Modal(document.getElementById('modalKelompok'));
+      myModal.show();
+    }
+  }
+
+  function cekSandiRekap() {
+    let sandi = prompt("Masukkan sandi rahasia untuk membuka menu Rekap:");
+    if (sandi === "GSM2026") {
+      showPage('rekap');
+    } else if (sandi !== null) {
+      alert("Sandi salah! Akses ditolak.");
+    }
+  }
+
+  function bukaFormAbsen(jenis) {
+    jenisAbsenAktif = jenis;
+    document.getElementById('judul-form-absen').innerText = "Formulir Absensi " + jenis;
+    showPage('form-absen');
+  }
+
+  function showPage(pageId) {
+    try {
+      document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
+      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+      
+      let targetPage = document.getElementById('view-' + pageId);
+      let targetNav = document.getElementById('nav-' + pageId);
+      
+      if(targetPage) {
+        targetPage.classList.add('active-view');
+        if(targetNav) targetNav.classList.add('active');
+        
+        let animEl = targetPage.querySelector('.animasi-turun');
+        if (animEl) {
+          animEl.style.animation = 'none'; 
+          setTimeout(() => { animEl.style.animation = ''; }, 20); 
+        }
+      }
+
+      let navbarCollapse = document.getElementById('navbarNav');
+      if(navbarCollapse.classList.contains('show')){
+        let bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
+        bsCollapse.hide();
+      }
+      
+    } catch (error) {
+      console.log("Terjadi kendala saat pindah halaman: ", error);
+    }
+  }
+
+  function submitAbsenMandiri() {
+    let fileInput = document.getElementById('input-foto');
+    if(fileInput.files.length === 0) return alert('Silakan unggah foto bukti terlebih dahulu!');
+    
+    let btn = document.getElementById('btn-simpan-absen');
+    btn.disabled = true;
+    btn.innerText = "Mengunggah Data & Foto (" + jenisAbsenAktif + ")... Mohon Tunggu";
+
+    let tgl = document.getElementById('tgl-absen').value;
+    let idKel = document.getElementById('select-kelompok-absen').value;
+    let nim = document.getElementById('input-nim').value;
+    let nama = document.getElementById('input-nama').value;
+    let status = document.querySelector('input[name="status_absen"]:checked').value;
+
+    let file = fileInput.files[0];
+    let reader = new FileReader();
+    
+    reader.onload = function(e) {
+      let base64Foto = e.target.result;
+      
+      if (typeof google !== 'undefined') {
+        google.script.run.withSuccessHandler(() => {
+          alert("Absensi " + jenisAbsenAktif + " & Foto Berhasil Terkirim!");
+          btn.disabled = false;
+          btn.innerText = "Kirim Absensi Sekarang";
+          document.getElementById('input-nim').value = '';
+          document.getElementById('input-nama').value = '';
+          document.getElementById('select-kelompok-absen').value = '';
+          fileInput.value = ''; 
+          showPage('dashboard');
+        }).saveAttendanceSelf(tgl, nim, nama, idKel, status, base64Foto, jenisAbsenAktif);
+      } else {
+        setTimeout(() => {
+          alert("Simulasi: Absensi " + jenisAbsenAktif + " berhasil terkirim!");
+          btn.disabled = false;
+          btn.innerText = "Kirim Absensi Sekarang";
+          showPage('dashboard');
+        }, 1000);
+      }
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function loadRekap() {
+    let idKel = document.getElementById('select-kelompok-rekap').value;
+    if(!idKel) return alert('Pilih kelompok terlebih dahulu!');
+
+    document.getElementById('table-rekap').innerHTML = '<tr><td colspan="8"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
+
+    if (typeof google !== 'undefined') {
+      google.script.run.withSuccessHandler(res => {
+        let html = '';
+        if(!res || res.length === 0) {
+          html = '<tr><td colspan="8" class="text-muted">Belum ada absensi untuk kelompok ini.</td></tr>';
+        } else {
+          res.forEach(r => {
+            let linkFoto = (r.foto && r.foto.length > 0) ? `<a href="${r.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold"><i class="fa-solid fa-image me-1"></i>Lihat Foto</a>` : '-';
+            html += `<tr>
+                       <td class="fw-bold">${r.nim}</td>
+                       <td class="text-start">${r.nama}</td>
+                       <td><span class="badge bg-success">${r.H}</span></td>
+                       <td><span class="badge bg-info text-dark">${r.I}</span></td>
+                       <td><span class="badge bg-warning text-dark">${r.S}</span></td>
+                       <td><span class="badge bg-danger">${r.A}</span></td>
+                       <td>${linkFoto}</td>
+                       <td>
+                         <button class="btn btn-sm btn-danger fw-bold" onclick="konfirmasiHapus('${r.nim}', '${r.nama}')">
+                           <i class="fa-solid fa-trash-can me-1"></i> Hapus
+                         </button>
+                       </td>
+                     </tr>`;
+          });
+        }
+        document.getElementById('table-rekap').innerHTML = html;
+      }).getRecap(idKel);
+    } else {
+      setTimeout(() => {
+        document.getElementById('table-rekap').innerHTML = `
+          <tr>
+            <td class="fw-bold">2026001</td>
+            <td class="text-start">Contoh Mahasiswa</td>
+            <td><span class="badge bg-success">1</span></td>
+            <td><span class="badge bg-info text-dark">0</span></td>
+            <td><span class="badge bg-warning text-dark">0</span></td>
+            <td><span class="badge bg-danger">0</span></td>
+            <td><span class="text-muted">-</span></td>
+            <td>
+              <button class="btn btn-sm btn-danger fw-bold" onclick="alert('Simulasi Hapus')">
+                <i class="fa-solid fa-trash-can me-1"></i> Hapus
+              </button>
+            </td>
+          </tr>`;
+      }, 500);
+    }
+  }
+
+  function konfirmasiHapus(nim, nama) {
+    let idKel = document.getElementById('select-kelompok-rekap').value;
+    let konfirmasi = confirm(`Apakah Anda yakin ingin menghapus seluruh riwayat absensi untuk ${nama} (NIM: ${nim}) dari kelompok ${idKel}?`);
+    
+    if (konfirmasi) {
+      if (typeof google !== 'undefined') {
+        google.script.run.withSuccessHandler(pesan => {
+          alert(pesan);
+          loadRekap();
+        }).hapusDataAbsensiMahasiswa(nim, idKel);
+      }
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
