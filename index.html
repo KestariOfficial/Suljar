@@ -77,6 +77,21 @@
       100% { transform: translateY(0) scale(1); opacity: 1; }
     }
 
+    .card-kelompok {
+      border: none;
+      border-radius: 15px;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      overflow: hidden;
+      background: white;
+      cursor: pointer;
+    }
+
+    .card-kelompok:hover {
+      transform: translateY(-8px) scale(1.03);
+      box-shadow: 0 12px 25px rgba(0, 180, 216, 0.4);
+    }
+
     .card-absen-option {
       border: 2px solid var(--ocean-aqua);
       border-radius: 15px;
@@ -106,9 +121,9 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok Maba</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap-panitia" href="javascript:void(0)" onclick="cekSandiRekap('panitia')"><i class="fa-solid fa-table me-1"></i> Rekap Panitia</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap-maba" href="javascript:void(0)" onclick="cekSandiRekap('maba')"><i class="fa-solid fa-table-cells me-1"></i> Rekap Maba</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-table me-1"></i> Tabel Rekap</a></li>
       </ul>
     </div>
   </div>
@@ -124,13 +139,22 @@
           <i class="fa-solid fa-anchor fa-3x text-info"></i>
         </div>
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
-        <h3 class="text-secondary fw-normal mb-4">Situs Absensi Terpadu Panitia & Maba Pemanfaatan Sumber Daya Perikanan 2026</h3>
+        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h3>
         <hr class="w-25 mx-auto border-info border-3 opacity-75">
-        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melakukan absensi kedatangan/kepulangan atau melihat tabel rekapitulasi.</p>
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk mengisi absensi, melihat informasi kelompok Maba, atau membuka tabel rekap.</p>
       </div>
     </div>
 
-    <!-- Pilihan Jalur Masuk (Absen Panitia atau Maba) -->
+    <!-- Halaman Kelompok Maba & Fun Fact -->
+    <div id="view-kelompok" class="page-view">
+      <div class="animasi-turun">
+        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
+        <p class="text-muted mb-4">Klik pada kartu kelompok di bawah untuk melihat arti nama dan fun fact organisme!</p>
+        <div class="row g-4" id="grid-kelompok"></div>
+      </div>
+    </div>
+
+    <!-- Pilihan Jalur Absen (Panitia / Maba) -->
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
         <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
@@ -159,7 +183,7 @@
       </div>
     </div>
 
-    <!-- Pilihan Sesi (Kedatangan / Kepulangan) -->
+    <!-- Pilihan Sesi Absen (Kedatangan / Kepulangan) -->
     <div id="view-sesi" class="page-view">
       <div class="animasi-turun">
         <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
@@ -191,7 +215,7 @@
       </div>
     </div>
 
-    <!-- Formulir Absensi Utama (Dinamis Panitia / Maba) -->
+    <!-- Formulir Absensi -->
     <div id="view-form" class="page-view">
       <div class="animasi-turun">
         <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('sesi')">
@@ -235,80 +259,112 @@
       </div>
     </div>
 
-    <!-- Tampilan Tabel Rekap Panitia -->
-    <div id="view-rekap-panitia" class="page-view">
+    <!-- Halaman Utama Tabel Rekap (Digabung dengan Tombol Pilihan Panitia / Maba) -->
+    <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekap Presensi Panitia</h2>
-        <p class="text-muted text-center mb-4">Pilih divisi panitia untuk melihat huruf H (Kedatangan) dan S (Kepulangan).</p>
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi</h2>
+        <p class="text-muted text-center mb-4">Silakan pilih kategori rekap yang ingin ditampilkan di bawah ini.</p>
         
-        <div class="row justify-content-center mb-4">
-          <div class="col-md-6">
-            <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia()">
-              <option value="">-- Pilih Divisi Panitia --</option>
-            </select>
+        <div class="d-flex justify-content-center gap-3 mb-4">
+          <button class="btn btn-primary px-4 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('panitia')"><i class="fa-solid fa-user-shield me-2"></i>Rekap Panitia</button>
+          <button class="btn btn-success px-4 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('maba')"><i class="fa-solid fa-user-graduate me-2"></i>Rekap Maba</button>
+        </div>
+
+        <!-- Rekap Panitia Section -->
+        <div id="section-rekap-panitia">
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-6">
+              <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia()">
+                <option value="">-- Pilih Divisi Panitia --</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive bg-white p-3 rounded shadow-sm border">
+            <table class="table table-bordered table-striped text-center align-middle">
+              <thead class="table-dark" style="background-color: var(--ocean-deep);">
+                <tr>
+                  <th style="width: 8%;">NO</th>
+                  <th class="text-start" style="width: 42%;">NAMA PANITIA</th>
+                  <th style="width: 20%;">KEDATANGAN</th>
+                  <th style="width: 20%;">KEPULANGAN</th>
+                  <th style="width: 10%;">BUKTI</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-rekap-panitia-body">
+                <tr><td colspan="5" class="text-muted">Silakan pilih divisi panitia di atas.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="table-responsive bg-white p-3 rounded shadow-sm border">
-          <table class="table table-bordered table-striped text-center align-middle">
-            <thead class="table-dark" style="background-color: var(--ocean-deep);">
-              <tr>
-                <th style="width: 8%;">NO</th>
-                <th class="text-start" style="width: 42%;">NAMA PANITIA</th>
-                <th style="width: 20%;">KEDATANGAN</th>
-                <th style="width: 20%;">KEPULANGAN</th>
-                <th style="width: 10%;">BUKTI</th>
-              </tr>
-            </thead>
-            <tbody id="tabel-rekap-panitia-body">
-              <tr><td colspan="5" class="text-muted">Silakan pilih divisi di atas.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tampilan Tabel Rekap Maba -->
-    <div id="view-rekap-maba" class="page-view">
-      <div class="animasi-turun">
-        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table-cells me-2"></i>Tabel Rekap Presensi Maba</h2>
-        <p class="text-muted text-center mb-4">Pilih kelompok Maba untuk melihat huruf H (Kedatangan) dan S (Kepulangan).</p>
-        
-        <div class="row justify-content-center mb-4">
-          <div class="col-md-6">
-            <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba()">
-              <option value="">-- Pilih Kelompok Maba --</option>
-            </select>
+        <!-- Rekap Maba Section -->
+        <div id="section-rekap-maba" style="display: none;">
+          <div class="row justify-content-center mb-3">
+            <div class="col-md-6">
+              <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba()">
+                <option value="">-- Pilih Kelompok Maba --</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-responsive bg-white p-3 rounded shadow-sm border">
+            <table class="table table-bordered table-striped text-center align-middle">
+              <thead class="table-dark" style="background-color: var(--ocean-deep);">
+                <tr>
+                  <th style="width: 8%;">NO</th>
+                  <th class="text-start" style="width: 42%;">NAMA MAHASISWA BARU</th>
+                  <th style="width: 20%;">KEDATANGAN</th>
+                  <th style="width: 20%;">KEPULANGAN</th>
+                  <th style="width: 10%;">BUKTI</th>
+                </tr>
+              </thead>
+              <tbody id="tabel-rekap-maba-body">
+                <tr><td colspan="5" class="text-muted">Silakan pilih kelompok maba di atas.</td></tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <div class="table-responsive bg-white p-3 rounded shadow-sm border">
-          <table class="table table-bordered table-striped text-center align-middle">
-            <thead class="table-dark" style="background-color: var(--ocean-deep);">
-              <tr>
-                <th style="width: 8%;">NO</th>
-                <th class="text-start" style="width: 42%;">NAMA MAHASISWA BARU</th>
-                <th style="width: 20%;">KEDATANGAN</th>
-                <th style="width: 20%;">KEPULANGAN</th>
-                <th style="width: 10%;">BUKTI</th>
-              </tr>
-            </thead>
-            <tbody id="tabel-rekap-maba-body">
-              <tr><td colspan="5" class="text-muted">Silakan pilih kelompok di atas.</td></tr>
-            </tbody>
-          </table>
-        </div>
       </div>
     </div>
 
   </div>
 </div>
 
+<!-- Modal Detail Kelompok Maba & Fun Fact -->
+<div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+      <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal));">
+        <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 bg-light">
+        <div class="text-center mb-3">
+          <div id="modalIconContainer" class="display-5 text-info mb-2"></div>
+        </div>
+        <div class="mb-3">
+          <h6 class="text-primary fw-bold text-uppercase small"><i class="fa-solid fa-book-open me-1"></i> Arti Nama & Karakteristik</h6>
+          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.6;"></p>
+        </div>
+        <hr class="text-muted">
+        <div>
+          <h6 class="text-success fw-bold text-uppercase small"><i class="fa-solid fa-lightbulb me-1"></i> Fun Fact (Fakta Unik)</h6>
+          <div class="p-3 rounded bg-white border-start border-4 border-success shadow-sm">
+            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.5;"></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-white border-0">
+        <button type="button" class="btn btn-secondary px-4 fw-bold rounded-pill" data-bs-dismiss="modal">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
   // ⚠️ Ganti URL ini dengan URL Web App Apps Script Anda yang berakhiran /exec
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbymy7stN_8u4yutStZjrN4W-7o1KFUN5sHjHMGiKHx75H6wfi8sOQi_MTmCGFKCQEYD/exec";
 
-  // Data Lengkap Panitia[cite: 3]
   const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": [
       "AHMAD CHOIRUL ANAM", "ULIL ABSHOR ASHIDIQ", "SYIFA SETYA WAHYUNINGTYAS", 
@@ -381,7 +437,6 @@
     ]
   };
 
-  // Data Lengkap Maba Berdasarkan PDF Resmi[cite: 6]
   const dataMaba = {
     "Kelompok 1 (ULVA)": [
       "Ivonne Chandra M. (PK)", "WAFIYYUDDIN ABI GA IL", "RHASYA YUDHISTIRA PRAYITNO", "KEISYA ZAHRA ARIZKA", "VINOLIA ROSA AZZAREL", "ΜΟΚΗ. ARKAN ALI FAHRI", "ALEXANDER DAFA ANDRIANO", "KARIN DYARUM WIRATAMA", "WARDAH ASH-SHOFIA K.", "RAMA KHAFIDZI PUTRA", "AGIS JALAUDDIN PRATAMA", "NARAYA FUAIZATUS SADWANI", "NESA ALDA KIRANA", "EDWARD SANJAYA S.", "MUCHAMAD RIDWAN ARIFIAN", "AMANDA ABIGAIL"
@@ -415,13 +470,56 @@
     ]
   };
 
-  let jalurAktif = "Panitia"; // "Panitia" atau "Maba"
+  const infoKelompok = [
+    { nama: "Kelompok 1 (ULVA)", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva adalah genus alga hijau laut yang sering disebut sebagai selada laut (sea lettuce). Lembaran tubuhnya tipis dan menyerupai daun selada.", funFact: "Dapat dikonsumsi oleh manusia dan sangat kaya akan vitamin serta mineral esensial!" },
+    { nama: "Kelompok 2 (THALASSIA)", color: "#1abc9c", icon: "fa-water", desc: "Thalassia adalah salah satu jenis tumbuhan lamun (seagrass) pesisir berdaun pipih yang hidup di perairan laut dangkal.", funFact: "Memiliki kemampuan menyerap blue carbon dari atmosfer dengan sangat cepat dan efisien!" },
+    { nama: "Kelompok 3 (ENHALUS)", color: "#3498db", icon: "fa-feather", desc: "Enhalus adalah marga lamun berukuran besar yang memiliki helaian daun mirip pita panjang dan kuat.", funFact: "Memiliki keunikan sistem penyerbukan di mana bunga jantan melepaskan diri dan mengapung di permukaan air." },
+    { nama: "Kelompok 4 (PADINA)", color: "#e67e22", icon: "fa-fan", desc: "Padina adalah alga cokelat yang bentuk thallusnya pipih menyerupai kipas tangan terbuka dengan garis-garis konsentris.", funFact: "Permukaan tubuhnya dilapisi oleh kalsium karbonat sehingga terasa agak keras saat disentuh." },
+    { nama: "Kelompok 5 (CAULERPA)", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa adalah alga hijau yang tumbuh menjalar menyerupai tanaman darat mini lengkap dengan struktur mirip akar dan daun.", funFact: "Secara biologis, seluruh tubuh alga ini sebenarnya hanya merupakan satu sel raksasa berinti banyak (sifonal)!" },
+    { nama: "Kelompok 6 (ACROPORA)", color: "#e74c3c", icon: "fa-tree", desc: "Acropora adalah karang batu (scleractinia) utama penyusun terumbu yang memiliki bentuk pertumbuhan bercabang mirip pepohonan.", funFact: "Merupakan salah satu jenis karang dengan laju pertumbuhan tercepat di ekosistem terumbu karang." },
+    { nama: "Kelompok 7 (FUNGIA)", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia adalah jenis karang soliter unik yang bentuknya bundar pipih menyerupai piringan jamur mandiri tanpa koloni.", funFact: "Karang ini tidak menempel mati di dasar laut, melainkan dapat merayap secara perlahan di atas pasir." },
+    { nama: "Kelompok 8 (FAVIA)", color: "#16a085", icon: "fa-braille", desc: "Favia adalah kelompok karang batu pembentuk koloni masif dengan calyx (mangkuk polip) yang berukuran rapat dan berdinding tebal.", funFact: "Polipnya aktif menjulurkan tentakel panjang pada malam hari untuk mencari makan." },
+    { nama: "Kelompok 9 (PORITES)", color: "#d35400", icon: "fa-mountain", desc: "Porites adalah karang masif berukuran besar yang membentuk koloni menyerupai kubah atau bukit batu di dasar laut.", funFact: "Koloni karang ini dapat hidup dan tumbuh terus menerus hingga mencapai ratusan bahkan ribuan tahun!" },
+    { nama: "Kelompok 10 (MONTIPORA)", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora adalah karang koloni pembentuk terumbu yang tumbuh dalam bentuk lembaran tipis bertumpuk, mengerak, atau ber-benjol.", funFact: "Memiliki variasi bentuk pertumbuhan (growth form) yang sangat fleksibel tergantung kondisi arus air." }
+  ];
+
+  let jalurAktif = "Panitia";
   let jenisAbsenAktif = "Kedatangan";
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
+    inisialisasiKelompokMaba();
     inisialisasiDropdownRekap();
   });
+
+  function inisialisasiKelompokMaba() {
+    let htmlCards = '';
+    infoKelompok.forEach((k) => {
+      htmlCards += `
+        <div class="col-md-4 col-sm-6">
+          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;" onclick="tampilkanDetailKelompok('${k.nama}')">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center">
+              <div class="mb-3"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
+              <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
+              <small class="text-muted mt-2">Klik untuk info & fun fact</small>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+    document.getElementById('grid-kelompok').innerHTML = htmlCards;
+  }
+
+  function tampilkanDetailKelompok(namaKelompok) {
+    let k = infoKelompok.find(item => item.nama === namaKelompok);
+    if (k) {
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>${k.nama}`;
+      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
+      document.getElementById('modalDesc').innerText = k.desc;
+      document.getElementById('modalFunFact').innerText = k.funFact;
+      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
+    }
+  }
 
   function inisialisasiDropdownRekap() {
     let opsiPanitia = '<option value="">-- Pilih Divisi Panitia --</option>';
@@ -509,16 +607,24 @@
     if(targetNav) targetNav.classList.add('active');
   }
 
-  function cekSandiRekap(tipe) {
-    let sandi = prompt("Masukkan sandi rahasia untuk membuka Rekap:");
+  function cekSandiRekap() {
+    let sandi = prompt("Masukkan sandi rahasia untuk membuka Tabel Rekap:");
     if (sandi === "GSM2026") {
-      if (tipe === 'panitia') {
-        showPage('rekap-panitia');
-      } else {
-        showPage('rekap-maba');
-      }
+      showPage('rekap');
     } else if (sandi !== null) {
       alert("Sandi salah!");
+    }
+  }
+
+  function gantiTabRekap(tipe) {
+    let secPanitia = document.getElementById('section-rekap-panitia');
+    let secMaba = document.getElementById('section-rekap-maba');
+    if (tipe === 'panitia') {
+      secPanitia.style.display = 'block';
+      secMaba.style.display = 'none';
+    } else {
+      secPanitia.style.display = 'none';
+      secMaba.style.display = 'block';
     }
   }
 
