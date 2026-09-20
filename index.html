@@ -465,10 +465,10 @@
     let inputFoto = document.getElementById('input-foto');
 
     if (jenis === 'Kepulangan') {
-      wrapperFoto.style.display = 'none'; // Sembunyikan upload foto saat kepulangan
+      wrapperFoto.style.display = 'none';
       inputFoto.required = false;
     } else {
-      wrapperFoto.style.display = 'block'; // Tampilkan upload foto saat kedatangan
+      wrapperFoto.style.display = 'block';
       inputFoto.required = true;
     }
 
@@ -542,11 +542,10 @@
       };
       reader.readAsDataURL(fileInput.files[0]);
     } else {
-      kirimData(""); // Tanpa foto untuk kepulangan
+      kirimData("");
     }
   }
 
-  // Fungsi memuat rekap dengan pengecekan terpisah antara Kedatangan dan Kepulangan
   async function muatTabelRekapDivisi() {
     let divisi = document.getElementById('select-divisi-rekap').value;
     let tbody = document.getElementById('tabel-rekap-body');
@@ -566,19 +565,20 @@
       let html = '';
 
       daftarNama.forEach((namaPanitia, index) => {
-        // Cari seluruh catatan absen milik panitia ini dalam divisi tersebut
-        let records = dataRes.filter(r => r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
+        let records = dataRes.filter(r => r.nama && r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
         
         let hadirDatang = false;
         let hadirPulang = false;
         let linkBukti = '-';
 
         records.forEach(rec => {
-          // Memeriksa jenis absen dari backend (Panitia_Kedatangan atau Panitia_Kepulangan)
-          if (rec.jenisAbsen === "Panitia_Kedatangan" || (rec.H > 0 && !rec.jenisAbsen)) {
+          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().trim() : "";
+          
+          // Deteksi akurat jenis absen kedatangan atau kepulangan
+          if (jenis === "Panitia_Kedatangan" || jenis.includes("Kedatangan")) {
             hadirDatang = true;
           }
-          if (rec.jenisAbsen === "Panitia_Kepulangan") {
+          if (jenis === "Panitia_Kepulangan" || jenis.includes("Kepulangan")) {
             hadirPulang = true;
           }
           if (rec.foto && rec.foto.length > 0) {
