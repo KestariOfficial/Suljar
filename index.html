@@ -7,7 +7,7 @@
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Pustaka Chart.js untuk Diagram Batang Statistik -->
+  <!-- Pustaka Chart.js untuk Diagram Batang -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -111,8 +111,8 @@
     .chart-container {
       position: relative;
       width: 100%;
-      max-height: 450px;
-      margin: auto;
+      height: 380px;
+      margin-bottom: 30px;
     }
   </style>
 </head>
@@ -252,17 +252,17 @@
               <select id="select-divisi-absen" class="form-control border-info">
                 <option value="">-- Pilih Divisi --</option>
                 <option value="BPI">BPI</option>
-                <option value="Divisi Keamanan">Divisi Keamanan</option>
-                <option value="Divisi Kestari">Divisi Kestari</option>
-                <option value="Divisi Korlap">Divisi Korlap</option>
-                <option value="Divisi Humas">Divisi Humas</option>
-                <option value="Divisi Konsumsi">Divisi Konsumsi</option>
-                <option value="Divisi PDD">Divisi PDD</option>
-                <option value="Divisi Acara">Divisi Acara</option>
-                <option value="Divisi Kesehatan">Divisi Kesehatan</option>
-                <option value="Divisi Daspon">Divisi Daspon</option>
-                <option value="Divisi Perkap">Divisi Perkap</option>
-                <option value="Divisi PK">Divisi PK</option>
+                <option value="Keamanan">Keamanan</option>
+                <option value="Kestari">Kestari</option>
+                <option value="Korlap">Korlap</option>
+                <option value="Humas">Humas</option>
+                <option value="Konsumsi">Konsumsi</option>
+                <option value="PDD">PDD</option>
+                <option value="Acara">Acara</option>
+                <option value="Kesehatan">Kesehatan</option>
+                <option value="Daspon">Daspon</option>
+                <option value="Perkap">Perkap</option>
+                <option value="PK">PK</option>
               </select>
             </div>
           </div>
@@ -305,25 +305,26 @@
       </div>
     </div>
 
-    <!-- Tampilan Statistik Rekap (Diagram Batang Terpisah Maba & Panitia) -->
+    <!-- Tampilan Statistik Rekap (Diagram Batang Semua Kelompok & Divisi) -->
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-bar me-2"></i>Statistik Kehadiran</h2>
-        <p class="text-muted text-center mb-4">Grafik diagram batang rekapitulasi kehadiran berdasarkan kelompok Maba dan divisi Panitia.</p>
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Statistik Kehadiran</h2>
+        <p class="text-muted text-center mb-4">Grafik diagram batang rekam jejak kehadiran seluruh Kelompok Maba dan Divisi Panitia.</p>
         
-        <!-- Pilihan Kategori Statistik -->
-        <div class="row justify-content-center mb-4">
-          <div class="col-md-6">
-            <select id="select-kategori-statistik" class="form-control border-info fw-bold text-center" onchange="muatStatistikGrafik()">
-              <option value="Maba">📊 Statistik Kehadiran Maba (Tiap Kelompok)</option>
-              <option value="Panitia">📊 Statistik Kehadiran Panitia (Tiap Divisi)</option>
-            </select>
+        <!-- Grafik 1: Kelompok Maba -->
+        <div class="card p-3 mb-4 shadow-sm border-info">
+          <h4 class="fw-bold text-success mb-3"><i class="fa-solid fa-user-graduate me-2"></i>Statistik Kehadiran Maba (Tiap Kelompok)</h4>
+          <div class="chart-container">
+            <canvas id="grafikMaba"></canvas>
           </div>
         </div>
 
-        <!-- Wadah Diagram Batang -->
-        <div class="chart-container bg-white p-3 rounded shadow-sm border">
-          <canvas id="grafikKehadiran"></canvas>
+        <!-- Grafik 2: Divisi Panitia -->
+        <div class="card p-3 shadow-sm border-primary">
+          <h4 class="fw-bold text-primary mb-3"><i class="fa-solid fa-user-shield me-2"></i>Statistik Kehadiran Panitia (Tiap Divisi)</h4>
+          <div class="chart-container">
+            <canvas id="grafikPanitia"></canvas>
+          </div>
         </div>
       </div>
     </div>
@@ -380,14 +381,15 @@
   ];
 
   const daftarDivisiPanitia = [
-    "BPI", "Divisi Keamanan", "Divisi Kestari", "Divisi Korlap", 
-    "Divisi Humas", "Divisi Konsumsi", "Divisi PDD", "Divisi Acara", 
-    "Divisi Kesehatan", "Divisi Daspon", "Divisi Perkap", "Divisi PK"
+    "BPI", "Keamanan", "Kestari", "Korlap", 
+    "Humas", "Konsumsi", "PDD", "Acara", 
+    "Kesehatan", "Daspon", "Perkap", "PK"
   ];
 
   let kategoriAbsenAktif = "Maba";
   let jenisAbsenAktif = "Kedatangan";
-  let myChart = null;
+  let chartMabaInstance = null;
+  let chartPanitiaInstance = null;
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
@@ -437,7 +439,7 @@
     let sandi = prompt("Masukkan sandi rahasia untuk membuka menu Statistik Rekap:");
     if (sandi === "GSM2026") {
       showPage('rekap');
-      muatStatistikGrafik();
+      muatSemuaStatistikGrafik();
     } else if (sandi !== null) {
       alert("Sandi salah! Akses ditolak.");
     }
@@ -584,86 +586,93 @@
     reader.readAsDataURL(file);
   }
 
-  // Fungsi untuk menarik data rekap dari masing-masing kelompok/divisi dan meramunya menjadi diagram batang
-  async function muatStatistikGrafik() {
-    let kategoriStat = document.getElementById('select-kategori-statistik').value;
-    let labels = [];
-    let targetList = [];
-
-    if (kategoriStat === 'Maba') {
-      targetList = daftarKelompok.map(k => k.nama);
-      labels = targetList;
-    } else {
-      targetList = daftarDivisiPanitia;
-      labels = targetList;
-    }
-
-    let dataKehadiran = [];
-
-    // Tampilkan indikator loading di konsol / grafik sementara memuat data
-    for (let item of targetList) {
-      let queryId = (kategoriStat === 'Maba') ? item : ("PANITIA_" + item);
+  // Fungsi untuk menarik data rekap seluruh Kelompok Maba dan Divisi Panitia secara otomatis
+  async function muatSemuaStatistikGrafik() {
+    // 1. Ambil data Maba
+    let mabaLabels = daftarKelompok.map(k => k.nama);
+    let mabaData = [];
+    for (let kelompok of mabaLabels) {
       try {
-        let response = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${queryId}`);
-        let resJson = await response.json();
-        
-        // Hitung total hadir (H) dari rekap anggota dalam kelompok/divisi tersebut
-        let totalHadir = 0;
-        if (resJson && Array.isArray(resJson)) {
-          resJson.forEach(mhs => {
-            totalHadir += (mhs.H || 0);
-          });
+        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${kelompok}`);
+        let json = await res.json();
+        let totalH = 0;
+        if (json && Array.isArray(json)) {
+          json.forEach(m => totalH += (m.H || 0));
         }
-        dataKehadiran.push(totalHadir);
+        mabaData.push(totalH);
       } catch (e) {
-        console.error("Gagal memuat rekap untuk " + item, e);
-        dataKehadiran.push(0);
+        mabaData.push(0);
       }
     }
+    renderChartMaba(mabaLabels, mabaData);
 
-    renderChart(labels, dataKehadiran, kategoriStat);
+    // 2. Ambil data Panitia
+    let panitiaLabels = daftarDivisiPanitia;
+    let panitiaData = [];
+    for (let divisi of panitiaLabels) {
+      try {
+        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
+        let json = await res.json();
+        let totalH = 0;
+        if (json && Array.isArray(json)) {
+          json.forEach(p => totalH += (p.H || 0));
+        }
+        panitiaData.push(totalH);
+      } catch (e) {
+        panitiaData.push(0);
+      }
+    }
+    renderChartPanitia(panitiaLabels, panitiaData);
   }
 
-  function renderChart(labels, dataValues, kategori) {
-    let ctx = document.getElementById('grafikKehadiran').getContext('2d');
-    
-    if (myChart) {
-      myChart.destroy(); // Hancurkan chart sebelumnya agar tidak bertumpuk
-    }
+  function renderChartMaba(labels, dataValues) {
+    let ctx = document.getElementById('grafikMaba').getContext('2d');
+    if (chartMabaInstance) chartMabaInstance.destroy();
 
-    let judulGrafik = (kategori === 'Maba') ? 'Jumlah Total Kehadiran (H) per Kelompok Maba' : 'Jumlah Total Kehadiran (H) per Divisi Panitia';
-    let warnaBar = (kategori === 'Maba') ? 'rgba(0, 180, 216, 0.7)' : 'rgba(0, 51, 102, 0.7)';
-    let warnaBorder = (kategori === 'Maba') ? 'rgba(0, 119, 145, 1)' : 'rgba(0, 30, 60, 1)';
-
-    myChart = new Chart(ctx, {
+    chartMabaInstance = new Chart(ctx, {
       type: 'bar',
       data: {
         labels: labels,
         datasets: [{
-          label: judulGrafik,
+          label: 'Jumlah Kehadiran (H) Maba',
           data: dataValues,
-          backgroundColor: warnaBar,
-          borderColor: warnaBorder,
+          backgroundColor: 'rgba(0, 180, 216, 0.75)',
+          borderColor: 'rgba(0, 119, 145, 1)',
           borderWidth: 2,
-          borderRadius: 8
+          borderRadius: 6
         }]
       },
       options: {
         responsive: true,
-        plugins: {
-          legend: {
-            display: true,
-            position: 'top'
-          }
-        },
-        scales: {
-          y: {
-            beginAtZero: true,
-            ticks: {
-              stepSize: 1
-            }
-          }
-        }
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
+      }
+    });
+  }
+
+  function renderChartPanitia(labels, dataValues) {
+    let ctx = document.getElementById('grafikPanitia').getContext('2d');
+    if (chartPanitiaInstance) chartPanitiaInstance.destroy();
+
+    chartPanitiaInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: 'Jumlah Kehadiran (H) Panitia',
+          data: dataValues,
+          backgroundColor: 'rgba(0, 51, 102, 0.75)',
+          borderColor: 'rgba(0, 20, 40, 1)',
+          borderWidth: 2,
+          borderRadius: 6
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
       }
     });
   }
