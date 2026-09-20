@@ -141,7 +141,7 @@
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
         <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Kelompok Pemanfaatan Sumber Daya Perikanan 2026</h3>
         <hr class="w-25 mx-auto border-info border-3 opacity-75">
-        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi kedatangan/kepulangan, atau melihat rekap data.</p>
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi Maba/Panitia, atau melihat rekap data.</p>
       </div>
     </div>
 
@@ -154,28 +154,28 @@
       </div>
     </div>
 
-    <!-- Menu Pilihan Absen -->
+    <!-- Menu Utama Absen (Pilih Maba atau Panitia) -->
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Pilih Jenis Absensi</h2>
-        <p class="text-muted text-center mb-4">Silakan pilih jenis absensi yang ingin Anda lakukan hari ini.</p>
+        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
+        <p class="text-muted text-center mb-4">Silakan pilih kategori absensi Anda di bawah ini.</p>
         
         <div class="row justify-content-center g-4 mt-3">
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kedatangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihKategori('Maba')">
               <div class="card-body">
-                <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
-                <h3 class="fw-bold text-success">Absen Kedatangan</h3>
-                <p class="text-muted small mt-2">Lakukan absensi saat memulai kegiatan atau tiba di lokasi.</p>
+                <i class="fa-solid fa-user-graduate fa-3x text-success mb-3"></i>
+                <h3 class="fw-bold text-success">Absensi Maba</h3>
+                <p class="text-muted small mt-2">Untuk Mahasiswa Baru (Kedatangan & Kepulangan per Kelompok).</p>
               </div>
             </div>
           </div>
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kepulangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihKategori('Panitia')">
               <div class="card-body">
-                <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
-                <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
-                <p class="text-muted small mt-2">Lakukan absensi saat menyelesaikan kegiatan atau pulang.</p>
+                <i class="fa-solid fa-user-shield fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold text-primary">Absensi Panitia</h3>
+                <p class="text-muted small mt-2">Untuk Panitia Acara (Kedatangan & Kepulangan).</p>
               </div>
             </div>
           </div>
@@ -183,14 +183,46 @@
       </div>
     </div>
 
-    <!-- Formulir Absen -->
-    <div id="view-form-absen" class="page-view">
+    <!-- Sub-Menu Pilihan Jenis Absen (Kedatangan / Kepulangan) -->
+    <div id="view-sub-absen" class="page-view">
       <div class="animasi-turun">
         <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
-          <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Pilihan Absen
+          <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Pilih Kategori
+        </button>
+        <h2 class="fw-bold mb-2 text-center" id="judul-sub-absen" style="color: var(--ocean-deep);">Pilih Jenis Absensi</h2>
+        <p class="text-muted text-center mb-4">Pilih apakah ini sesi kedatangan atau kepulangan.</p>
+        
+        <div class="row justify-content-center g-4 mt-3">
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsenFinal('Kedatangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
+                <h3 class="fw-bold text-success">Absen Kedatangan</h3>
+                <p class="text-muted small mt-2">Catat kehadiran awal kegiatan.</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-5">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsenFinal('Kepulangan')">
+              <div class="card-body">
+                <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
+                <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
+                <p class="text-muted small mt-2">Catat kepulangan akhir kegiatan.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulir Absen Final -->
+    <div id="view-form-absen" class="page-view">
+      <div class="animasi-turun">
+        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('sub-absen')">
+          <i class="fa-solid fa-arrow-left me-1"></i> Kembali
         </button>
         <h2 class="fw-bold mb-2" id="judul-form-absen" style="color: var(--ocean-deep);">Formulir Absensi</h2>
-        <p class="text-muted mb-4">Masukkan data kehadiran Anda dengan lengkap dan benar.</p>
+        <p class="text-muted mb-4">Lengkapi data diri Anda di bawah ini.</p>
         
         <form id="form-absen-mandiri" onsubmit="event.preventDefault(); submitAbsenMandiri();">
           <div class="row mb-3">
@@ -198,9 +230,10 @@
               <label class="fw-bold">Tanggal</label>
               <input type="date" id="tgl-absen" class="form-control" required>
             </div>
-            <div class="col-md-6 mb-3">
+            <!-- Kolompok hanya muncul jika kategori Maba -->
+            <div class="col-md-6 mb-3" id="wrapper-kelompok">
               <label class="fw-bold">Pilih Nama Kelompok</label>
-              <select id="select-kelompok-absen" class="form-control border-info" required>
+              <select id="select-kelompok-absen" class="form-control border-info">
                 <option value="">-- Pilih Kelompok --</option>
               </select>
             </div>
@@ -208,8 +241,8 @@
 
           <div class="row mb-3">
             <div class="col-md-6 mb-3">
-              <label class="fw-bold">NIM Mahasiswa</label>
-              <input type="number" id="input-nim" class="form-control border-info" placeholder="Contoh: 2026001" required>
+              <label class="fw-bold" id="label-id-pengenal">NIM Mahasiswa</label>
+              <input type="text" id="input-nim" class="form-control border-info" placeholder="Contoh: 2026001" required>
             </div>
             <div class="col-md-6 mb-3">
               <label class="fw-bold">Nama Lengkap</label>
@@ -249,12 +282,18 @@
       <div class="animasi-turun">
         <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Rekapitulasi Absen</h2>
         <div class="row mb-3 mt-3">
-          <div class="col-md-6 mb-2">
+          <div class="col-md-4 mb-2">
+            <select id="select-kategori-rekap" class="form-control border-info" onchange="gantiKategoriRekap()">
+              <option value="Maba">Rekap Maba (Kelompok)</option>
+              <option value="Panitia">Rekap Panitia</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-2" id="wrapper-rekap-kelompok">
             <select id="select-kelompok-rekap" class="form-control border-info">
               <option value="">Pilih Kelompok...</option>
             </select>
           </div>
-          <div class="col-md-6 mb-2">
+          <div class="col-md-4 mb-2">
             <button class="btn btn-primary w-100 fw-bold shadow-sm" onclick="loadRekap()" style="background-color: var(--ocean-teal);">Tampilkan Data Rekap</button>
           </div>
         </div>
@@ -262,8 +301,8 @@
           <table class="table table-striped table-bordered text-center align-middle shadow-sm">
             <thead class="table-dark" style="background-color: var(--ocean-deep);">
               <tr>
-                <th>NIM</th>
-                <th>Nama Mahasiswa</th>
+                <th id="th-id">NIM</th>
+                <th>Nama Lengkap</th>
                 <th class="text-success">H</th>
                 <th class="text-info">I</th>
                 <th class="text-warning">S</th>
@@ -273,7 +312,7 @@
               </tr>
             </thead>
             <tbody id="table-rekap">
-              <tr><td colspan="8" class="text-muted">Silakan pilih kelompok lalu klik Tampilkan Data.</td></tr>
+              <tr><td colspan="8" class="text-muted">Silakan pilih kategori/kelompok lalu klik Tampilkan Data.</td></tr>
             </tbody>
           </table>
         </div>
@@ -391,7 +430,8 @@
     }
   ];
 
-  let jenisAbsenAktif = "Kedatangan";
+  let kategoriAbsenAktif = "Maba"; // "Maba" atau "Panitia"
+  let jenisAbsenAktif = "Kedatangan"; // "Kedatangan" atau "Kepulangan"
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
@@ -447,10 +487,49 @@
     }
   }
 
-  function bukaFormAbsen(jenis) {
+  function pilihKategori(kategori) {
+    kategoriAbsenAktif = kategori;
+    showPage('sub-absen');
+  }
+
+  function bukaFormAbsenFinal(jenis) {
     jenisAbsenAktif = jenis;
-    document.getElementById('judul-form-absen').innerText = "Formulir Absensi " + jenis;
+    document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} (${kategoriAbsenAktif})`;
+    
+    // Atur tampilan form berdasarkan kategori (Maba vs Panitia)
+    let wrapperKelompok = document.getElementById('wrapper-kelompok');
+    let selectKelompok = document.getElementById('select-kelompok-absen');
+    let labelId = document.getElementById('label-id-pengenal');
+    let inputNim = document.getElementById('input-nim');
+
+    if (kategoriAbsenAktif === 'Maba') {
+      wrapperKelompok.style.display = 'block';
+      selectKelompok.required = true;
+      labelId.innerText = "NIM Mahasiswa";
+      inputNim.placeholder = "Contoh: 2026001";
+    } else {
+      wrapperKelompok.style.display = 'none';
+      selectKelompok.required = false;
+      selectKelompok.value = "";
+      labelId.innerText = "ID / NIP / Nomor Anggota Panitia";
+      inputNim.placeholder = "Contoh: PAN001";
+    }
+
     showPage('form-absen');
+  }
+
+  function gantiKategoriRekap() {
+    let kat = document.getElementById('select-kategori-rekap').value;
+    let wrapperKelompokRekap = document.getElementById('wrapper-rekap-kelompok');
+    let thId = document.getElementById('th-id');
+
+    if (kat === 'Maba') {
+      wrapperKelompokRekap.style.display = 'block';
+      thId.innerText = "NIM";
+    } else {
+      wrapperKelompokRekap.style.display = 'none';
+      thId.innerText = "ID Panitia";
+    }
   }
 
   function showPage(pageId) {
@@ -459,7 +538,7 @@
       document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
       
       let targetPage = document.getElementById('view-' + pageId);
-      let targetNav = document.getElementById('nav-' + pageId);
+      let targetNav = document.getElementById('nav-' + (pageId === 'sub-absen' || pageId === 'form-absen' ? 'absen' : pageId));
       
       if(targetPage) {
         targetPage.classList.add('active-view');
@@ -489,10 +568,10 @@
     
     let btn = document.getElementById('btn-simpan-absen');
     btn.disabled = true;
-    btn.innerText = "Mengunggah Data & Foto (" + jenisAbsenAktif + ")... Mohon Tunggu";
+    btn.innerText = `Mengunggah Data & Foto (${kategoriAbsenAktif} - ${jenisAbsenAktif})... Mohon Tunggu`;
 
     let tgl = document.getElementById('tgl-absen').value;
-    let idKel = document.getElementById('select-kelompok-absen').value;
+    let idKel = kategoriAbsenAktif === 'Maba' ? document.getElementById('select-kelompok-absen').value : 'PANITIA';
     let nim = document.getElementById('input-nim').value;
     let nama = document.getElementById('input-nama').value;
     let status = document.querySelector('input[name="status_absen"]:checked').value;
@@ -511,7 +590,7 @@
         idKel: idKel,
         status: status,
         base64Foto: base64Foto,
-        jenisAbsen: jenisAbsenAktif
+        jenisAbsen: `${kategoriAbsenAktif}_${jenisAbsenAktif}`
       };
 
       fetch(SCRIPT_URL, {
@@ -521,7 +600,7 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        alert("Absensi " + jenisAbsenAktif + " & Foto Berhasil Terkirim!");
+        alert(`Absensi ${kategoriAbsenAktif} (${jenisAbsenAktif}) & Foto Berhasil Terkirim!`);
         btn.disabled = false;
         btn.innerText = "Kirim Absensi Sekarang";
         document.getElementById('input-nim').value = '';
@@ -541,8 +620,10 @@
   }
 
   function loadRekap() {
-    let idKel = document.getElementById('select-kelompok-rekap').value;
-    if(!idKel) return alert('Pilih kelompok terlebih dahulu!');
+    let kat = document.getElementById('select-kategori-rekap').value;
+    let idKel = kat === 'Maba' ? document.getElementById('select-kelompok-rekap').value : 'PANITIA';
+    
+    if(kat === 'Maba' && !idKel) return alert('Pilih kelompok terlebih dahulu!');
 
     document.getElementById('table-rekap').innerHTML = '<tr><td colspan="8"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
 
@@ -551,7 +632,7 @@
       .then(res => {
         let html = '';
         if(!res || res.length === 0) {
-          html = '<tr><td colspan="8" class="text-muted">Belum ada absensi untuk kelompok ini.</td></tr>';
+          html = '<tr><td colspan="8" class="text-muted">Belum ada data absensi untuk kategori ini.</td></tr>';
         } else {
           res.forEach(r => {
             let linkFoto = (r.foto && r.foto.length > 0) ? `<a href="${r.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold"><i class="fa-solid fa-image me-1"></i>Lihat Foto</a>` : '-';
