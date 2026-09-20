@@ -158,7 +158,7 @@
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
         <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi Panitia</h2>
-        <p class="text-muted text-center mb-4">Silakan pilih sesi kehadiran rapat teknis atau kegiatan Anda.</p>
+        <p class="text-muted text-center mb-4">Silakan pilih sesi kehadiran atau kepulangan rapat Anda.</p>
         
         <div class="row justify-content-center g-4 mt-3">
           <div class="col-md-5">
@@ -166,7 +166,7 @@
               <div class="card-body">
                 <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
                 <h3 class="fw-bold text-success">Absen Kedatangan</h3>
-                <p class="text-muted small mt-2">Catat kehadiran awal saat datang.</p>
+                <p class="text-muted small mt-2">Catat kehadiran awal saat datang (Wajib Foto).</p>
               </div>
             </div>
           </div>
@@ -175,7 +175,7 @@
               <div class="card-body">
                 <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
                 <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
-                <p class="text-muted small mt-2">Catat kepulangan akhir kegiatan.</p>
+                <p class="text-muted small mt-2">Catat kepulangan akhir (Tanpa Foto).</p>
               </div>
             </div>
           </div>
@@ -216,9 +216,10 @@
             </div>
           </div>
 
-          <div class="mb-4">
+          <!-- Bagian Upload Foto (Hanya muncul saat Kedatangan) -->
+          <div class="mb-4" id="wrapper-foto">
             <label class="fw-bold">Unggah Bukti Foto / TTD Kehadiran (Wajib):</label>
-            <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment" required>
+            <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment">
             <small class="text-muted">Ambil foto menggunakan kamera HP.</small>
           </div>
 
@@ -459,6 +460,18 @@
   function bukaFormAbsen(jenis) {
     jenisAbsenAktif = jenis;
     document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} Panitia`;
+    
+    let wrapperFoto = document.getElementById('wrapper-foto');
+    let inputFoto = document.getElementById('input-foto');
+
+    if (jenis === 'Kepulangan') {
+      wrapperFoto.style.display = 'none'; // Sembunyikan upload foto saat kepulangan
+      inputFoto.required = false;
+    } else {
+      wrapperFoto.style.display = 'block'; // Tampilkan upload foto saat kedatangan
+      inputFoto.required = true;
+    }
+
     showPage('form-absen');
   }
 
@@ -475,26 +488,27 @@
 
   function submitAbsenPanitia() {
     let fileInput = document.getElementById('input-foto');
-    if(fileInput.files.length === 0) return alert('Silakan unggah foto/bukti kehadiran terlebih dahulu!');
-    
+    let divisi = document.getElementById('select-divisi-absen').value;
+    let nama = document.getElementById('select-nama-panitia').value;
+    let tgl = document.getElementById('tgl-absen').value;
+
+    if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) {
+      return alert('Silakan unggah foto/bukti kehadiran terlebih dahulu!');
+    }
+
     let btn = document.getElementById('btn-simpan-absen');
     btn.disabled = true;
     btn.innerText = `Mengirim Absen ${jenisAbsenAktif}... Mohon Tunggu`;
 
-    let tgl = document.getElementById('tgl-absen').value;
-    let divisi = document.getElementById('select-divisi-absen').value;
-    let nama = document.getElementById('select-nama-panitia').value;
-
-    let reader = new FileReader();
-    reader.onload = function(e) {
+    let kirimData = (base64Foto = "") => {
       let payload = {
         action: "saveAttendance",
         tgl: tgl,
-        nim: divisi, // Menyimpan divisi sebagai identifier
+        nim: divisi,
         nama: nama,
         idKel: "PANITIA_" + divisi,
-        status: "H", // Hadir
-        base64Foto: e.target.result,
+        status: "H",
+        base64Foto: base64Foto,
         jenisAbsen: `Panitia_${jenisAbsenAktif}`
       };
 
@@ -520,10 +534,19 @@
         btn.innerText = "Kirim Absensi Sekarang";
       });
     };
-    reader.readAsDataURL(fileInput.files[0]);
+
+    if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        kirimData(e.target.result);
+      };
+      reader.readAsDataURL(fileInput.files[0]);
+    } else {
+      kirimData(""); // Tanpa foto untuk kepulangan
+    }
   }
 
-  // Fungsi untuk memuat tabel rekap panitia berdasarkan divisi yang dipilih secara instan
+  // Fungsi memuat rekap dengan pengecekan terpisah antara Kedatangan dan Kepulangan
   async function muatTabelRekapDivisi() {
     let divisi = document.getElementById('select-divisi-rekap').value;
     let tbody = document.getElementById('tabel-rekap-body');
@@ -543,22 +566,28 @@
       let html = '';
 
       daftarNama.forEach((namaPanitia, index) => {
-        // Cek apakah panitia ini sudah absen kedatangan / kepulangan dari database
-        let record = dataRes.find(r => r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
+        // Cari seluruh catatan absen milik panitia ini dalam divisi tersebut
+        let records = dataRes.filter(r => r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
         
-        let centangKedatangan = '<span class="text-muted">-</span>';
-        let centangKepulangan = '<span class="text-muted">-</span>';
+        let hadirDatang = false;
+        let hadirPulang = false;
         let linkBukti = '-';
 
-        if (record) {
-          // Jika ada record H (Hadir), kita cek jenis absen atau log datanya
-          if (record.H > 0) {
-            centangKedatangan = '<i class="fa-solid fa-check-circle fa-lg text-success"></i> (Hadir)';
+        records.forEach(rec => {
+          // Memeriksa jenis absen dari backend (Panitia_Kedatangan atau Panitia_Kepulangan)
+          if (rec.jenisAbsen === "Panitia_Kedatangan" || (rec.H > 0 && !rec.jenisAbsen)) {
+            hadirDatang = true;
           }
-          if (record.foto && record.foto.length > 0) {
-            linkBukti = `<a href="${record.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          if (rec.jenisAbsen === "Panitia_Kepulangan") {
+            hadirPulang = true;
           }
-        }
+          if (rec.foto && rec.foto.length > 0) {
+            linkBukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          }
+        });
+
+        let centangKedatangan = hadirDatang ? '<i class="fa-solid fa-check-circle fa-lg text-success"></i>' : '<span class="text-muted">-</span>';
+        let centangKepulangan = hadirPulang ? '<i class="fa-solid fa-check-circle fa-lg text-primary"></i>' : '<span class="text-muted">-</span>';
 
         html += `
           <tr>
