@@ -7,6 +7,8 @@
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <!-- Pustaka Chart.js untuk Diagram Batang Statistik -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --ocean-deep: #003366;
@@ -105,6 +107,13 @@
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
     }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+      max-height: 450px;
+      margin: auto;
+    }
   </style>
 </head>
 <body>
@@ -123,7 +132,7 @@
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-chart-pie me-1"></i> Rekap</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-chart-pie me-1"></i> Statistik Rekap</a></li>
       </ul>
     </div>
   </div>
@@ -141,7 +150,7 @@
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
         <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Kelompok Pemanfaatan Sumber Daya Perikanan 2026</h3>
         <hr class="w-25 mx-auto border-info border-3 opacity-75">
-        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi Maba/Panitia, atau melihat rekap data.</p>
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi Maba/Panitia, atau melihat statistik rekap.</p>
       </div>
     </div>
 
@@ -154,7 +163,7 @@
       </div>
     </div>
 
-    <!-- Menu Utama Absen (Pilih Maba atau Panitia) -->
+    <!-- Menu Utama Absen -->
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
         <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
@@ -183,14 +192,14 @@
       </div>
     </div>
 
-    <!-- Sub-Menu Pilihan Jenis Absen (Kedatangan / Kepulangan) -->
+    <!-- Sub-Menu Pilihan Jenis Absen -->
     <div id="view-sub-absen" class="page-view">
       <div class="animasi-turun">
         <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
           <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Pilih Kategori
         </button>
         <h2 class="fw-bold mb-2 text-center" id="judul-sub-absen" style="color: var(--ocean-deep);">Pilih Jenis Absensi</h2>
-        <p class="text-muted text-center mb-4">Pilih apakah ini sesi kedatangan atau kepulangan.</p>
+        <p class="text-muted text-center mb-4">Pilih apakah sesi kedatangan atau kepulangan.</p>
         
         <div class="row justify-content-center g-4 mt-3">
           <div class="col-md-5">
@@ -231,7 +240,6 @@
               <input type="date" id="tgl-absen" class="form-control" required>
             </div>
             
-            <!-- Kolompok (untuk Maba) -->
             <div class="col-md-6 mb-3" id="wrapper-kelompok">
               <label class="fw-bold">Pilih Nama Kelompok</label>
               <select id="select-kelompok-absen" class="form-control border-info">
@@ -239,7 +247,6 @@
               </select>
             </div>
 
-            <!-- Divisi (untuk Panitia) -->
             <div class="col-md-6 mb-3" id="wrapper-divisi" style="display: none;">
               <label class="fw-bold">Pilih Divisi Panitia</label>
               <select id="select-divisi-absen" class="form-control border-info">
@@ -290,7 +297,7 @@
           <div class="mb-4">
             <label class="fw-bold">Unggah Bukti Foto (Wajib):</label>
             <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment" required>
-            <small class="text-muted">Gunakan kamera HP atau pilih dari galeri.</small>
+            <small class="text-muted">Gunakan kamera HP atau galeri.</small>
           </div>
 
           <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-simpan-absen" style="background: linear-gradient(135deg, #2e8b57, #3cb371);">Kirim Absensi Sekarang</button>
@@ -298,64 +305,25 @@
       </div>
     </div>
 
-    <!-- Rekap -->
+    <!-- Tampilan Statistik Rekap (Diagram Batang Terpisah Maba & Panitia) -->
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Rekapitulasi Absen</h2>
-        <div class="row mb-3 mt-3">
-          <div class="col-md-4 mb-2">
-            <select id="select-kategori-rekap" class="form-control border-info" onchange="gantiKategoriRekap()">
-              <option value="Maba">Rekap Maba (Kelompok)</option>
-              <option value="Panitia">Rekap Panitia (Divisi)</option>
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-bar me-2"></i>Statistik Kehadiran</h2>
+        <p class="text-muted text-center mb-4">Grafik diagram batang rekapitulasi kehadiran berdasarkan kelompok Maba dan divisi Panitia.</p>
+        
+        <!-- Pilihan Kategori Statistik -->
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-6">
+            <select id="select-kategori-statistik" class="form-control border-info fw-bold text-center" onchange="muatStatistikGrafik()">
+              <option value="Maba">📊 Statistik Kehadiran Maba (Tiap Kelompok)</option>
+              <option value="Panitia">📊 Statistik Kehadiran Panitia (Tiap Divisi)</option>
             </select>
-          </div>
-          
-          <div class="col-md-4 mb-2" id="wrapper-rekap-kelompok">
-            <select id="select-kelompok-rekap" class="form-control border-info">
-              <option value="">Pilih Kelompok...</option>
-            </select>
-          </div>
-
-          <div class="col-md-4 mb-2" id="wrapper-rekap-divisi" style="display: none;">
-            <select id="select-divisi-rekap" class="form-control border-info">
-              <option value="">Pilih Divisi...</option>
-              <option value="BPI">BPI</option>
-              <option value="Divisi Keamanan">Divisi Keamanan</option>
-              <option value="Divisi Kestari">Divisi Kestari</option>
-              <option value="Divisi Korlap">Divisi Korlap</option>
-              <option value="Divisi Humas">Divisi Humas</option>
-              <option value="Divisi Konsumsi">Divisi Konsumsi</option>
-              <option value="Divisi PDD">Divisi PDD</option>
-              <option value="Divisi Acara">Divisi Acara</option>
-              <option value="Divisi Kesehatan">Divisi Kesehatan</option>
-              <option value="Divisi Daspon">Divisi Daspon</option>
-              <option value="Divisi Perkap">Divisi Perkap</option>
-              <option value="Divisi PK">Divisi PK</option>
-            </select>
-          </div>
-
-          <div class="col-md-4 mb-2">
-            <button class="btn btn-primary w-100 fw-bold shadow-sm" onclick="loadRekap()" style="background-color: var(--ocean-teal);">Tampilkan Data Rekap</button>
           </div>
         </div>
-        <div class="table-responsive mt-4">
-          <table class="table table-striped table-bordered text-center align-middle shadow-sm">
-            <thead class="table-dark" style="background-color: var(--ocean-deep);">
-              <tr>
-                <th id="th-id">NIM</th>
-                <th>Nama Lengkap</th>
-                <th class="text-success">H</th>
-                <th class="text-info">I</th>
-                <th class="text-warning">S</th>
-                <th>A</th>
-                <th>Bukti Foto</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody id="table-rekap">
-              <tr><td colspan="8" class="text-muted">Silakan pilih kategori/kelompok/divisi lalu klik Tampilkan Data.</td></tr>
-            </tbody>
-          </table>
+
+        <!-- Wadah Diagram Batang -->
+        <div class="chart-container bg-white p-3 rounded shadow-sm border">
+          <canvas id="grafikKehadiran"></canvas>
         </div>
       </div>
     </div>
@@ -363,7 +331,7 @@
   </div>
 </div>
 
-<!-- Modal Pop-up Deskripsi & Fun Fact Kelompok -->
+<!-- Modal Pop-up Deskripsi Kelompok -->
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
@@ -399,80 +367,27 @@
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
   const daftarKelompok = [
-    { 
-      nama: "ULVA", 
-      color: "#2ecc71", 
-      icon: "fa-seedling", 
-      desc: "Ulva menggambarkan kelompok yang terinspirasi dari selada laut, sejenis alga hijau berbentuk lembaran tipis bergelombang yang tumbuh subur dan menjadi salah satu produsen primer penting di perairan dangkal serta ekosistem pesisir.", 
-      funFact: "Tahukah kamu? Beberapa jenis Ulva (selada laut) dapat dikonsumsi oleh manusia karena kaya akan vitamin dan mineral, serta sering dijadikan bahan makanan tradisional di berbagai belahan dunia!" 
-    },
-    { 
-      nama: "THALASSIA", 
-      color: "#1abc9c", 
-      icon: "fa-water", 
-      desc: "Thalassia merepresentasikan kelompok yang dinamai dari tumbuhan lamun pesisir berdaun pipih panjang, yang berperan besar dalam menjaga kestabilan substrat dasar laut serta menjadi habitat asuhan bagi berbagai biota perairan.", 
-      funFact: "Tahukah kamu? Padang lamun Thalassia mampu menyerap karbon dari atmosfer (dikenal sebagai blue carbon) jauh lebih cepat dan efisien dibandingkan hutan daratan biasa!" 
-    },
-    { 
-      nama: "ENHALUS", 
-      color: "#3498db", 
-      icon: "fa-feather", 
-      desc: "Enhalus mengambil nama dari spesies lamun berdaun pita panjang menyerupai pita kokoh berbulur hitam di pangkalnya, melambangkan ketahanan dan fungsi ekologis yang vital di zona intertidal dan perairan dangkal.", 
-      funFact: "Tahukah kamu? Enhalus acoroides memiliki bunga jantan yang bisa 'melepaskan diri' dari tanaman dan mengapung di permukaan air untuk menemukan bunga betina demi melakukan penyerbukan bawah air!" 
-    },
-    { 
-      nama: "PADINA", 
-      color: "#e67e22", 
-      icon: "fa-fan", 
-      desc: "Padina diadaptasi dari bentuk alga cokelat unik menyerupai kipas kecil bergaris konsentris yang menghiasi ekosistem pesisir dengan keindahan struktur morfologinya.", 
-      funFact: "Tahukah kamu? Permukaan thallus alga Padina sering kali dilapisi oleh endapan kalsium karbonat (kapur), membuat teksturnya terasa keras dan menyerupai kerang mini yang rapuh." 
-    },
-    { 
-      nama: "CAULERPA", 
-      color: "#27ae60", 
-      icon: "fa-seedling", 
-      desc: "Caulerpa mencerminkan karakteristik alga hijau dengan bentuk menjalar mirip bulu ayam atau butiran anggur laut, melambangkan keanekaragaman hayati nabati yang melimpah dan bernilai tinggi di perairan tropis.", 
-      funFact: "Tahukah kamu? Meskipun bentuknya menyerupai tanaman tingkat tinggi yang kompleks, seluruh tubuh alga Caulerpa sebenarnya hanya terdiri dari satu sel raksasa dengan banyak inti sel di dalamnya!" 
-    },
-    { 
-      nama: "ACROPORA", 
-      color: "#e74c3c", 
-      icon: "fa-tree", 
-      desc: "Acropora melambangkan kelompok karang batu berwujud bercabang menyerupai pepohonan mini di bawah laut sebagai pembentuk utama ekosistem terumbu karang pelindung ribuan biota.", 
-      funFact: "Tahukah kamu? Karang Acropora memiliki pertumbuhan tercepat di antara jenis karang batu lainnya, mampu memanjang hingga belasan sentimeter dalam waktu hanya satu tahun!" 
-    },
-    { 
-      nama: "FUNGIA", 
-      color: "#9b59b6", 
-      icon: "fa-compact-disc", 
-      desc: "Fungia terinspirasi dari karang soliter berbentuk piringan bundar menyerupai jamur (mushroom coral), menggambarkan keunikan individu karang tunggal yang tangguh berdiri sendiri di dasar perairan terumbu.", 
-      funFact: "Tahukah kamu? Berbeda dengan kebanyakan karang lain yang hidup menempel mati di satu tempat, karang Fungia muda dapat bergerak merayap secara perlahan di atas pasir untuk mencari posisi hidup yang ideal!" 
-    },
-    { 
-      nama: "FAVIA", 
-      color: "#16a085", 
-      icon: "fa-braille", 
-      desc: "Favia dinamai dari koloni karang masif dengan mangkuk polip rapat berdinding tebal menyerupai sarang lebah atau permukaan berbintik teratur.", 
-      funFact: "Tahukah kamu? Pada malam hari, polip-polip karang Favia akan menjulurkan tentakel penangkapnya yang panjang ke luar untuk berburu mangsa mikroskopis di kolom air." 
-    },
-    { 
-      nama: "PORITES", 
-      color: "#d35400", 
-      icon: "fa-mountain", 
-      desc: "Porites merujuk pada jenis karang masif berbentuk kubah besar menyerupai batu besar kekuningan yang dikenal sangat kuat, kokoh, dan berumur panjang dalam membangun struktur terumbu.", 
-      funFact: "Tahukah kamu? Beberapa koloni karang besar Porites dapat hidup hingga ratusan bahkan ribuan tahun, menjadikannya 'perekam sejarah' perubahan iklim purba lewat lapisan kerangka batunya." 
-    },
-    { 
-      nama: "MONTIPORA", 
-      color: "#2980b9", 
-      icon: "fa-layer-group", 
-      desc: "Montipora merepresentasikan kelompok karang berkoloni lembaran tipis bertingkat (foliose) atau mengerak (encrusting) yang dinamis dalam memperluas habitat di bawah permukaan laut.", 
-      funFact: "Tahukah kamu? Karang Montipora sangat fleksibel dalam hal bentuk pertumbuhan; spesies yang sama bisa tumbuh menjadi bentuk lembaran tipis di tempat teduh, atau menjadi tonjolan tebal di area berombak kuat!" 
-    }
+    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva menggambarkan kelompok yang terinspirasi dari selada laut, sejenis alga hijau berbentuk lembaran tipis bergelombang yang tumbuh subur.", funFact: "Beberapa jenis Ulva dapat dikonsumsi karena kaya akan vitamin dan mineral!" },
+    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia merepresentasikan tumbuhan lamun pesisir berdaun pipih panjang yang menjaga kestabilan substrat dasar laut.", funFact: "Padang lamun Thalassia mampu menyerap karbon (blue carbon) sangat cepat!" },
+    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus mengambil nama dari spesies lamun berdaun pita panjang menyerupai pita kokoh berbulur hitam di pangkalnya.", funFact: "Enhalus acoroides memiliki bunga jantan yang bisa 'melepaskan diri' untuk penyerbukan air!" },
+    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina diadaptasi dari alga cokelat unik menyerupai kipas kecil bergaris konsentris di ekosistem pesisir.", funFact: "Permukaan thallus Padina dilapisi endapan kalsium karbonat sehingga terasa keras." },
+    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa mencerminkan alga hijau menjalar mirip bulu ayam atau anggur laut yang bernilai tinggi.", funFact: "Tubuh alga Caulerpa sebenarnya hanya terdiri dari satu sel raksasa berinti banyak!" },
+    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora melambangkan karang batu bercabang menyerupai pepohonan mini di bawah laut.", funFact: "Karang Acropora memiliki pertumbuhan tercepat dibanding karang batu lainnya!" },
+    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia terinspirasi dari karang soliter berbentuk piringan bundar menyerupai jamur (mushroom coral).", funFact: "Karang Fungia muda dapat bergerak merayap perlahan di atas pasir!" },
+    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia dinamai dari koloni karang masif dengan mangkuk polip rapat menyerupai sarang lebah.", funFact: "Pada malam hari, polip Favia menjulurkan tentakel panjang untuk berburu mangsa." },
+    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites merujuk pada karang masif kubah besar kekuningan yang sangat kuat dan berumur panjang.", funFact: "Koloni Porites bisa hidup ratusan tahun menjadi 'perekam sejarah' iklim purba." },
+    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora merepresentasikan karang berkoloni lembaran tipis bertingkat yang dinamis.", funFact: "Bentuk pertumbuhannya sangat fleksibel tergantung kuatnya ombak di habitatnya!" }
   ];
 
-  let kategoriAbsenAktif = "Maba"; // "Maba" atau "Panitia"
-  let jenisAbsenAktif = "Kedatangan"; // "Kedatangan" atau "Kepulangan"
+  const daftarDivisiPanitia = [
+    "BPI", "Divisi Keamanan", "Divisi Kestari", "Divisi Korlap", 
+    "Divisi Humas", "Divisi Konsumsi", "Divisi PDD", "Divisi Acara", 
+    "Divisi Kesehatan", "Divisi Daspon", "Divisi Perkap", "Divisi PK"
+  ];
+
+  let kategoriAbsenAktif = "Maba";
+  let jenisAbsenAktif = "Kedatangan";
+  let myChart = null;
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
@@ -502,7 +417,6 @@
     });
 
     document.getElementById('select-kelompok-absen').innerHTML = htmlDropdown;
-    document.getElementById('select-kelompok-rekap').innerHTML = htmlDropdown;
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
@@ -520,9 +434,10 @@
   }
 
   function cekSandiRekap() {
-    let sandi = prompt("Masukkan sandi rahasia untuk membuka menu Rekap:");
+    let sandi = prompt("Masukkan sandi rahasia untuk membuka menu Statistik Rekap:");
     if (sandi === "GSM2026") {
       showPage('rekap');
+      muatStatistikGrafik();
     } else if (sandi !== null) {
       alert("Sandi salah! Akses ditolak.");
     }
@@ -563,30 +478,12 @@
       wrapperDivisi.style.display = 'block';
       selectDivisi.required = true;
 
-      // Sembunyikan input NIM/ID karena diganti pilihan divisi
       wrapperNim.style.display = 'none';
       inputNim.required = false;
       inputNim.value = "-"; 
     }
 
     showPage('form-absen');
-  }
-
-  function gantiKategoriRekap() {
-    let kat = document.getElementById('select-kategori-rekap').value;
-    let wrapperKelompokRekap = document.getElementById('wrapper-rekap-kelompok');
-    let wrapperDivisiRekap = document.getElementById('wrapper-rekap-divisi');
-    let thId = document.getElementById('th-id');
-
-    if (kat === 'Maba') {
-      wrapperKelompokRekap.style.display = 'block';
-      wrapperDivisiRekap.style.display = 'none';
-      thId.innerText = "NIM";
-    } else {
-      wrapperKelompokRekap.style.display = 'none';
-      wrapperDivisiRekap.style.display = 'block';
-      thId.innerText = "Divisi";
-    }
   }
 
   function showPage(pageId) {
@@ -635,8 +532,9 @@
       idKel = document.getElementById('select-kelompok-absen').value;
       nim = document.getElementById('input-nim').value;
     } else {
-      idKel = "PANITIA_" + document.getElementById('select-divisi-absen').value;
-      nim = document.getElementById('select-divisi-absen').value; // Menyimpan nama divisi di kolom NIM/ID pada sheet
+      let divVal = document.getElementById('select-divisi-absen').value;
+      idKel = "PANITIA_" + divVal;
+      nim = divVal; 
     }
 
     let nama = document.getElementById('input-nama').value;
@@ -686,52 +584,88 @@
     reader.readAsDataURL(file);
   }
 
-  function loadRekap() {
-    let kat = document.getElementById('select-kategori-rekap').value;
-    let idKel = "";
+  // Fungsi untuk menarik data rekap dari masing-masing kelompok/divisi dan meramunya menjadi diagram batang
+  async function muatStatistikGrafik() {
+    let kategoriStat = document.getElementById('select-kategori-statistik').value;
+    let labels = [];
+    let targetList = [];
 
-    if (kat === 'Maba') {
-      idKel = document.getElementById('select-kelompok-rekap').value;
-      if(!idKel) return alert('Pilih kelompok terlebih dahulu!');
+    if (kategoriStat === 'Maba') {
+      targetList = daftarKelompok.map(k => k.nama);
+      labels = targetList;
     } else {
-      let divisiVal = document.getElementById('select-divisi-rekap').value;
-      if(!divisiVal) return alert('Pilih divisi terlebih dahulu!');
-      idKel = "PANITIA_" + divisiVal;
+      targetList = daftarDivisiPanitia;
+      labels = targetList;
     }
 
-    document.getElementById('table-rekap').innerHTML = '<tr><td colspan="8"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
+    let dataKehadiran = [];
 
-    fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`)
-      .then(response => response.json())
-      .then(res => {
-        let html = '';
-        if(!res || res.length === 0) {
-          html = '<tr><td colspan="8" class="text-muted">Belum ada data absensi untuk kategori ini.</td></tr>';
-        } else {
-          res.forEach(r => {
-            let linkFoto = (r.foto && r.foto.length > 0) ? `<a href="${r.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold"><i class="fa-solid fa-image me-1"></i>Lihat Foto</a>` : '-';
-            html += `<tr>
-                       <td class="fw-bold">${r.nim}</td>
-                       <td class="text-start">${r.nama}</td>
-                       <td><span class="badge bg-success">${r.H}</span></td>
-                       <td><span class="badge bg-info text-dark">${r.I}</span></td>
-                       <td><span class="badge bg-warning text-dark">${r.S}</span></td>
-                       <td><span class="badge bg-danger">${r.A}</span></td>
-                       <td>${linkFoto}</td>
-                       <td>
-                         <button class="btn btn-sm btn-danger fw-bold" onclick="alert('Penghapusan data dapat dikelola langsung dari Google Sheets.')">
-                           <i class="fa-solid fa-trash-can me-1"></i> Hapus
-                         </button>
-                       </td>
-                     </tr>`;
+    // Tampilkan indikator loading di konsol / grafik sementara memuat data
+    for (let item of targetList) {
+      let queryId = (kategoriStat === 'Maba') ? item : ("PANITIA_" + item);
+      try {
+        let response = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${queryId}`);
+        let resJson = await response.json();
+        
+        // Hitung total hadir (H) dari rekap anggota dalam kelompok/divisi tersebut
+        let totalHadir = 0;
+        if (resJson && Array.isArray(resJson)) {
+          resJson.forEach(mhs => {
+            totalHadir += (mhs.H || 0);
           });
         }
-        document.getElementById('table-rekap').innerHTML = html;
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('table-rekap').innerHTML = '<tr><td colspan="8" class="text-danger">Gagal memuat data rekap.</td></tr>';
-      });
+        dataKehadiran.push(totalHadir);
+      } catch (e) {
+        console.error("Gagal memuat rekap untuk " + item, e);
+        dataKehadiran.push(0);
+      }
+    }
+
+    renderChart(labels, dataKehadiran, kategoriStat);
+  }
+
+  function renderChart(labels, dataValues, kategori) {
+    let ctx = document.getElementById('grafikKehadiran').getContext('2d');
+    
+    if (myChart) {
+      myChart.destroy(); // Hancurkan chart sebelumnya agar tidak bertumpuk
+    }
+
+    let judulGrafik = (kategori === 'Maba') ? 'Jumlah Total Kehadiran (H) per Kelompok Maba' : 'Jumlah Total Kehadiran (H) per Divisi Panitia';
+    let warnaBar = (kategori === 'Maba') ? 'rgba(0, 180, 216, 0.7)' : 'rgba(0, 51, 102, 0.7)';
+    let warnaBorder = (kategori === 'Maba') ? 'rgba(0, 119, 145, 1)' : 'rgba(0, 30, 60, 1)';
+
+    myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{
+          label: judulGrafik,
+          data: dataValues,
+          backgroundColor: warnaBar,
+          borderColor: warnaBorder,
+          borderWidth: 2,
+          borderRadius: 8
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              stepSize: 1
+            }
+          }
+        }
+      }
+    });
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
