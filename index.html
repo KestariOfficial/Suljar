@@ -464,7 +464,7 @@
     "Kelompok 10 (MONTIPORA)": [
       "M. Rizal Kurniawan (PK)", "VARELO MAULANA MAGRIBI", "MUCHAMMAD ATTA ZAIDAN A.", "EVELLYN HASVA AISAH ANWAR", "VINO FEBRIAN YUDISTIRA", "KYLA ELIZA KUSUMAWARDANI", "ELVIORA NAVRATILOVA REVIANTI", "DANASTRI AYOM DAMASTUTI", "AULIA ANNAH DHIYAH", "RAMOS IMANUEL M.", "RAMZI RAYMIJAD", "VIORENTINA CINDY CANTIKAP.", "NOVITA ADELIA PUTRI EFFENDI", "ADRE AHMAD MAULANA", "RIDHO FAIZAL HAFIDZ"
     ]
-  ];
+  };
 
   const infoKelompok = [
     { nama: "Kelompok 1 (ULVA)", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva adalah genus alga hijau laut yang sering disebut sebagai selada laut (sea lettuce). Lembaran tubuhnya tipis dan menyerupai daun selada.", funFact: "Dapat dikonsumsi oleh manusia dan sangat kaya akan vitamin serta mineral esensial!" },
@@ -707,7 +707,8 @@
           let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().toLowerCase() : "";
           let statusVal = rec.status ? rec.status.toString().toUpperCase() : "";
           
-          if (jenis.includes("kedatangan") || statusVal === "H") {
+          // Fallback cerdas: Jika ada record atas nama ini, otomatis anggap Hadir jika bukan kepulangan
+          if (jenis.includes("kedatangan") || statusVal === "H" || (!jenis.includes("kepulangan") && statusVal !== "S")) {
             h = '<strong class="text-success fs-5">H</strong>';
           }
           if (jenis.includes("kepulangan") || statusVal === "S") {
@@ -751,7 +752,8 @@
           let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().toLowerCase() : "";
           let statusVal = rec.status ? rec.status.toString().toUpperCase() : "";
           
-          if (jenis.includes("kedatangan") || statusVal === "H") {
+          // Fallback cerdas: Jika ada record atas nama ini, otomatis anggap Hadir jika bukan kepulangan
+          if (jenis.includes("kedatangan") || statusVal === "H" || (!jenis.includes("kepulangan") && statusVal !== "S")) {
             h = '<strong class="text-success fs-5">H</strong>';
           }
           if (jenis.includes("kepulangan") || statusVal === "S") {
