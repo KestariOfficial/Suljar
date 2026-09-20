@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Absensi & Rekap Sulam Jaring 2026</title>
+  <title>Situs Resmi Sulam Jaring 2026</title>
+  <link rel="icon" type="image/png" href="Logo.png">
+  <link rel="shortcut icon" type="image/png" href="Logo.png">
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
@@ -113,7 +115,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container-fluid px-4">
     <a class="navbar-brand fw-bold d-flex align-items-center" href="javascript:void(0)" onclick="showPage('dashboard')">
-      <img src="https://github.com/god290607-debug/Suljar/blob/main/logo.png?raw=true" alt="Logo Sulam Jaring" width="38" height="38" class="me-2 rounded-circle bg-white p-1">
+      <img src="Logo.png" alt="Logo Sulam Jaring" width="38" height="38" class="me-2 rounded-circle bg-white p-1">
       Sulam Jaring 2026
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -137,7 +139,7 @@
     <div id="view-dashboard" class="page-view active-view">
       <div class="text-center py-5 animasi-turun">
         <div class="mb-4">
-          <img src="https://github.com/god290607-debug/Suljar/blob/main/logo.png?raw=true" alt="Logo" width="90" height="90" class="rounded-circle shadow p-2 bg-white mb-2">
+          <img src="Logo.png" alt="Logo" width="90" height="90" class="rounded-circle shadow p-2 bg-white mb-2">
         </div>
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
         <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h3>
@@ -363,7 +365,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyJu96yPblamD8vY5f6ALJLR9zg8i4LxzmiuVwxu7g-EMjwmt5R3H3-VbmcDnDlc3qH/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
   const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": [
@@ -703,10 +705,18 @@
         let h = '-', s = '-', bukti = '-';
 
         records.forEach(rec => {
-          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString() : "";
-          if (jenis.includes("Kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
-          if (jenis.includes("Kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
-          if (rec.foto && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().toLowerCase() : "";
+          let statusVal = rec.status ? rec.status.toString().toUpperCase() : "";
+          
+          if (jenis.includes("kedatangan") || statusVal === "H") {
+            h = '<strong class="text-success fs-5">H</strong>';
+          }
+          if (jenis.includes("kepulangan") || statusVal === "S") {
+            s = '<strong class="text-primary fs-5">S</strong>';
+          }
+          if (rec.foto && rec.foto.length > 0 && rec.foto[0]) {
+            bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          }
         });
 
         html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaPanitia}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
@@ -734,10 +744,18 @@
         let h = '-', s = '-', bukti = '-';
 
         records.forEach(rec => {
-          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString() : "";
-          if (jenis.includes("Kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
-          if (jenis.includes("Kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
-          if (rec.foto && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().toLowerCase() : "";
+          let statusVal = rec.status ? rec.status.toString().toUpperCase() : "";
+          
+          if (jenis.includes("kedatangan") || statusVal === "H") {
+            h = '<strong class="text-success fs-5">H</strong>';
+          }
+          if (jenis.includes("kepulangan") || statusVal === "S") {
+            s = '<strong class="text-primary fs-5">S</strong>';
+          }
+          if (rec.foto && rec.foto.length > 0 && rec.foto[0]) {
+            bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          }
         });
 
         html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaMaba}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
