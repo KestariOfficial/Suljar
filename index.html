@@ -7,7 +7,7 @@
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Pustaka Chart.js untuk Diagram Batang -->
+  <!-- Pustaka Chart.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
@@ -305,11 +305,14 @@
       </div>
     </div>
 
-    <!-- Tampilan Statistik Rekap (Diagram Batang Semua Kelompok & Divisi) -->
+    <!-- Tampilan Statistik Rekap Cepat (Instant Loading) -->
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Statistik Kehadiran</h2>
-        <p class="text-muted text-center mb-4">Grafik diagram batang rekam jejak kehadiran seluruh Kelompok Maba dan Divisi Panitia.</p>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <h2 class="fw-bold text-center m-0" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Statistik Kehadiran Cepat</h2>
+          <button class="btn btn-outline-primary btn-sm fw-bold" onclick="muatSemuaStatistikGrafik()"><i class="fa-solid fa-rotate me-1"></i> Segarkan Data</button>
+        </div>
+        <p class="text-muted text-center mb-4">Grafik diagram batang rekam jejak kehadiran seluruh Kelompok Maba dan Divisi Panitia secara instan.</p>
         
         <!-- Grafik 1: Kelompok Maba -->
         <div class="card p-3 mb-4 shadow-sm border-info">
@@ -586,42 +589,47 @@
     reader.readAsDataURL(file);
   }
 
-  // Fungsi untuk menarik data rekap seluruh Kelompok Maba dan Divisi Panitia secara otomatis
+  // OPTIMASI ANTI-DELAY: Mengambil seluruh data secara paralel (Promise.all) agar loading instan
   async function muatSemuaStatistikGrafik() {
-    // 1. Ambil data Maba
     let mabaLabels = daftarKelompok.map(k => k.nama);
-    let mabaData = [];
-    for (let kelompok of mabaLabels) {
-      try {
-        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${kelompok}`);
-        let json = await res.json();
-        let totalH = 0;
-        if (json && Array.isArray(json)) {
-          json.forEach(m => totalH += (m.H || 0));
-        }
-        mabaData.push(totalH);
-      } catch (e) {
-        mabaData.push(0);
-      }
-    }
-    renderChartMaba(mabaLabels, mabaData);
-
-    // 2. Ambil data Panitia
     let panitiaLabels = daftarDivisiPanitia;
-    let panitiaData = [];
-    for (let divisi of panitiaLabels) {
-      try {
-        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
-        let json = await res.json();
-        let totalH = 0;
-        if (json && Array.isArray(json)) {
-          json.forEach(p => totalH += (p.H || 0));
-        }
-        panitiaData.push(totalH);
-      } catch (e) {
-        panitiaData.push(0);
+
+    // Buat daftar permintaan secara serentak (paralel) agar tidak antre lama
+    let mabaPromises = mabaLabels.map(kelompok => 
+      fetch(`${SCRIPT_URL}?action=getRecap&idKel=${kelompok}`)
+        .then(res => res.json())
+        .catch(() => [])
+    );
+
+    let panitiaPromises = panitiaLabels.map(divisi => 
+      fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`)
+        .then(res => res.json())
+        .catch(() => [])
+    );
+
+    // Jalankan semuanya bersamaan
+    let mabaResults = await Promise.all(mabaPromises);
+    let panitiaResults = await Promise.all(panitiaPromises);
+
+    // Hitung total kehadiran (H) Maba
+    let mabaData = mabaResults.map(json => {
+      let totalH = 0;
+      if (json && Array.isArray(json)) {
+        json.forEach(m => totalH += (m.H || 0));
       }
-    }
+      return totalH;
+    });
+
+    // Hitung total kehadiran (H) Panitia
+    let panitiaData = panitiaResults.map(json => {
+      let totalH = 0;
+      if (json && Array.isArray(json)) {
+        json.forEach(p => totalH += (p.H || 0));
+      }
+      return totalH;
+    });
+
+    renderChartMaba(mabaLabels, mabaData);
     renderChartPanitia(panitiaLabels, panitiaData);
   }
 
@@ -645,13 +653,14 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 800 }, // Animasi naik yang halus dan cepat
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
       }
     });
   }
 
-  function renderChartPanitia(labels, dataValues) {
+    function renderChartPanitia(labels, dataValues) {
     let ctx = document.getElementById('grafikPanitia').getContext('2d');
     if (chartPanitiaInstance) chartPanitiaInstance.destroy();
 
@@ -671,6 +680,7 @@
       options: {
         responsive: true,
         maintainAspectRatio: false,
+        animation: { duration: 800 }, // Animasi naik yang halus dan cepat
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
       }
