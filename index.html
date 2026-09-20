@@ -166,7 +166,7 @@
               <div class="card-body">
                 <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
                 <h3 class="fw-bold text-success">Absen Kedatangan</h3>
-                <p class="text-muted small mt-2">Catat kehadiran awal saat datang (Wajib Foto).</p>
+                <p class="text-muted small mt-2">Catat kehadiran awal (H) & Wajib Foto.</p>
               </div>
             </div>
           </div>
@@ -175,7 +175,7 @@
               <div class="card-body">
                 <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
                 <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
-                <p class="text-muted small mt-2">Catat kepulangan akhir (Tanpa Foto).</p>
+                <p class="text-muted small mt-2">Catat kepulangan akhir (S) & Tanpa Foto.</p>
               </div>
             </div>
           </div>
@@ -232,7 +232,7 @@
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
         <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi Panitia</h2>
-        <p class="text-muted text-center mb-4">Pilih divisi di bawah ini untuk melihat tabel kehadiran kedatangan dan kepulangan secara real-time.</p>
+        <p class="text-muted text-center mb-4">Pilih divisi di bawah ini untuk melihat huruf H (Kedatangan) dan S (Kepulangan) secara real-time.</p>
         
         <div class="row justify-content-center mb-4">
           <div class="col-md-6">
@@ -299,7 +299,6 @@
   // ⚠️ Ganti URL ini dengan URL Web App Apps Script Anda yang berakhiran /exec
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
-  // Data Nama Panitia Lengkap Berdasarkan Dokumen Resmi[cite: 3]
   const dataPanitiaDivisi = {
     "BADAN PENGURUS INTI (BPI)": [
       "AHMAD CHOIRUL ANAM", "ULIL ABSHOR ASHIDIQ", "SYIFA SETYA WAHYUNINGTYAS", 
@@ -373,16 +372,16 @@
   };
 
   const daftarKelompokMaba = [
-    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva menggambarkan kelompok selada laut.", funFact: "Dapat dikonsumsi dan kaya vitamin!" },
-    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia lamun pesisir berdaun pipih.", funFact: "Menyerap blue carbon sangat cepat!" },
-    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus lamun pita panjang.", funFact: "Memiliki bunga jantan mengapung." },
-    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina alga cokelat bentuk kipas.", funFact: "Permukaannya dilapisi kalsium." },
-    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa alga hijau menjalar.", funFact: "Tubuhnya adalah satu sel raksasa!" },
-    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora karang batu bercabang.", funFact: "Pertumbuhan karang tercepat!" },
-    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia karang piringan bundar.", funFact: "Dapat merayap perlahan di atas pasir." },
-    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia koloni karang mangkuk polip.", funFact: "Menjulurkan tentakel malam hari." },
-    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites karang masif kubah besar.", funFact: "Bisa hidup hingga ribuan tahun." },
-    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora karang lembaran tipis.", funFact: "Bentuk tumbuh sangat fleksibel." }
+    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva kelompok selada laut.", funFact: "Kaya vitamin!" },
+    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia lamun pesisir.", funFact: "Menyerap blue carbon!" },
+    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus lamun pita.", funFact: "Bunga jantan mengapung." },
+    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina alga cokelat.", funFact: "Permukaan dilapisi kalsium." },
+    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa alga hijau.", funFact: "Satu sel raksasa!" },
+    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora karang batu.", funFact: "Pertumbuhan tercepat!" },
+    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia karang piringan.", funFact: "Dapat merayap di pasir." },
+    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia karang mangkuk.", funFact: "Berburu malam hari." },
+    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites karang masif.", funFact: "Hidup ribuan tahun." },
+    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora lembaran tipis.", funFact: "Bentuk fleksibel." }
   ];
 
   let jenisAbsenAktif = "Kedatangan";
@@ -424,28 +423,16 @@
     daftarKelompokMaba.forEach((k) => {
       htmlCards += `
         <div class="col-md-4 col-sm-6">
-          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;" onclick="tampilkanDetailKelompok('${k.nama}')">
+          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;">
             <div class="card-body d-flex flex-column justify-content-center align-items-center">
               <div class="mb-3"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
               <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
-              <small class="text-muted mt-2">Klik untuk info organisme</small>
             </div>
           </div>
         </div>
       `;
     });
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
-  }
-
-  function tampilkanDetailKelompok(nama) {
-    let k = daftarKelompokMaba.find(item => item.nama === nama);
-    if (k) {
-      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>Kelompok ${k.nama}`;
-      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
-      document.getElementById('modalDesc').innerText = k.desc;
-      document.getElementById('modalFunFact').innerText = k.funFact;
-      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
-    }
   }
 
   function cekSandiRekap() {
@@ -507,7 +494,7 @@
         nim: divisi,
         nama: nama,
         idKel: "PANITIA_" + divisi,
-        status: "H",
+        status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S', // H untuk Kedatangan, S untuk Kepulangan
         base64Foto: base64Foto,
         jenisAbsen: `Panitia_${jenisAbsenAktif}`
       };
@@ -567,36 +554,30 @@
       daftarNama.forEach((namaPanitia, index) => {
         let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaPanitia.toString().trim().toUpperCase());
         
-        let hadirDatang = false;
-        let hadirPulang = false;
+        let tampilH = '-';
+        let tampilS = '-';
         let linkBukti = '-';
 
         records.forEach(rec => {
           let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().trim() : "";
           
-          if (jenis.includes("Kedatangan") || jenis.includes("Panitia_Kedatangan")) {
-            hadirDatang = true;
+          if (jenis.includes("Kedatangan") || jenis.includes("Panitia_Kedatangan") || rec.status === "H") {
+            tampilH = '<strong class="text-success fs-5">H</strong>';
           }
-          if (jenis.includes("Kepulangan") || jenis.includes("Panitia_Kepulangan")) {
-            hadirPulang = true;
-          }
-          if (!rec.jenisAbsen && rec.status === "H") {
-            hadirDatang = true;
+          if (jenis.includes("Kepulangan") || jenis.includes("Panitia_Kepulangan") || rec.status === "S") {
+            tampilS = '<strong class="text-primary fs-5">S</strong>';
           }
           if (rec.foto && rec.foto.length > 0 && rec.foto[0] !== "") {
             linkBukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
           }
         });
 
-        let centangKedatangan = hadirDatang ? '<i class="fa-solid fa-check-circle fa-lg text-success"></i>' : '<span class="text-muted">-</span>';
-        let centangKepulangan = hadirPulang ? '<i class="fa-solid fa-check-circle fa-lg text-primary"></i>' : '<span class="text-muted">-</span>';
-
         html += `
           <tr>
             <td>${index + 1}</td>
             <td class="text-start fw-bold">${namaPanitia}</td>
-            <td>${centangKedatangan}</td>
-            <td>${centangKepulangan}</td>
+            <td>${tampilH}</td>
+            <td>${tampilS}</td>
             <td>${linkBukti}</td>
           </tr>
         `;
@@ -605,7 +586,7 @@
       tbody.innerHTML = html;
     } catch (e) {
       console.error(e);
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat rekap. Periksa koneksi atau URL SCRIPT_URL.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat rekap.</td></tr>';
     }
   }
 </script>
