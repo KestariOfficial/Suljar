@@ -359,7 +359,7 @@
 </div>
 
 <script>
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxU5AVvmyj70bDdiDv3AFD9mW026zOnBZ0w0KFauZc7NTGDmAbxkfmxilsV3OrjyCDv/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
   const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": [
@@ -464,7 +464,7 @@
     "Kelompok 10 (MONTIPORA)": [
       "M. Rizal Kurniawan (PK)", "VARELO MAULANA MAGRIBI", "MUCHAMMAD ATTA ZAIDAN A.", "EVELLYN HASVA AISAH ANWAR", "VINO FEBRIAN YUDISTIRA", "KYLA ELIZA KUSUMAWARDANI", "ELVIORA NAVRATILOVA REVIANTI", "DANASTRI AYOM DAMASTUTI", "AULIA ANNAH DHIYAH", "RAMOS IMANUEL M.", "RAMZI RAYMIJAD", "VIORENTINA CINDY CANTIKAP.", "NOVITA ADELIA PUTRI EFFENDI", "ADRE AHMAD MAULANA", "RIDHO FAIZAL HAFIDZ"
     ]
-  };
+  ];
 
   const infoKelompok = [
     { nama: "Kelompok 1 (ULVA)", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva adalah genus alga hijau laut yang sering disebut sebagai selada laut (sea lettuce). Lembaran tubuhnya tipis dan menyerupai daun selada.", funFact: "Dapat dikonsumsi oleh manusia dan sangat kaya akan vitamin serta mineral esensial!" },
@@ -695,7 +695,12 @@
       let html = '';
 
       daftar.forEach((namaPanitia, index) => {
-        let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaPanitia.toString().trim().toUpperCase());
+        let cleanTarget = namaPanitia.toString().trim().toUpperCase();
+        let records = dataRes.filter(r => {
+          let rNama = r.nama ? r.nama.toString().trim().toUpperCase() : "";
+          return rNama.includes(cleanTarget) || cleanTarget.includes(rNama);
+        });
+        
         let h = '-', s = '-', bukti = '-';
 
         records.forEach(rec => {
@@ -734,7 +739,12 @@
       let html = '';
 
       daftar.forEach((namaMaba, index) => {
-        let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaMaba.toString().trim().toUpperCase());
+        let cleanTarget = namaMaba.toString().trim().toUpperCase();
+        let records = dataRes.filter(r => {
+          let rNama = r.nama ? r.nama.toString().trim().toUpperCase() : "";
+          return rNama.includes(cleanTarget) || cleanTarget.includes(rNama);
+        });
+
         let h = '-', s = '-', bukti = '-';
 
         records.forEach(rec => {
