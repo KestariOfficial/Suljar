@@ -7,8 +7,6 @@
   <base target="_top">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <!-- Pustaka Chart.js -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     :root {
       --ocean-deep: #003366;
@@ -107,13 +105,6 @@
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
     }
-
-    .chart-container {
-      position: relative;
-      width: 100%;
-      height: 380px;
-      margin-bottom: 30px;
-    }
   </style>
 </head>
 <body>
@@ -132,7 +123,7 @@
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-chart-pie me-1"></i> Statistik Rekap</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-table me-1"></i> Tabel Rekap Panitia</a></li>
       </ul>
     </div>
   </div>
@@ -148,17 +139,17 @@
           <i class="fa-solid fa-anchor fa-3x text-info"></i>
         </div>
         <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep) !important;">Selamat Datang Para Penjelajah</h1>
-        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Kelompok Pemanfaatan Sumber Daya Perikanan 2026</h3>
+        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Pengelolaan Panitia Pemanfaatan Sumber Daya Perikanan 2026</h3>
         <hr class="w-25 mx-auto border-info border-3 opacity-75">
-        <p class="text-muted mt-3">Silakan pilih menu di atas untuk melihat daftar kelompok, mengisi absensi Maba/Panitia, atau melihat statistik rekap.</p>
+        <p class="text-muted mt-3">Silakan pilih menu di atas untuk mengisi absensi atau melihat tabel rekapitulasi panitia secara real-time.</p>
       </div>
     </div>
 
-    <!-- Kelompok -->
+    <!-- Kelompok Maba -->
     <div id="view-kelompok" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok</h2>
-        <p class="text-muted mb-4">Klik pada salah satu kartu kelompok di bawah untuk melihat profil deskripsi, bentuk asli organisme, dan <em>fun fact</em> menarik!</p>
+        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
+        <p class="text-muted mb-4">Klik pada salah satu kartu kelompok di bawah untuk melihat profil deskripsi dan bentuk organisme!</p>
         <div class="row g-4" id="grid-kelompok"></div>
       </div>
     </div>
@@ -166,53 +157,21 @@
     <!-- Menu Utama Absen -->
     <div id="view-absen" class="page-view">
       <div class="animasi-turun">
-        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
-        <p class="text-muted text-center mb-4">Silakan pilih kategori absensi Anda di bawah ini.</p>
+        <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi Panitia</h2>
+        <p class="text-muted text-center mb-4">Silakan pilih sesi kehadiran rapat teknis atau kegiatan Anda.</p>
         
         <div class="row justify-content-center g-4 mt-3">
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihKategori('Maba')">
-              <div class="card-body">
-                <i class="fa-solid fa-user-graduate fa-3x text-success mb-3"></i>
-                <h3 class="fw-bold text-success">Absensi Maba</h3>
-                <p class="text-muted small mt-2">Untuk Mahasiswa Baru (Kedatangan & Kepulangan per Kelompok).</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihKategori('Panitia')">
-              <div class="card-body">
-                <i class="fa-solid fa-user-shield fa-3x text-primary mb-3"></i>
-                <h3 class="fw-bold text-primary">Absensi Panitia</h3>
-                <p class="text-muted small mt-2">Untuk Panitia Acara (Berdasarkan Pilihan Divisi).</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sub-Menu Pilihan Jenis Absen -->
-    <div id="view-sub-absen" class="page-view">
-      <div class="animasi-turun">
-        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
-          <i class="fa-solid fa-arrow-left me-1"></i> Kembali ke Pilih Kategori
-        </button>
-        <h2 class="fw-bold mb-2 text-center" id="judul-sub-absen" style="color: var(--ocean-deep);">Pilih Jenis Absensi</h2>
-        <p class="text-muted text-center mb-4">Pilih apakah sesi kedatangan atau kepulangan.</p>
-        
-        <div class="row justify-content-center g-4 mt-3">
-          <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsenFinal('Kedatangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kedatangan')">
               <div class="card-body">
                 <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
                 <h3 class="fw-bold text-success">Absen Kedatangan</h3>
-                <p class="text-muted small mt-2">Catat kehadiran awal kegiatan.</p>
+                <p class="text-muted small mt-2">Catat kehadiran awal saat datang.</p>
               </div>
             </div>
           </div>
           <div class="col-md-5">
-            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsenFinal('Kepulangan')">
+            <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormAbsen('Kepulangan')">
               <div class="card-body">
                 <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
                 <h3 class="fw-bold text-primary">Absen Kepulangan</h3>
@@ -224,80 +183,43 @@
       </div>
     </div>
 
-    <!-- Formulir Absen Final -->
+    <!-- Formulir Absen Panitia -->
     <div id="view-form-absen" class="page-view">
       <div class="animasi-turun">
-        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('sub-absen')">
+        <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')">
           <i class="fa-solid fa-arrow-left me-1"></i> Kembali
         </button>
-        <h2 class="fw-bold mb-2" id="judul-form-absen" style="color: var(--ocean-deep);">Formulir Absensi</h2>
-        <p class="text-muted mb-4">Lengkapi data diri Anda di bawah ini.</p>
+        <h2 class="fw-bold mb-2" id="judul-form-absen" style="color: var(--ocean-deep);">Formulir Absensi Panitia</h2>
+        <p class="text-muted mb-4">Pilih divisi Anda, lalu pilih nama Anda dari daftar yang tersedia.</p>
         
-        <form id="form-absen-mandiri" onsubmit="event.preventDefault(); submitAbsenMandiri();">
+        <form id="form-absen-panitia" onsubmit="event.preventDefault(); submitAbsenPanitia();">
           <div class="row mb-3">
             <div class="col-md-6 mb-3">
               <label class="fw-bold">Tanggal</label>
               <input type="date" id="tgl-absen" class="form-control" required>
             </div>
             
-            <div class="col-md-6 mb-3" id="wrapper-kelompok">
-              <label class="fw-bold">Pilih Nama Kelompok</label>
-              <select id="select-kelompok-absen" class="form-control border-info">
-                <option value="">-- Pilih Kelompok --</option>
-              </select>
-            </div>
-
-            <div class="col-md-6 mb-3" id="wrapper-divisi" style="display: none;">
-              <label class="fw-bold">Pilih Divisi Panitia</label>
-              <select id="select-divisi-absen" class="form-control border-info">
+            <div class="col-md-6 mb-3">
+              <label class="fw-bold">Pilih Divisi</label>
+              <select id="select-divisi-absen" class="form-control border-info" onchange="updateDaftarNama()" required>
                 <option value="">-- Pilih Divisi --</option>
-                <option value="BPI">BPI</option>
-                <option value="Keamanan">Keamanan</option>
-                <option value="Kestari">Kestari</option>
-                <option value="Korlap">Korlap</option>
-                <option value="Humas">Humas</option>
-                <option value="Konsumsi">Konsumsi</option>
-                <option value="PDD">PDD</option>
-                <option value="Acara">Acara</option>
-                <option value="Kesehatan">Kesehatan</option>
-                <option value="Daspon">Daspon</option>
-                <option value="Perkap">Perkap</option>
-                <option value="PK">PK</option>
               </select>
             </div>
           </div>
 
           <div class="row mb-3">
-            <div class="col-md-6 mb-3" id="wrapper-nim">
-              <label class="fw-bold">NIM Mahasiswa</label>
-              <input type="text" id="input-nim" class="form-control border-info" placeholder="Contoh: 2026001" required>
-            </div>
-            <div class="col-md-6 mb-3">
-              <label class="fw-bold">Nama Lengkap</label>
-              <input type="text" id="input-nama" class="form-control border-info" placeholder="Nama Lengkap" required>
-            </div>
-          </div>
-
-          <div class="mb-4 border border-info p-3 rounded bg-light">
-            <label class="fw-bold d-block mb-2 text-primary">Keterangan Kehadiran:</label>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="status_absen" value="H" checked required>
-              <label class="form-check-label text-success fw-bold">Hadir (H)</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="status_absen" value="I">
-              <label class="form-check-label text-info fw-bold">Izin (I)</label>
-            </div>
-            <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="status_absen" value="S">
-              <label class="form-check-label text-warning fw-bold">Sakit (S)</label>
+            <div class="col-md-12 mb-3">
+              <label class="fw-bold">Pilih Nama Panitia</label>
+              <select id="select-nama-panitia" class="form-control border-info" required>
+                <option value="">-- Pilih Divisi Terlebih Dahulu --</option>
+              </select>
             </div>
           </div>
 
           <div class="mb-4">
-            <label class="fw-bold">Unggah Bukti Foto (Wajib):</label>
+            <label class="fw-bold">Unggah Bukti Foto / TTD Kehadiran (Wajib):</label>
             <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment" required>
-            <small class="text-muted">Gunakan kamera HP atau galeri.</small>
+            <small class="text-muted">Ambil foto menggunakan kamera HP.</small>
           </div>
 
           <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-simpan-absen" style="background: linear-gradient(135deg, #2e8b57, #3cb371);">Kirim Absensi Sekarang</button>
@@ -305,29 +227,35 @@
       </div>
     </div>
 
-    <!-- Tampilan Statistik Rekap Cepat (Instant Loading) -->
+    <!-- Tampilan Tabel Rekap Panitia Tiap Divisi -->
     <div id="view-rekap" class="page-view">
       <div class="animasi-turun">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-          <h2 class="fw-bold text-center m-0" style="color: var(--ocean-deep);"><i class="fa-solid fa-chart-column me-2"></i>Statistik Kehadiran Cepat</h2>
-          <button class="btn btn-outline-primary btn-sm fw-bold" onclick="muatSemuaStatistikGrafik()"><i class="fa-solid fa-rotate me-1"></i> Segarkan Data</button>
-        </div>
-        <p class="text-muted text-center mb-4">Grafik diagram batang rekam jejak kehadiran seluruh Kelompok Maba dan Divisi Panitia secara instan.</p>
+        <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi Panitia</h2>
+        <p class="text-muted text-center mb-4">Pilih divisi di bawah ini untuk melihat tabel kehadiran kedatangan dan kepulangan secara real-time.</p>
         
-        <!-- Grafik 1: Kelompok Maba -->
-        <div class="card p-3 mb-4 shadow-sm border-info">
-          <h4 class="fw-bold text-success mb-3"><i class="fa-solid fa-user-graduate me-2"></i>Statistik Kehadiran Maba (Tiap Kelompok)</h4>
-          <div class="chart-container">
-            <canvas id="grafikMaba"></canvas>
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-6">
+            <select id="select-divisi-rekap" class="form-control border-info fw-bold text-center" onchange="muatTabelRekapDivisi()">
+              <option value="">-- Pilih Divisi untuk Melihat Tabel --</option>
+            </select>
           </div>
         </div>
 
-        <!-- Grafik 2: Divisi Panitia -->
-        <div class="card p-3 shadow-sm border-primary">
-          <h4 class="fw-bold text-primary mb-3"><i class="fa-solid fa-user-shield me-2"></i>Statistik Kehadiran Panitia (Tiap Divisi)</h4>
-          <div class="chart-container">
-            <canvas id="grafikPanitia"></canvas>
-          </div>
+        <div class="table-responsive bg-white p-3 rounded shadow-sm border">
+          <table class="table table-bordered table-striped text-center align-middle">
+            <thead class="table-dark" style="background-color: var(--ocean-deep);">
+              <tr>
+                <th style="width: 8%;">NO</th>
+                <th class="text-start" style="width: 42%;">NAMA PANITIA</th>
+                <th style="width: 20%;">KEDATANGAN</th>
+                <th style="width: 20%;">KEPULANGAN</th>
+                <th style="width: 10%;">BUKTI</th>
+              </tr>
+            </thead>
+            <tbody id="tabel-rekap-body">
+              <tr><td colspan="5" class="text-muted">Silakan pilih divisi terlebih dahulu di atas.</td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -335,7 +263,7 @@
   </div>
 </div>
 
-<!-- Modal Pop-up Deskripsi Kelompok -->
+<!-- Modal Detail Kelompok Maba -->
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
@@ -367,199 +295,207 @@
 </div>
 
 <script>
-  // ⚠️ PASTIKAN URL BERAKHIRAN /exec INI ADALAH URL WEB APP GOOGLE APPS SCRIPT ANDA TERBARU
+  // ⚠️ Ganti URL ini dengan URL Web App Apps Script Anda yang berakhiran /exec
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
-  const daftarKelompok = [
-    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva menggambarkan kelompok yang terinspirasi dari selada laut, sejenis alga hijau berbentuk lembaran tipis bergelombang yang tumbuh subur.", funFact: "Beberapa jenis Ulva dapat dikonsumsi karena kaya akan vitamin dan mineral!" },
-    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia merepresentasikan tumbuhan lamun pesisir berdaun pipih panjang yang menjaga kestabilan substrat dasar laut.", funFact: "Padang lamun Thalassia mampu menyerap karbon (blue carbon) sangat cepat!" },
-    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus mengambil nama dari spesies lamun berdaun pita panjang menyerupai pita kokoh berbulur hitam di pangkalnya.", funFact: "Enhalus acoroides memiliki bunga jantan yang bisa 'melepaskan diri' untuk penyerbukan air!" },
-    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina diadaptasi dari alga cokelat unik menyerupai kipas kecil bergaris konsentris di ekosistem pesisir.", funFact: "Permukaan thallus Padina dilapisi endapan kalsium karbonat sehingga terasa keras." },
-    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa mencerminkan alga hijau menjalar mirip bulu ayam atau anggur laut yang bernilai tinggi.", funFact: "Tubuh alga Caulerpa sebenarnya hanya terdiri dari satu sel raksasa berinti banyak!" },
-    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora melambangkan karang batu bercabang menyerupai pepohonan mini di bawah laut.", funFact: "Karang Acropora memiliki pertumbuhan tercepat dibanding karang batu lainnya!" },
-    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia terinspirasi dari karang soliter berbentuk piringan bundar menyerupai jamur (mushroom coral).", funFact: "Karang Fungia muda dapat bergerak merayap perlahan di atas pasir!" },
-    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia dinamai dari koloni karang masif dengan mangkuk polip rapat menyerupai sarang lebah.", funFact: "Pada malam hari, polip Favia menjulurkan tentakel panjang untuk berburu mangsa." },
-    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites merujuk pada karang masif kubah besar kekuningan yang sangat kuat dan berumur panjang.", funFact: "Koloni Porites bisa hidup ratusan tahun menjadi 'perekam sejarah' iklim purba." },
-    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora merepresentasikan karang berkoloni lembaran tipis bertingkat yang dinamis.", funFact: "Bentuk pertumbuhannya sangat fleksibel tergantung kuatnya ombak di habitatnya!" }
+  // Data Nama Panitia Lengkap Berdasarkan Dokumen Resmi[cite: 3]
+  const dataPanitiaDivisi = {
+    "BADAN PENGURUS INTI (BPI)": [
+      "AHMAD CHOIRUL ANAM", "ULIL ABSHOR ASHIDIQ", "SYIFA SETYA WAHYUNINGTYAS", 
+      "ARFAN ARDIANTA ROHMAN", "LUTHFIYAH ROBI’ATUL ADAWI", "FIRYAL MECCA SUTRISNO"
+    ],
+    "DIVISI ACARA": [
+      "RAFAEL PARNINGOTAN S", "MUHAMMAD AFFAN NASHWAN", "RAIHAN ANDIKA PUTRA", 
+      "AFFANDANI YOGA SAPUTRA", "AYLA FIRDA NURUSIYAH", "KHANZA MEIDY PUTRI AZZAHRA", 
+      "ANNISA YASYFA SYAH", "WIKA PUTRA NATHANAEL", "NOVEIA DWI INTAN PRAMITA", 
+      "PUTRI SANIA SALSABILA", "HILDA FRISKA NURIL R", "HANIFAH NADIANA", 
+      "PARIS IGNESIUS SINAGA", "AZRIL ARVINSYAH"
+    ],
+    "DIVISI HUMAS": [
+      "VANYA TAKIA BALQIS", "AINUN SALSABILA", "ZIHAN AZZAHRA RAHMAN T", 
+      "MUHAMMAD ISAL ARDIANSYAH", "SHOFIYYAH PUTRI SALSABILA", "NIDYA SHELITA ARIFIN", 
+      "ADHITYA NUGRAHA PRATAMA", "ASYROFY HABIBY ROZZAQ", "RADITYA BIMANTARA PUTRA", 
+      "MUTIARA RAMADHANI", "WINDA KUSUMAWATI", "MUHAMMAD FAHMI RIJAL M", 
+      "NORINE ANINDYA SAMBUR", "SARAH JELITA NUR SADIDAH"
+    ],
+    "DIVISI KOORDINATOR LAPANGAN": [
+      "GERARD HAFIZD SHEEHAN", "MUHAMAD WAHYU SEPTIAN", "BALQIS AMALIYAH PUTRI S", 
+      "AIFA DWI CAHYA AURANISA", "MUHAMAD GAZALBA AZIZ", "MUHAMMAD ABDUL SALAM", 
+      "CHRISTIAN JONA PRANATA"
+    ],
+    "DIVISI KEAMANAN": [
+      "RAGHA GEDE PUTRA NUGROS", "DANU WIDI PANGESTU", "RAFIF FADHILAH BUDIAR", 
+      "HIZKA SIMAJUNTAK", "AGIL REKSI PAHDAVA", "FATIHATUS SHOLEHA", 
+      "ALFANDY NURFAIZ", "MUHAMMAD MA'RUF", "SYAHROOS ANANTA", 
+      "ATALA SHAFINA ANNADHIM", "CHICO KHAMLA RIZQULLAH P", "NAUFAL RAFIF BUONO"
+    ],
+    "DIVISI KONSUMSI": [
+      "AULIA SETYA ANGGRAINI", "NAYLA TRI NUGRAHENI", "MUHAMMAD DAFFA FA", 
+      "GIVENT ARMANDO", "EDGINA EVELYN REGINALDI", "EVA NUR HIDAYAT PUTRI", 
+      "NUGRAHA PAMBAYUN R", "APRILIA SALWA SALSABIL", "AOFATUL MAZIDAH", "NAJWAA SHABRINA M"
+    ],
+    "DIVISI KESTARI": [
+      "KANIA AYU NURFALISHA", "ABDULLAH RIJKMAN ARIFIN", "AKMAL RAIS PRAYOGA", 
+      "ARYA CRISTIANTO SITORUS", "MAR ATUL MUNAFIAH", "NUR FATIKA PUTRI ZAHRA'", 
+      "SUCI OKTAVIA NUR ANGGRAINI", "NURUL FAIZAH", "ZAHWA NAURA BABY KESUMA"
+    ],
+    "DIVISI PDD": [
+      "KUSNIA TRI CAHYA", "AYLA BASSAMA PRIANDRA", "NAZWA 'AULYA RAHMAN", 
+      "GADIZA HAYUNINGRUM", "REZA AURA WULAN RIZKY", "TRI BINTANG KURNIAWAN", 
+      "FAI'IS WAGE", "EGGI IRNANDA", "SITI ALYANA NAJWA", "KARIN APRILIA", 
+      "AKHLIS MAULANA YUSUF", "KUSNIA TRI CAHYA"
+    ],
+    "DIVISI KESEHATAN": [
+      "SALSABILLA", "NAUFAL FEBRIAN", "MOHAMMAD FAJAR MUBAROK", "NEALZA YUSRIYYA NASTARI", 
+      "FIDIA GAYUH PUDYASTAMA", "KEZIA LUTHFIYAH ADILAH", "SYIFA LATIFA AURA BILLAH", 
+      "INSAN MAULANA ADI PRATAMA", "DAVI RAISSHA UNTARA", "ANEYRA ZACHARY ISTABILLAH", "ALPINE DHARMA INDRAJAYA"
+    ],
+    "DIVISI DANA DAN SPONSOR": [
+      "ANEYRA ZACHARY ISTABILLAH", "ALPINE DHARMA INDRAJAYA", "DANIAH SUCI RACHMAWATI", 
+      "FAKHRIYATUS SHOLIHAH", "DYAS ANGGRAENI HARTINA P", "NUR BINTANG DWI JULIANTI", 
+      "FARREL MANGGALIH TRISTYO", "TARRA WAHYU NUR ANGGRAINI", "SEAN LAUZER ALHAJ", 
+      "JUAN CARLOS ALBERTO F", "MUHAMMAD NAJIB"
+    ],
+    "DIVISI PENDAMPING KELOMPOK": [
+      "CHELSEA USWATUN NISA", "BINTANG REVIANSYAH", "HELENA TRI YARFA OCTAVIA", 
+      "AYSHATUL HUSNA", "ALFAN RIDHO FADILLAH", "SAFIRA NURUL AINI DWI K", 
+      "MUHAMMAD AFSAAL HABIBIE PUTRA PURWANTO", "NURDEYANA", "MOHAMMAD ALI AKBAR AL R", 
+      "IVONNE CHANDRA M", "MUHAMMAD RIJAL KURNIAWAN", "PANDU AL IKHSAN BARIQ"
+    ],
+    "DIVISI PERLENGKAPAN": [
+      "MOCH. ASYROFIL UMAM", "MUHAMMAD AKBAR H", "MUHAMMAD FAISHOL Z", "MUHAMMAD IQBAL W", 
+      "MUHAMMAD YUSUF MAULANA", "MUHAMMAD FADILLAH", "MUHAMMAD IKHWAN KHASANI", 
+      "MUTIARA NAYSYILIA R", "AKBAR ARDIANSYAH", "TEORINO AFIDI ABELINO", 
+      "KEVIN BOY TARIPAR B", "NEHEMIA PARULIAN MANURUNG", "WULAN NUR FAUZIAH", 
+      "DIMAS PRAYOGA", "IVANA LORNA OLIVIA"
+    ]
+  };
+
+  const daftarKelompokMaba = [
+    { nama: "ULVA", color: "#2ecc71", icon: "fa-seedling", desc: "Ulva menggambarkan kelompok selada laut.", funFact: "Dapat dikonsumsi dan kaya vitamin!" },
+    { nama: "THALASSIA", color: "#1abc9c", icon: "fa-water", desc: "Thalassia lamun pesisir berdaun pipih.", funFact: "Menyerap blue carbon sangat cepat!" },
+    { nama: "ENHALUS", color: "#3498db", icon: "fa-feather", desc: "Enhalus lamun pita panjang.", funFact: "Memiliki bunga jantan mengapung." },
+    { nama: "PADINA", color: "#e67e22", icon: "fa-fan", desc: "Padina alga cokelat bentuk kipas.", funFact: "Permukaannya dilapisi kalsium." },
+    { nama: "CAULERPA", color: "#27ae60", icon: "fa-seedling", desc: "Caulerpa alga hijau menjalar.", funFact: "Tubuhnya adalah satu sel raksasa!" },
+    { nama: "ACROPORA", color: "#e74c3c", icon: "fa-tree", desc: "Acropora karang batu bercabang.", funFact: "Pertumbuhan karang tercepat!" },
+    { nama: "FUNGIA", color: "#9b59b6", icon: "fa-compact-disc", desc: "Fungia karang piringan bundar.", funFact: "Dapat merayap perlahan di atas pasir." },
+    { nama: "FAVIA", color: "#16a085", icon: "fa-braille", desc: "Favia koloni karang mangkuk polip.", funFact: "Menjulurkan tentakel malam hari." },
+    { nama: "PORITES", color: "#d35400", icon: "fa-mountain", desc: "Porites karang masif kubah besar.", funFact: "Bisa hidup hingga ribuan tahun." },
+    { nama: "MONTIPORA", color: "#2980b9", icon: "fa-layer-group", desc: "Montipora karang lembaran tipis.", funFact: "Bentuk tumbuh sangat fleksibel." }
   ];
 
-  const daftarDivisiPanitia = [
-    "BPI", "Keamanan", "Kestari", "Korlap", 
-    "Humas", "Konsumsi", "PDD", "Acara", 
-    "Kesehatan", "Daspon", "Perkap", "PK"
-  ];
-
-  let kategoriAbsenAktif = "Maba";
   let jenisAbsenAktif = "Kedatangan";
-  let chartMabaInstance = null;
-  let chartPanitiaInstance = null;
 
   document.addEventListener("DOMContentLoaded", () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
-    inisialisasiKelompok();
+    inisialisasiDropdownDivisi();
+    inisialisasiKelompokMaba();
   });
 
-  function inisialisasiKelompok() {
-    let htmlDropdown = '<option value="">-- Pilih Kelompok --</option>';
-    let htmlCards = '';
+  function inisialisasiDropdownDivisi() {
+    let opsiHTML = '<option value="">-- Pilih Divisi --</option>';
+    for (let divisi in dataPanitiaDivisi) {
+      opsiHTML += `<option value="${divisi}">${divisi}</option>`;
+    }
+    document.getElementById('select-divisi-absen').innerHTML = opsiHTML;
+    document.getElementById('select-divisi-rekap').innerHTML = opsiHTML;
+  }
 
-    daftarKelompok.forEach((k) => {
-      htmlDropdown += `<option value="${k.nama}">${k.nama}</option>`;
-      let iconClass = k.icon || "fa-water";
+  function updateDaftarNama() {
+    let divisiPilih = document.getElementById('select-divisi-absen').value;
+    let selectNama = document.getElementById('select-nama-panitia');
+    
+    if (!divisiPilih) {
+      selectNama.innerHTML = '<option value="">-- Pilih Divisi Terlebih Dahulu --</option>';
+      return;
+    }
+
+    let listNama = dataPanitiaDivisi[divisiPilih];
+    let namaHTML = '<option value="">-- Pilih Nama Anda --</option>';
+    listNama.forEach(nama => {
+      namaHTML += `<option value="${nama}">${nama}</option>`;
+    });
+    selectNama.innerHTML = namaHTML;
+  }
+
+  function inisialisasiKelompokMaba() {
+    let htmlCards = '';
+    daftarKelompokMaba.forEach((k) => {
       htmlCards += `
         <div class="col-md-4 col-sm-6">
           <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;" onclick="tampilkanDetailKelompok('${k.nama}')">
             <div class="card-body d-flex flex-column justify-content-center align-items-center">
-              <div class="mb-3">
-                <i class="fa-solid ${iconClass} fa-2x" style="color: ${k.color};"></i>
-              </div>
+              <div class="mb-3"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
               <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
-              <small class="text-muted mt-2"><i class="fa-solid fa-circle-info me-1"></i> Klik untuk info bentuk & fun fact</small>
+              <small class="text-muted mt-2">Klik untuk info organisme</small>
             </div>
           </div>
         </div>
       `;
     });
-
-    document.getElementById('select-kelompok-absen').innerHTML = htmlDropdown;
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
-  function tampilkanDetailKelompok(namaKelompok) {
-    let kelompokData = daftarKelompok.find(item => item.nama === namaKelompok);
-    if (kelompokData) {
-      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>Kelompok ${kelompokData.nama}`;
-      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${kelompokData.icon || 'fa-water'}" style="color: ${kelompokData.color};"></i>`;
-      document.getElementById('modalDesc').innerText = kelompokData.desc;
-      document.getElementById('modalFunFact').innerText = kelompokData.funFact;
-      
-      let myModal = new bootstrap.Modal(document.getElementById('modalKelompok'));
-      myModal.show();
+  function tampilkanDetailKelompok(nama) {
+    let k = daftarKelompokMaba.find(item => item.nama === nama);
+    if (k) {
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>Kelompok ${k.nama}`;
+      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
+      document.getElementById('modalDesc').innerText = k.desc;
+      document.getElementById('modalFunFact').innerText = k.funFact;
+      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
     }
   }
 
   function cekSandiRekap() {
-    let sandi = prompt("Masukkan sandi rahasia untuk membuka menu Statistik Rekap:");
+    let sandi = prompt("Masukkan sandi rahasia untuk membuka Tabel Rekap:");
     if (sandi === "GSM2026") {
       showPage('rekap');
-      muatSemuaStatistikGrafik();
     } else if (sandi !== null) {
-      alert("Sandi salah! Akses ditolak.");
+      alert("Sandi salah!");
     }
   }
 
-  function pilihKategori(kategori) {
-    kategoriAbsenAktif = kategori;
-    showPage('sub-absen');
-  }
-
-  function bukaFormAbsenFinal(jenis) {
+  function bukaFormAbsen(jenis) {
     jenisAbsenAktif = jenis;
-    document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} (${kategoriAbsenAktif})`;
-    
-    let wrapperKelompok = document.getElementById('wrapper-kelompok');
-    let selectKelompok = document.getElementById('select-kelompok-absen');
-    let wrapperDivisi = document.getElementById('wrapper-divisi');
-    let selectDivisi = document.getElementById('select-divisi-absen');
-    let wrapperNim = document.getElementById('wrapper-nim');
-    let inputNim = document.getElementById('input-nim');
-
-    if (kategoriAbsenAktif === 'Maba') {
-      wrapperKelompok.style.display = 'block';
-      selectKelompok.required = true;
-      wrapperDivisi.style.display = 'none';
-      selectDivisi.required = false;
-      selectDivisi.value = "";
-      
-      wrapperNim.style.display = 'block';
-      inputNim.required = true;
-      document.querySelector('#wrapper-nim label').innerText = "NIM Mahasiswa";
-      inputNim.placeholder = "Contoh: 2026001";
-    } else {
-      wrapperKelompok.style.display = 'none';
-      selectKelompok.required = false;
-      selectKelompok.value = "";
-      
-      wrapperDivisi.style.display = 'block';
-      selectDivisi.required = true;
-
-      wrapperNim.style.display = 'none';
-      inputNim.required = false;
-      inputNim.value = "-"; 
-    }
-
+    document.getElementById('judul-form-absen').innerText = `Formulir Absen ${jenis} Panitia`;
     showPage('form-absen');
   }
 
   function showPage(pageId) {
-    try {
-      document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
-      document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
-      
-      let targetPage = document.getElementById('view-' + pageId);
-      let targetNav = document.getElementById('nav-' + (pageId === 'sub-absen' || pageId === 'form-absen' ? 'absen' : pageId));
-      
-      if(targetPage) {
-        targetPage.classList.add('active-view');
-        if(targetNav) targetNav.classList.add('active');
-        
-        let animEl = targetPage.querySelector('.animasi-turun');
-        if (animEl) {
-          animEl.style.animation = 'none'; 
-          setTimeout(() => { animEl.style.animation = ''; }, 20); 
-        }
-      }
-
-      let navbarCollapse = document.getElementById('navbarNav');
-      if(navbarCollapse.classList.contains('show')){
-        let bsCollapse = new bootstrap.Collapse(navbarCollapse, {toggle: false});
-        bsCollapse.hide();
-      }
-      
-    } catch (error) {
-      console.log("Terjadi kendala saat pindah halaman: ", error);
-    }
+    document.querySelectorAll('.page-view').forEach(el => el.classList.remove('active-view'));
+    document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+    
+    let targetPage = document.getElementById('view-' + pageId);
+    let targetNav = document.getElementById('nav-' + (pageId === 'form-absen' ? 'absen' : pageId));
+    
+    if(targetPage) targetPage.classList.add('active-view');
+    if(targetNav) targetNav.classList.add('active');
   }
 
-  function submitAbsenMandiri() {
+  function submitAbsenPanitia() {
     let fileInput = document.getElementById('input-foto');
-    if(fileInput.files.length === 0) return alert('Silakan unggah foto bukti terlebih dahulu!');
+    if(fileInput.files.length === 0) return alert('Silakan unggah foto/bukti kehadiran terlebih dahulu!');
     
     let btn = document.getElementById('btn-simpan-absen');
     btn.disabled = true;
-    btn.innerText = `Mengunggah Data & Foto (${kategoriAbsenAktif} - ${jenisAbsenAktif})... Mohon Tunggu`;
+    btn.innerText = `Mengirim Absen ${jenisAbsenAktif}... Mohon Tunggu`;
 
     let tgl = document.getElementById('tgl-absen').value;
-    let idKel = "";
-    let nim = "";
-    
-    if (kategoriAbsenAktif === 'Maba') {
-      idKel = document.getElementById('select-kelompok-absen').value;
-      nim = document.getElementById('input-nim').value;
-    } else {
-      let divVal = document.getElementById('select-divisi-absen').value;
-      idKel = "PANITIA_" + divVal;
-      nim = divVal; 
-    }
+    let divisi = document.getElementById('select-divisi-absen').value;
+    let nama = document.getElementById('select-nama-panitia').value;
 
-    let nama = document.getElementById('input-nama').value;
-    let status = document.querySelector('input[name="status_absen"]:checked').value;
-
-    let file = fileInput.files[0];
     let reader = new FileReader();
-    
     reader.onload = function(e) {
-      let base64Foto = e.target.result;
-      
       let payload = {
         action: "saveAttendance",
         tgl: tgl,
-        nim: nim,
+        nim: divisi, // Menyimpan divisi sebagai identifier
         nama: nama,
-        idKel: idKel,
-        status: status,
-        base64Foto: base64Foto,
-        jenisAbsen: `${kategoriAbsenAktif}_${jenisAbsenAktif}`
+        idKel: "PANITIA_" + divisi,
+        status: "H", // Hadir
+        base64Foto: e.target.result,
+        jenisAbsen: `Panitia_${jenisAbsenAktif}`
       };
 
       fetch(SCRIPT_URL, {
@@ -569,122 +505,77 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        alert(`Absensi ${kategoriAbsenAktif} (${jenisAbsenAktif}) & Foto Berhasil Terkirim!`);
+        alert(`Absen ${jenisAbsenAktif} atas nama ${nama} berhasil dikirim!`);
         btn.disabled = false;
         btn.innerText = "Kirim Absensi Sekarang";
-        document.getElementById('input-nim').value = '';
-        document.getElementById('input-nama').value = '';
-        document.getElementById('select-kelompok-absen').value = '';
         document.getElementById('select-divisi-absen').value = '';
-        fileInput.value = ''; 
+        document.getElementById('select-nama-panitia').innerHTML = '<option value="">-- Pilih Divisi Terlebih Dahulu --</option>';
+        fileInput.value = '';
         showPage('dashboard');
       })
-      .catch(error => {
-        console.error("Error!", error);
-        alert("Terjadi kendala saat mengirim data.");
+      .catch(err => {
+        console.error(err);
+        alert("Gagal mengirim data.");
         btn.disabled = false;
         btn.innerText = "Kirim Absensi Sekarang";
       });
     };
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(fileInput.files[0]);
   }
 
-  // OPTIMASI ANTI-DELAY: Mengambil seluruh data secara paralel (Promise.all) agar loading instan
-  async function muatSemuaStatistikGrafik() {
-    let mabaLabels = daftarKelompok.map(k => k.nama);
-    let panitiaLabels = daftarDivisiPanitia;
+  // Fungsi untuk memuat tabel rekap panitia berdasarkan divisi yang dipilih secara instan
+  async function muatTabelRekapDivisi() {
+    let divisi = document.getElementById('select-divisi-rekap').value;
+    let tbody = document.getElementById('tabel-rekap-body');
+    
+    if (!divisi) {
+      tbody.innerHTML = '<tr><td colspan="5" class="text-muted">Silakan pilih divisi terlebih dahulu.</td></tr>';
+      return;
+    }
 
-    // Buat daftar permintaan secara serentak (paralel) agar tidak antre lama
-    let mabaPromises = mabaLabels.map(kelompok => 
-      fetch(`${SCRIPT_URL}?action=getRecap&idKel=${kelompok}`)
-        .then(res => res.json())
-        .catch(() => [])
-    );
+    tbody.innerHTML = '<tr><td colspan="5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Memuat data rekap...</td></tr>';
 
-    let panitiaPromises = panitiaLabels.map(divisi => 
-      fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`)
-        .then(res => res.json())
-        .catch(() => [])
-    );
+    try {
+      let response = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
+      let dataRes = await response.json();
 
-    // Jalankan semuanya bersamaan
-    let mabaResults = await Promise.all(mabaPromises);
-    let panitiaResults = await Promise.all(panitiaPromises);
+      let daftarNama = dataPanitiaDivisi[divisi] || [];
+      let html = '';
 
-    // Hitung total kehadiran (H) Maba
-    let mabaData = mabaResults.map(json => {
-      let totalH = 0;
-      if (json && Array.isArray(json)) {
-        json.forEach(m => totalH += (m.H || 0));
-      }
-      return totalH;
-    });
+      daftarNama.forEach((namaPanitia, index) => {
+        // Cek apakah panitia ini sudah absen kedatangan / kepulangan dari database
+        let record = dataRes.find(r => r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
+        
+        let centangKedatangan = '<span class="text-muted">-</span>';
+        let centangKepulangan = '<span class="text-muted">-</span>';
+        let linkBukti = '-';
 
-    // Hitung total kehadiran (H) Panitia
-    let panitiaData = panitiaResults.map(json => {
-      let totalH = 0;
-      if (json && Array.isArray(json)) {
-        json.forEach(p => totalH += (p.H || 0));
-      }
-      return totalH;
-    });
+        if (record) {
+          // Jika ada record H (Hadir), kita cek jenis absen atau log datanya
+          if (record.H > 0) {
+            centangKedatangan = '<i class="fa-solid fa-check-circle fa-lg text-success"></i> (Hadir)';
+          }
+          if (record.foto && record.foto.length > 0) {
+            linkBukti = `<a href="${record.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
+          }
+        }
 
-    renderChartMaba(mabaLabels, mabaData);
-    renderChartPanitia(panitiaLabels, panitiaData);
-  }
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td class="text-start fw-bold">${namaPanitia}</td>
+            <td>${centangKedatangan}</td>
+            <td>${centangKepulangan}</td>
+            <td>${linkBukti}</td>
+          </tr>
+        `;
+      });
 
-  function renderChartMaba(labels, dataValues) {
-    let ctx = document.getElementById('grafikMaba').getContext('2d');
-    if (chartMabaInstance) chartMabaInstance.destroy();
-
-    chartMabaInstance = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Jumlah Kehadiran (H) Maba',
-          data: dataValues,
-          backgroundColor: 'rgba(0, 180, 216, 0.75)',
-          borderColor: 'rgba(0, 119, 145, 1)',
-          borderWidth: 2,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 800 }, // Animasi naik yang halus dan cepat
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-      }
-    });
-  }
-
-    function renderChartPanitia(labels, dataValues) {
-    let ctx = document.getElementById('grafikPanitia').getContext('2d');
-    if (chartPanitiaInstance) chartPanitiaInstance.destroy();
-
-    chartPanitiaInstance = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: labels,
-        datasets: [{
-          label: 'Jumlah Kehadiran (H) Panitia',
-          data: dataValues,
-          backgroundColor: 'rgba(0, 51, 102, 0.75)',
-          borderColor: 'rgba(0, 20, 40, 1)',
-          borderWidth: 2,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 800 }, // Animasi naik yang halus dan cepat
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } }
-      }
-    });
+      tbody.innerHTML = html;
+    } catch (e) {
+      console.error(e);
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat rekap. Periksa koneksi atau URL SCRIPT_URL.</td></tr>';
+    }
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
