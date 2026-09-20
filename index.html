@@ -565,7 +565,7 @@
       let html = '';
 
       daftarNama.forEach((namaPanitia, index) => {
-        let records = dataRes.filter(r => r.nama && r.nama.trim().toUpperCase() === namaPanitia.trim().toUpperCase());
+        let records = dataRes.filter(r => r.nama && r.nama.toString().trim().toUpperCase() === namaPanitia.toString().trim().toUpperCase());
         
         let hadirDatang = false;
         let hadirPulang = false;
@@ -574,14 +574,16 @@
         records.forEach(rec => {
           let jenis = rec.jenisAbsen ? rec.jenisAbsen.toString().trim() : "";
           
-          // Deteksi akurat jenis absen kedatangan atau kepulangan
-          if (jenis === "Panitia_Kedatangan" || jenis.includes("Kedatangan")) {
+          if (jenis.includes("Kedatangan") || jenis.includes("Panitia_Kedatangan")) {
             hadirDatang = true;
           }
-          if (jenis === "Panitia_Kepulangan" || jenis.includes("Kepulangan")) {
+          if (jenis.includes("Kepulangan") || jenis.includes("Panitia_Kepulangan")) {
             hadirPulang = true;
           }
-          if (rec.foto && rec.foto.length > 0) {
+          if (!rec.jenisAbsen && rec.status === "H") {
+            hadirDatang = true;
+          }
+          if (rec.foto && rec.foto.length > 0 && rec.foto[0] !== "") {
             linkBukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
           }
         });
