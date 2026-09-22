@@ -5,173 +5,283 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Situs Resmi Sulam Jaring 2026</title>
   <base target="_top">
-  <!-- Preconnect untuk mempercepat tarikan data dari Google -->
+  
+  <!-- Optimasi Font & Koneksi -->
   <link rel="preconnect" href="https://script.google.com">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  
   <style>
     :root {
-      --ocean-deep: #003366;
-      --ocean-teal: #007791;
+      --ocean-deep: #021b33;
+      --ocean-teal: #004d66;
       --ocean-aqua: #00b4d8;
       --sun-yellow: #ffd166;
+      --glass-bg: rgba(255, 255, 255, 0.85);
+      --glass-border: rgba(255, 255, 255, 0.4);
     }
+    
     body { 
-      padding-top: 90px; 
-      background-image: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 119, 145, 0.8)), url('foto.jpg');
-      background-size: cover;
-      background-attachment: fixed;
-      background-position: center;
+      padding-top: 100px; 
+      background: linear-gradient(135deg, var(--ocean-deep) 0%, var(--ocean-teal) 50%, var(--ocean-aqua) 100%);
+      background-size: 400% 400%;
+      animation: gradientBg 15s ease infinite;
       min-height: 100vh;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Poppins', sans-serif;
+      overflow-x: hidden;
+      color: #333;
     }
+
+    @keyframes gradientBg {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* --- Navbar Kaca (Glassmorphism) --- */
     .navbar {
-      background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)) !important;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-      border-bottom: 3px solid var(--ocean-aqua);
+      background: rgba(2, 27, 51, 0.7) !important;
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
     }
     .navbar-brand {
-      font-size: 1.4rem;
-      letter-spacing: 0.5px;
+      font-size: 1.5rem;
+      font-weight: 800;
       color: var(--sun-yellow) !important;
+      text-shadow: 0 2px 10px rgba(255, 209, 102, 0.3);
     }
     .nav-link {
-      color: #fff !important;
+      color: rgba(255, 255, 255, 0.8) !important;
       font-weight: 600;
-      border-radius: 20px;
-      padding: 8px 15px !important;
-      margin: 0 3px;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      border-radius: 25px;
+      padding: 8px 18px !important;
+      margin: 0 5px;
+      transition: all 0.3s ease;
     }
     .nav-link:hover, .nav-link.active {
-      background-color: var(--ocean-aqua);
-      color: var(--ocean-deep) !important;
+      background-color: rgba(0, 180, 216, 0.2);
+      color: #fff !important;
+      transform: translateY(-2px);
     }
+
+    /* --- Kotak Konten Kaca (Glassmorphism) --- */
     .content-wrapper {
-      background-color: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 35px;
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--glass-border);
+      border-radius: 30px;
+      padding: 40px;
       margin-bottom: 40px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-      border: 2px solid var(--ocean-aqua);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       position: relative;
-      overflow: hidden;
+      z-index: 10; /* Berada di Atas Animasi Latar */
     }
+
     .page-view { display: none; }
-    .active-view { display: block; animation: fadeIn 0.4s ease-out; }
+    .active-view { display: block; animation: zoomIn 0.5s cubic-bezier(0.25, 0.8, 0.25, 1); }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
+    @keyframes zoomIn {
+      from { opacity: 0; transform: scale(0.95) translateY(20px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
-    /* --- Animasi Bawah Laut Dashboard (Dioptimalkan menggunakan GPU) --- */
+    /* --- Animasi Bawah Laut (Dipindah ke Background Tubuh) --- */
     .sea-bg {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none; z-index: 0;
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 0; overflow: hidden;
     }
-    .sea-item { position: absolute; opacity: 0.7; will-change: transform, left, right; }
-    .fish-1 { top: 20%; left: -10%; font-size: 3rem; color: var(--ocean-aqua); animation: swimRight 15s linear infinite; }
-    .fish-2 { top: 60%; right: -10%; font-size: 2.5rem; color: #ff6b6b; transform: scaleX(-1); animation: swimLeft 12s linear infinite; }
-    .coral-1 { bottom: -15px; left: 10%; font-size: 5rem; color: #e74c3c; animation: sway 4s ease-in-out infinite alternate; }
-    .coral-2 { bottom: -15px; right: 15%; font-size: 4rem; color: #2ecc71; animation: sway 5s ease-in-out infinite alternate-reverse; }
-    .starfish { bottom: 10px; left: 45%; font-size: 2rem; color: var(--sun-yellow); animation: pulse 3s infinite; }
-    .content-front { position: relative; z-index: 1; }
+    .sea-item { position: absolute; opacity: 0.4; will-change: transform, left, right; }
+    .fish-1 { top: 15%; left: -10%; font-size: 4rem; color: rgba(255,255,255,0.3); animation: swimRight 18s linear infinite; }
+    .fish-2 { top: 65%; right: -10%; font-size: 3rem; color: rgba(255,255,255,0.2); transform: scaleX(-1); animation: swimLeft 14s linear infinite; }
+    .coral-1 { bottom: -20px; left: 8%; font-size: 6rem; color: rgba(255,255,255,0.15); animation: sway 5s ease-in-out infinite alternate; }
+    .coral-2 { bottom: -15px; right: 12%; font-size: 5rem; color: rgba(255,255,255,0.1); animation: sway 4s ease-in-out infinite alternate-reverse; }
+    
+    /* Gelembung Air */
+    .bubble {
+      position: absolute; bottom: -50px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      animation: rise 10s infinite ease-in;
+    }
+    .b1 { width: 40px; height: 40px; left: 10%; animation-duration: 8s; }
+    .b2 { width: 20px; height: 20px; left: 20%; animation-duration: 5s; animation-delay: 1s; }
+    .b3 { width: 50px; height: 50px; left: 80%; animation-duration: 10s; animation-delay: 2s; }
+    .b4 { width: 30px; height: 30px; left: 50%; animation-duration: 7s; animation-delay: 0.5s; }
 
-    @keyframes swimRight { 0% { left: -10%; } 100% { left: 110%; } }
-    @keyframes swimLeft { 0% { right: -10%; } 100% { right: 110%; } }
-    @keyframes sway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
-    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-    /* ------------------------------------ */
+    @keyframes rise {
+      0% { bottom: -50px; transform: translateX(0); opacity: 0; }
+      50% { opacity: 1; }
+      100% { bottom: 100vh; transform: translateX(20px); opacity: 0; }
+    }
+    @keyframes swimRight { 0% { left: -10%; transform: translateY(0); } 50% { transform: translateY(-20px); } 100% { left: 110%; transform: translateY(0); } }
+    @keyframes swimLeft { 0% { right: -10%; transform: scaleX(-1) translateY(0); } 50% { transform: scaleX(-1) translateY(20px); } 100% { right: 110%; transform: scaleX(-1) translateY(0); } }
+    @keyframes sway { 0% { transform: rotate(-8deg); } 100% { transform: rotate(8deg); } }
 
+    /* --- Desain Card Modern --- */
     .card-kelompok, .card-absen-option {
-      border: 2px solid var(--ocean-aqua);
-      border-radius: 15px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      cursor: pointer;
       background: white;
+      border: none;
+      border-radius: 20px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+      overflow: hidden;
+      position: relative;
+    }
+    .card-kelompok::before, .card-absen-option::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px;
+      background: linear-gradient(90deg, var(--ocean-teal), var(--ocean-aqua));
+      opacity: 0; transition: opacity 0.3s ease;
     }
     .card-kelompok:hover, .card-absen-option:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0, 180, 216, 0.2);
     }
-    .btn-refresh {
-      transition: transform 0.3s ease;
+    .card-kelompok:hover::before, .card-absen-option:hover::before { opacity: 1; }
+
+    /* --- Tombol & Form --- */
+    .btn-gradient {
+      background: linear-gradient(135deg, var(--ocean-teal), var(--ocean-aqua));
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 15px rgba(0, 180, 216, 0.3);
     }
-    .btn-refresh:active {
-      transform: scale(0.9);
+    .btn-gradient:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 20px rgba(0, 180, 216, 0.4);
+      color: white;
+    }
+    .form-control, .form-select {
+      border-radius: 12px;
+      padding: 12px 15px;
+      border: 1px solid rgba(0, 180, 216, 0.3);
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      transition: all 0.3s ease;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--ocean-aqua);
+      box-shadow: 0 0 0 4px rgba(0, 180, 216, 0.1);
+    }
+
+    /* --- Tabel Modern --- */
+    .table-responsive {
+      border-radius: 15px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .table { margin-bottom: 0; }
+    .table-dark {
+      background: var(--ocean-deep);
+      color: white;
+    }
+    .table-dark th { font-weight: 600; letter-spacing: 0.5px; border-bottom: none; }
+    .table-striped tbody tr:nth-of-type(odd) { background-color: rgba(0, 180, 216, 0.03); }
+    .table tbody tr { transition: background-color 0.2s ease; }
+    .table tbody tr:hover { background-color: rgba(0, 180, 216, 0.08); }
+
+    .header-title {
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--ocean-deep), var(--ocean-aqua));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
   </style>
 </head>
 <body>
 
+<!-- Animasi Latar Belakang Ditempatkan di Luar Konten -->
+<div class="sea-bg">
+  <i class="fa-solid fa-fish sea-item fish-1"></i>
+  <i class="fa-solid fa-fish sea-item fish-2"></i>
+  <i class="fa-brands fa-pagelines sea-item coral-1"></i>
+  <i class="fa-brands fa-pagelines sea-item coral-2"></i>
+  <div class="bubble b1"></div>
+  <div class="bubble b2"></div>
+  <div class="bubble b3"></div>
+  <div class="bubble b4"></div>
+</div>
+
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container-fluid px-4">
-    <a class="navbar-brand fw-bold" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-water me-2"></i>Sulam Jaring 2026</a>
+    <a class="navbar-brand" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-anchor me-2"></i>Sulam Jaring 2026</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
-        <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish-fins me-1"></i> Kelompok Maba</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-table me-1"></i> Tabel Rekap</a></li>
+        <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-compass me-1"></i> Dashboard</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-water-ladder me-1"></i> Kelompok Maba</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-user-check me-1"></i> Absen</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-chart-bar me-1"></i> Tabel Rekap</a></li>
       </ul>
     </div>
   </div>
 </nav>
 
-<div class="container">
+<div class="container relative z-10">
   <div class="content-wrapper">
     
     <!-- Dashboard -->
-    <div id="view-dashboard" class="page-view active-view" style="min-height: 400px;">
-      <div class="sea-bg">
-        <i class="fa-solid fa-fish sea-item fish-1"></i>
-        <i class="fa-solid fa-fish sea-item fish-2"></i>
-        <i class="fa-brands fa-pagelines sea-item coral-1"></i>
-        <i class="fa-brands fa-pagelines sea-item coral-2"></i>
-        <i class="fa-solid fa-star sea-item starfish"></i>
-      </div>
-      
+    <div id="view-dashboard" class="page-view active-view">
       <div class="text-center py-5 content-front">
-        <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep);">Selamat Datang Para Penjelajah</h1>
-        <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h3>
-        <hr class="w-25 mx-auto border-info border-3">
-        <p class="text-muted mt-3">Silakan jelajahi ekosistem kami melalui menu di atas untuk mengisi absensi, mengenal nama kelompok, atau membuka tabel rekap.</p>
+        <div class="mb-4">
+          <i class="fa-solid fa-ship fa-4x mb-3" style="color: var(--ocean-aqua);"></i>
+        </div>
+        <h1 class="display-4 header-title mb-3">Selamat Datang Para Penjelajah</h1>
+        <h4 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h4>
+        <hr class="w-25 mx-auto border-info border-2 opacity-50 mb-4">
+        <p class="text-muted fs-5 mb-5 px-md-5">Platform resmi untuk mengelola administrasi kehadiran. Jelajahi ekosistem kami melalui menu di atas untuk mengisi absensi, mengenal nama kelompok, atau memantau rekapitulasi.</p>
+        
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn btn-gradient px-4 py-2 fs-5" onclick="showPage('absen')">
+            <i class="fa-solid fa-pen-to-square me-2"></i> Mulai Absen
+          </button>
+          <button class="btn btn-outline-dark border-2 px-4 py-2 fs-5 rounded-pill fw-bold" onclick="showPage('kelompok')">
+            <i class="fa-solid fa-book-open me-2"></i> Lihat Kelompok
+          </button>
+        </div>
       </div>
     </div>
 
     <!-- Kelompok Maba -->
     <div id="view-kelompok" class="page-view">
       <div class="content-front">
-        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
-        <p class="text-muted mb-4">Klik kartu kelompok untuk melihat arti nama dan fun fact organisme!</p>
+        <h2 class="header-title mb-2 text-center"><i class="fa-solid fa-droplet me-2"></i>Daftar Kelompok Maba</h2>
+        <p class="text-muted text-center mb-5">Klik kartu organisme di bawah untuk mempelajari filosofi nama dan fakta uniknya.</p>
         <div class="row g-4" id="grid-kelompok"></div>
       </div>
     </div>
 
     <!-- Pilihan Jalur Absen -->
     <div id="view-absen" class="page-view">
-      <h2 class="fw-bold mb-2 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-clipboard-user me-2"></i>Portal Absensi</h2>
-      <p class="text-muted text-center mb-4">Silakan pilih status jalur masuk Anda.</p>
-      <div class="row justify-content-center g-4 mt-3">
+      <h2 class="header-title mb-2 text-center"><i class="fa-solid fa-clipboard-check me-2"></i>Portal Absensi</h2>
+      <p class="text-muted text-center mb-4">Silakan pilih status jalur akses Anda.</p>
+      <div class="row justify-content-center g-4 mt-2">
         <div class="col-md-5">
-          <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihJalur('Panitia')">
-            <div class="card-body">
-              <i class="fa-solid fa-user-shield fa-3x text-primary mb-3"></i>
-              <h3 class="fw-bold text-primary">Absen Panitia</h3>
+          <div class="card card-absen-option p-5 text-center" onclick="pilihJalur('Panitia')">
+            <div class="card-body p-0">
+              <i class="fa-solid fa-user-shield fa-4x text-primary mb-4"></i>
+              <h3 class="fw-bold text-dark">Absen Panitia</h3>
+              <p class="text-muted small mt-2 mb-0">Akses khusus komite penyelenggara</p>
             </div>
           </div>
         </div>
         <div class="col-md-5">
-          <div class="card card-absen-option p-4 text-center shadow-sm" onclick="pilihJalur('Maba')">
-            <div class="card-body">
-              <i class="fa-solid fa-user-graduate fa-3x text-success mb-3"></i>
-              <h3 class="fw-bold text-success">Absen Maba</h3>
+          <div class="card card-absen-option p-5 text-center" onclick="pilihJalur('Maba')">
+            <div class="card-body p-0">
+              <i class="fa-solid fa-user-graduate fa-4x text-success mb-4"></i>
+              <h3 class="fw-bold text-dark">Absen Maba</h3>
+              <p class="text-muted small mt-2 mb-0">Akses mahasiswa baru</p>
             </div>
           </div>
         </div>
@@ -180,24 +290,24 @@
 
     <!-- Pilihan Sesi -->
     <div id="view-sesi" class="page-view">
-      <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('absen')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali</button>
-      <h2 class="fw-bold mb-2 text-center" id="judul-sesi" style="color: var(--ocean-deep);">Pilih Sesi Kehadiran</h2>
-      <div class="row justify-content-center g-4 mt-3">
+      <button class="btn btn-sm btn-outline-secondary rounded-pill mb-4 px-3" onclick="showPage('absen')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali</button>
+      <h2 class="header-title mb-2 text-center" id="judul-sesi">Pilih Sesi Kehadiran</h2>
+      <div class="row justify-content-center g-4 mt-2">
         <div class="col-md-5">
-          <div class="card card-absen-option p-4 text-center shadow-sm" onclick="bukaFormulir('Kedatangan')">
-            <div class="card-body">
-              <i class="fa-solid fa-door-open fa-3x text-success mb-3"></i>
-              <h3 class="fw-bold text-success">Kedatangan (H)</h3>
-              <p class="text-muted small mt-2">Wajib Unggah Foto.</p>
+          <div class="card card-absen-option p-5 text-center" onclick="bukaFormulir('Kedatangan')">
+            <div class="card-body p-0">
+              <i class="fa-solid fa-door-open fa-4x text-success mb-4"></i>
+              <h3 class="fw-bold text-dark">Kedatangan (H)</h3>
+              <span class="badge bg-success-subtle text-success px-3 py-2 rounded-pill mt-2 fw-bold border border-success border-opacity-25"><i class="fa-solid fa-camera me-1"></i> Wajib Foto</span>
             </div>
           </div>
         </div>
         <div class="col-md-5">
-          <div class="card card-absen-option p-4 text-center shadow-sm" onclick="cekSandiPulang()">
-            <div class="card-body">
-              <i class="fa-solid fa-door-closed fa-3x text-primary mb-3"></i>
-              <h3 class="fw-bold text-primary">Kepulangan (S)</h3>
-              <p class="text-muted small mt-2">Memerlukan Sandi Pulang & Tanpa Foto.</p>
+          <div class="card card-absen-option p-5 text-center" onclick="cekSandiPulang()">
+            <div class="card-body p-0">
+              <i class="fa-solid fa-door-closed fa-4x text-primary mb-4"></i>
+              <h3 class="fw-bold text-dark">Kepulangan (S)</h3>
+              <span class="badge bg-primary-subtle text-primary px-3 py-2 rounded-pill mt-2 fw-bold border border-primary border-opacity-25"><i class="fa-solid fa-key me-1"></i> Butuh Sandi & Tanpa Foto</span>
             </div>
           </div>
         </div>
@@ -206,83 +316,86 @@
 
     <!-- Formulir Absensi -->
     <div id="view-form" class="page-view">
-      <button class="btn btn-outline-secondary btn-sm mb-3" onclick="showPage('sesi')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali</button>
-      <h2 class="fw-bold mb-2" id="judul-formulir" style="color: var(--ocean-deep);">Formulir Absensi</h2>
-      <form id="form-absensi" onsubmit="event.preventDefault(); kirimDataAbsen();">
-        <div class="row mb-3">
-          <div class="col-md-6 mb-3">
-            <label class="fw-bold">Tanggal</label>
-            <input type="date" id="tgl-absen" class="form-control" required>
+      <button class="btn btn-sm btn-outline-secondary rounded-pill mb-4 px-3" onclick="showPage('sesi')"><i class="fa-solid fa-arrow-left me-1"></i> Kembali</button>
+      <div class="bg-white p-4 p-md-5 rounded-4 shadow-sm border">
+        <h2 class="fw-bold mb-4 text-center text-dark" id="judul-formulir">Formulir Absensi</h2>
+        <form id="form-absensi" onsubmit="event.preventDefault(); kirimDataAbsen();">
+          <div class="row mb-4">
+            <div class="col-md-6 mb-4 mb-md-0">
+              <label class="fw-semibold text-secondary mb-2"><i class="fa-regular fa-calendar me-2"></i>Tanggal</label>
+              <input type="date" id="tgl-absen" class="form-control bg-light" required>
+            </div>
+            <div class="col-md-6">
+              <label class="fw-semibold text-secondary mb-2" id="label-kategori-pilih"><i class="fa-solid fa-layer-group me-2"></i>Pilih Kategori / Divisi</label>
+              <select id="select-kategori" class="form-select bg-light" onchange="updateDaftarNamaAnggota()" required>
+                <option value="">-- Pilih Kategori --</option>
+              </select>
+            </div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label class="fw-bold" id="label-kategori-pilih">Pilih Kategori</label>
-            <select id="select-kategori" class="form-control border-info" onchange="updateDaftarNamaAnggota()" required>
-              <option value="">-- Pilih Kategori --</option>
+          <div class="mb-4">
+            <label class="fw-semibold text-secondary mb-2"><i class="fa-solid fa-user-tag me-2"></i>Nama Lengkap</label>
+            <select id="select-nama" class="form-select bg-light" required>
+              <option value="">-- Pilih Kategori Terlebih Dahulu --</option>
             </select>
           </div>
-        </div>
-        <div class="mb-3">
-          <label class="fw-bold">Pilih Nama Lengkap</label>
-          <select id="select-nama" class="form-control border-info" required>
-            <option value="">-- Pilih Kategori Terlebih Dahulu --</option>
-          </select>
-        </div>
-        <div class="mb-4" id="wrapper-foto">
-          <label class="fw-bold">Bukti Foto / TTD (Wajib):</label>
-          <input type="file" id="input-foto" class="form-control border-info" accept="image/*" capture="environment">
-        </div>
-        <button type="submit" class="btn btn-success w-100 py-3 fs-5 fw-bold shadow" id="btn-kirim">Kirim Absensi</button>
-      </form>
+          <div class="mb-5" id="wrapper-foto">
+            <label class="fw-semibold text-secondary mb-2"><i class="fa-solid fa-camera-retro me-2"></i>Bukti Foto / TTD (Wajib)</label>
+            <input type="file" id="input-foto" class="form-control bg-light" accept="image/*" capture="environment">
+          </div>
+          <button type="submit" class="btn btn-gradient w-100 py-3 fs-5" id="btn-kirim"><i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran</button>
+        </form>
+      </div>
     </div>
 
     <!-- Tabel Rekap -->
     <div id="view-rekap" class="page-view">
-      <h2 class="fw-bold mb-3 text-center" style="color: var(--ocean-deep);"><i class="fa-solid fa-table me-2"></i>Tabel Rekapitulasi Presensi</h2>
+      <h2 class="header-title mb-4 text-center"><i class="fa-solid fa-server me-2"></i>Rekapitulasi Presensi</h2>
+      
       <div class="d-flex justify-content-center gap-3 mb-4">
-        <button class="btn btn-primary px-4 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('panitia')">Rekap Panitia</button>
-        <button class="btn btn-success px-4 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('maba')">Rekap Maba</button>
+        <button class="btn btn-outline-primary px-4 py-2 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('panitia')" id="btn-tab-panitia">Data Panitia</button>
+        <button class="btn btn-outline-success px-4 py-2 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('maba')" id="btn-tab-maba">Data Maba</button>
       </div>
 
       <!-- Rekap Panitia -->
       <div id="section-rekap-panitia">
-        <div class="row justify-content-center mb-3">
-          <div class="col-md-7 d-flex gap-2">
-            <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia(false)">
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-8 d-flex gap-2">
+            <select id="select-rekap-divisi" class="form-select fw-bold border-2 border-primary" onchange="muatRekapPanitia(false)">
               <option value="">-- Pilih Divisi Panitia --</option>
             </select>
-            <button class="btn btn-info text-white fw-bold shadow-sm btn-refresh" onclick="muatRekapPanitia(true)" title="Segarkan Data Terbaru">
+            <button class="btn btn-primary px-4 shadow-sm btn-refresh" onclick="muatRekapPanitia(true)" title="Segarkan Data Terbaru">
               <i class="fa-solid fa-rotate-right" id="icon-refresh-panitia"></i>
             </button>
           </div>
         </div>
-        <div class="table-responsive bg-white p-3 rounded shadow-sm border mb-3">
-          <table class="table table-bordered table-striped text-center align-middle mb-0">
+        <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
+          <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark">
-              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>KEDATANGAN</th><th>KEPULANGAN</th><th>BUKTI</th></tr>
+              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="5" class="text-muted">Pilih divisi panitia di atas.</td></tr></tbody>
+            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
           </table>
         </div>
       </div>
 
       <!-- Rekap Maba -->
       <div id="section-rekap-maba" style="display: none;">
-        <div class="row justify-content-center mb-3">
-          <div class="col-md-7 d-flex gap-2">
-            <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba(false)">
+        <div class="row justify-content-center mb-4">
+          <div class="col-md-8 d-flex gap-2">
+            <select id="select-rekap-kelompok" class="form-select fw-bold border-2 border-success" onchange="muatRekapMaba(false)">
               <option value="">-- Pilih Kelompok Maba --</option>
             </select>
-            <button class="btn btn-info text-white fw-bold shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
+            <button class="btn btn-success px-4 shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
               <i class="fa-solid fa-rotate-right" id="icon-refresh-maba"></i>
             </button>
           </div>
         </div>
-        <div class="table-responsive bg-white p-3 rounded shadow-sm border mb-3">
-          <table class="table table-bordered table-striped text-center align-middle mb-0">
-            <thead class="table-dark">
-              <tr><th>NO</th><th class="text-start">NAMA MAHASISWA BARU</th><th>KEDATANGAN</th><th>KEPULANGAN</th><th>BUKTI</th></tr>
+        <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
+          <table class="table table-hover table-striped text-center align-middle mb-0">
+            <thead class="table-dark" style="background-color: var(--ocean-teal);">
+              <tr><th>NO</th><th class="text-start">NAMA MABA</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-maba-body"><tr><td colspan="5" class="text-muted">Pilih kelompok maba di atas.</td></tr></tbody>
+            <tbody id="tabel-rekap-maba-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih kelompok maba di atas.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -295,36 +408,38 @@
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-      <div class="modal-header text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal));">
+      <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)); padding: 20px 25px;">
         <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4 bg-light">
-        <div class="text-center mb-3">
-          <div id="modalIconContainer" class="display-5 text-info mb-2"></div>
+        <div class="text-center mb-4 mt-2">
+          <div id="modalIconContainer" class="display-1 text-info mb-3 drop-shadow"></div>
         </div>
-        <div class="mb-3">
-          <h6 class="text-primary fw-bold text-uppercase small"><i class="fa-solid fa-book-open me-1"></i> Arti Nama & Karakteristik</h6>
-          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.6;"></p>
+        <div class="mb-4">
+          <h6 class="text-primary fw-bold text-uppercase small mb-2"><i class="fa-solid fa-book-open me-2"></i> Karakteristik Organisme</h6>
+          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.7;"></p>
         </div>
-        <hr class="text-muted">
         <div>
-          <h6 class="text-success fw-bold text-uppercase small"><i class="fa-solid fa-lightbulb me-1"></i> Fun Fact (Fakta Unik)</h6>
-          <div class="p-3 rounded bg-white border-start border-4 border-success shadow-sm">
-            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.5;"></p>
+          <h6 class="text-success fw-bold text-uppercase small mb-2"><i class="fa-solid fa-lightbulb me-2"></i> Fakta Unik (Fun Fact)</h6>
+          <div class="p-3 rounded-3 bg-white border-start border-4 border-success shadow-sm">
+            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.6;"></p>
           </div>
         </div>
       </div>
-      <div class="modal-footer bg-white border-0">
-        <button type="button" class="btn btn-secondary px-4 fw-bold rounded-pill" data-bs-dismiss="modal">Tutup</button>
+      <div class="modal-footer bg-light border-0 pt-0 pb-4 justify-content-center">
+        <button type="button" class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" data-bs-dismiss="modal">Tutup</button>
       </div>
     </div>
   </div>
 </div>
 
 <script>
-  // PASTIKAN SCRIPT URL INI ADALAH URL YANG TERBARU DARI GOOGLE APPS SCRIPT
+  // =========================================================================
+  // PERHATIAN: HAPUS TULISAN DI BAWAH INI DAN GANTI DENGAN URL MILIK ANDA!!
+  // =========================================================================
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlKkw2QqvyQp5B_N7K9ShnmUqKtKxbI8my1h-DW86BFb2bPAaSidSpXpMIUdnWAbBV/exec";
+  // =========================================================================
 
   // Data Panitia & Maba
   const dataPanitia = {
@@ -370,14 +485,13 @@
 
   let jalurAktif = "Panitia";
   let jenisAbsenAktif = "Kedatangan";
-  
-  // Sistem Cache Memori untuk mempercepat loading tabel
   let cacheDataRekap = {}; 
 
   window.onload = () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
     inisialisasiKelompokMaba();
     inisialisasiDropdownRekap();
+    gantiTabRekap('panitia');
   };
 
   function inisialisasiKelompokMaba() {
@@ -385,11 +499,11 @@
     infoKelompok.forEach((k) => {
       htmlCards += `
         <div class="col-md-4 col-sm-6">
-          <div class="card card-kelompok p-4 h-100 text-center border-top border-4 shadow-sm" style="border-top-color: ${k.color} !important;" onclick="tampilkanDetailKelompok('${k.nama}')">
-            <div class="card-body d-flex flex-column justify-content-center align-items-center">
-              <div class="mb-3"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
-              <h4 class="card-title fw-bold mb-0" style="color: var(--ocean-deep);">${k.nama}</h4>
-              <small class="text-muted mt-2">Klik untuk info & fun fact</small>
+          <div class="card card-kelompok p-4 h-100 text-center" onclick="tampilkanDetailKelompok('${k.nama}')">
+            <div class="card-body d-flex flex-column justify-content-center align-items-center p-0">
+              <div class="mb-3 bg-light rounded-circle p-3 shadow-sm border border-2 border-white"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
+              <h5 class="card-title fw-bold mb-1" style="color: var(--ocean-deep);">${k.nama}</h5>
+              <small class="text-muted mt-2 fw-semibold" style="font-size: 0.8rem;">Lihat Detail <i class="fa-solid fa-arrow-right-long ms-1"></i></small>
             </div>
           </div>
         </div>
@@ -401,7 +515,7 @@
   function tampilkanDetailKelompok(namaKelompok) {
     let k = infoKelompok.find(item => item.nama === namaKelompok);
     if (k) {
-      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-fish me-2"></i>${k.nama}`;
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-water me-2"></i>${k.nama}`;
       document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
       document.getElementById('modalDesc').innerText = k.desc;
       document.getElementById('modalFunFact').innerText = k.funFact;
@@ -436,7 +550,7 @@
 
   function bukaFormulir(jenis) {
     jenisAbsenAktif = jenis;
-    document.getElementById('judul-formulir').innerText = `Formulir Absen ${jenis} (${jalurAktif})`;
+    document.getElementById('judul-formulir').innerText = `Formulir ${jenis} (${jalurAktif})`;
     let selectKat = document.getElementById('select-kategori');
     let wrapperFoto = document.getElementById('wrapper-foto');
 
@@ -479,9 +593,27 @@
   function gantiTabRekap(tipe) {
     document.getElementById('section-rekap-panitia').style.display = (tipe === 'panitia') ? 'block' : 'none';
     document.getElementById('section-rekap-maba').style.display = (tipe === 'maba') ? 'block' : 'none';
+    
+    let btnPanitia = document.getElementById('btn-tab-panitia');
+    let btnMaba = document.getElementById('btn-tab-maba');
+    
+    if(tipe === 'panitia') {
+      btnPanitia.classList.replace('btn-outline-primary', 'btn-primary');
+      btnPanitia.classList.add('text-white');
+      btnMaba.classList.replace('btn-success', 'btn-outline-success');
+    } else {
+      btnMaba.classList.replace('btn-outline-success', 'btn-success');
+      btnMaba.classList.add('text-white');
+      btnPanitia.classList.replace('btn-primary', 'btn-outline-primary');
+    }
   }
 
   function kirimDataAbsen() {
+    if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
+      alert("ERROR SYSTEM: Anda belum memasukkan URL Google Script pada kode index.html baris 361.");
+      return;
+    }
+
     let fileInput = document.getElementById('input-foto');
     let kategori = document.getElementById('select-kategori').value;
     let nama = document.getElementById('select-nama').value;
@@ -491,7 +623,7 @@
     if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) return alert('Wajib unggah foto!');
 
     btn.disabled = true;
-    btn.innerText = "Mengirim...";
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data...';
 
     let kirimPayload = (base64Foto = "") => {
       let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
@@ -508,17 +640,16 @@
         body: JSON.stringify(payload)
       })
       .then(() => {
-        alert("Absen berhasil dikirim!");
-        // Hapus cache agar data baru langsung muncul saat buka tabel rekap
+        alert("Absensi Anda telah tercatat dengan aman!");
         delete cacheDataRekap[idKel]; 
         btn.disabled = false;
-        btn.innerText = "Kirim Absensi";
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
         showPage('dashboard');
       })
       .catch(() => {
-        alert("Gagal mengirim.");
+        alert("Koneksi gagal, silakan coba lagi.");
         btn.disabled = false;
-        btn.innerText = "Kirim Absensi";
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
       });
     };
 
@@ -531,7 +662,6 @@
     }
   }
 
-  // --- FUNGSI OPTIMALISASI TABEL REKAP (Sangat Ringan & Cepat) ---
   function renderTabel(kategori, dataServer, tipe, tbody) {
     let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
     let html = '';
@@ -539,75 +669,57 @@
     daftar.forEach((nama, index) => {
       let targetNama = nama.toUpperCase().trim();
       let records = dataServer.filter(r => r.nama.toUpperCase().includes(targetNama));
-      let h = '-', s = '-', bukti = '-';
+      let h = '<span class="text-secondary">-</span>';
+      let s = '<span class="text-secondary">-</span>';
+      let bukti = '<span class="text-secondary">-</span>';
 
       records.forEach(rec => {
-        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
-        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
-        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold"><i class="fa-solid fa-eye me-1"></i>Lihat</a>`;
+        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
+        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
+        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-2 px-3 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Lihat Foto</a>`;
       });
 
-      html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${nama}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
+      html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
     });
     tbody.innerHTML = html;
   }
 
-  async function muatRekapPanitia(isRefresh = false) {
-    let divisi = document.getElementById('select-rekap-divisi').value;
-    let tbody = document.getElementById('tabel-rekap-panitia-body');
-    let iconRefresh = document.getElementById('icon-refresh-panitia');
-    
-    if (!divisi) return;
-    let idKel = 'PANITIA_' + divisi;
+  async function muatData(idKel, divisi, tipe, tbody, iconRefresh, isRefresh) {
+    if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
+       tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: Anda belum memasukkan link URL Google Apps Script Anda ke dalam file HTML.</td></tr>';
+       return;
+    }
 
-    // Ambil dari cache memori jika bukan refresh manual
     if (!isRefresh && cacheDataRekap[idKel]) {
-      renderTabel(divisi, cacheDataRekap[idKel], 'panitia', tbody);
+      renderTabel(divisi, cacheDataRekap[idKel], tipe, tbody);
       return;
     }
 
-    tbody.innerHTML = '<tr><td colspan="5" class="text-info fw-bold py-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>Menyelam mengambil data...</td></tr>';
+    tbody.innerHTML = `<tr><td colspan="5" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
     if(iconRefresh) iconRefresh.classList.add('fa-spin');
 
     try {
       let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
       let dataRes = await res.json();
-      cacheDataRekap[idKel] = dataRes; // Simpan ke cache
-      renderTabel(divisi, dataRes, 'panitia', tbody);
+      cacheDataRekap[idKel] = dataRes; 
+      renderTabel(divisi, dataRes, tipe, tbody);
     } catch {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-3">Gagal memuat data. Periksa koneksi internet Anda.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database. Periksa koneksi internet Anda.</td></tr>';
     } finally {
       if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
   }
 
-  async function muatRekapMaba(isRefresh = false) {
+  function muatRekapPanitia(isRefresh = false) {
+    let divisi = document.getElementById('select-rekap-divisi').value;
+    if (!divisi) return;
+    muatData('PANITIA_' + divisi, divisi, 'panitia', document.getElementById('tabel-rekap-panitia-body'), document.getElementById('icon-refresh-panitia'), isRefresh);
+  }
+
+  function muatRekapMaba(isRefresh = false) {
     let kelompok = document.getElementById('select-rekap-kelompok').value;
-    let tbody = document.getElementById('tabel-rekap-maba-body');
-    let iconRefresh = document.getElementById('icon-refresh-maba');
-    
     if (!kelompok) return;
-    let idKel = 'MABA_' + kelompok;
-
-    // Ambil dari cache memori jika bukan refresh manual
-    if (!isRefresh && cacheDataRekap[idKel]) {
-      renderTabel(kelompok, cacheDataRekap[idKel], 'maba', tbody);
-      return;
-    }
-
-    tbody.innerHTML = '<tr><td colspan="5" class="text-info fw-bold py-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>Menyelam mengambil data...</td></tr>';
-    if(iconRefresh) iconRefresh.classList.add('fa-spin');
-
-    try {
-      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
-      let dataRes = await res.json();
-      cacheDataRekap[idKel] = dataRes; // Simpan ke cache
-      renderTabel(kelompok, dataRes, 'maba', tbody);
-    } catch {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-3">Gagal memuat data. Periksa koneksi internet Anda.</td></tr>';
-    } finally {
-      if(iconRefresh) iconRefresh.classList.remove('fa-spin');
-    }
+    muatData('MABA_' + kelompok, kelompok, 'maba', document.getElementById('tabel-rekap-maba-body'), document.getElementById('icon-refresh-maba'), isRefresh);
   }
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
