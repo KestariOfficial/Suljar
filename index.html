@@ -22,7 +22,6 @@
       background-position: center;
       min-height: 100vh;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      overflow-x: hidden;
     }
     .navbar {
       background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)) !important;
@@ -45,7 +44,6 @@
     .nav-link:hover, .nav-link.active {
       background-color: var(--ocean-aqua);
       color: var(--ocean-deep) !important;
-      transform: translateY(-2px);
     }
     .content-wrapper {
       background-color: rgba(255, 255, 255, 0.95);
@@ -55,41 +53,36 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       border: 2px solid var(--ocean-aqua);
       position: relative;
-      overflow: hidden;
+      overflow: hidden; /* Penting untuk animasi laut agar tidak keluar kotak */
     }
     .page-view { display: none; }
-    .active-view { display: block; animation: fadeInScale 0.6s ease-in-out forwards; }
-
-    @keyframes fadeInScale {
-      0% { opacity: 0; transform: translateY(25px) scale(0.97); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+    .active-view { display: block; animation: fadeIn 0.5s ease-in-out; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Dekorasi & Animasi Dashboard Laut */
-    .sea-elements {
+    /* --- Animasi Bawah Laut Dashboard --- */
+    .sea-bg {
       position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       pointer-events: none;
-      overflow: hidden;
       z-index: 0;
     }
-    .floating-icon {
-      position: absolute;
-      color: rgba(0, 180, 216, 0.15);
-      animation: floatAround 8s infinite alternate ease-in-out;
-    }
-    @keyframes floatAround {
-      0% { transform: translateY(0px) rotate(0deg); }
-      100% { transform: translateY(-20px) rotate(10deg); }
-    }
+    .sea-item { position: absolute; opacity: 0.7; }
+    .fish-1 { top: 20%; left: -10%; font-size: 3rem; color: var(--ocean-aqua); animation: swimRight 15s linear infinite; }
+    .fish-2 { top: 60%; right: -10%; font-size: 2.5rem; color: #ff6b6b; transform: scaleX(-1); animation: swimLeft 12s linear infinite; }
+    .coral-1 { bottom: -15px; left: 10%; font-size: 5rem; color: #e74c3c; animation: sway 4s ease-in-out infinite alternate; }
+    .coral-2 { bottom: -15px; right: 15%; font-size: 4rem; color: #2ecc71; animation: sway 5s ease-in-out infinite alternate-reverse; }
+    .starfish { bottom: 10px; left: 45%; font-size: 2rem; color: var(--sun-yellow); animation: pulse 3s infinite; }
+    .content-front { position: relative; z-index: 1; }
 
-    .dashboard-content {
-      position: relative;
-      z-index: 1;
-    }
+    @keyframes swimRight { 0% { left: -10%; } 100% { left: 110%; } }
+    @keyframes swimLeft { 0% { right: -10%; } 100% { right: 110%; } }
+    @keyframes sway { 0% { transform: rotate(-5deg); } 100% { transform: rotate(5deg); } }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+    /* ------------------------------------ */
 
     .card-kelompok, .card-absen-option {
       border: 2px solid var(--ocean-aqua);
@@ -99,8 +92,8 @@
       background: white;
     }
     .card-kelompok:hover, .card-absen-option:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 12px 25px rgba(0, 180, 216, 0.4);
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
     }
   </style>
 </head>
@@ -115,7 +108,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-house me-1"></i> Dashboard</a></li>
-        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-1"></i> Kelompok Maba</a></li>
+        <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-fish-fins me-1"></i> Kelompok Maba</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-1"></i> Absen</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-rekap" href="javascript:void(0)" onclick="cekSandiRekap()"><i class="fa-solid fa-table me-1"></i> Tabel Rekap</a></li>
       </ul>
@@ -126,37 +119,31 @@
 <div class="container">
   <div class="content-wrapper">
     
-    <!-- Dashboard dengan Animasi & Dekorasi Karang, Ikan, Benda Laut -->
-    <div id="view-dashboard" class="page-view active-view">
-      <div class="sea-elements">
-        <i class="fa-solid fa-fish floating-icon fa-3x" style="top: 10%; left: 5%; animation-duration: 6s;"></i>
-        <i class="fa-solid fa-water floating-icon fa-4x" style="top: 70%; left: 10%; animation-duration: 9s;"></i>
-        <i class="fa-solid fa-anchor floating-icon fa-3x" style="top: 20%; right: 8%; animation-duration: 7s;"></i>
-        <i class="fa-solid fa-fish-fins floating-icon fa-4x" style="bottom: 15%; right: 12%; animation-duration: 5s;"></i>
-        <i class="fa-solid fa-shell floating-icon fa-2x" style="top: 50%; left: 50%; animation-duration: 8s;"></i>
+    <!-- Dashboard dengan Animasi Laut -->
+    <div id="view-dashboard" class="page-view active-view" style="min-height: 400px;">
+      <div class="sea-bg">
+        <i class="fa-solid fa-fish sea-item fish-1"></i>
+        <i class="fa-solid fa-fish sea-item fish-2"></i>
+        <i class="fa-brands fa-pagelines sea-item coral-1"></i>
+        <i class="fa-brands fa-pagelines sea-item coral-2"></i>
+        <i class="fa-solid fa-star sea-item starfish"></i>
       </div>
-
-      <div class="text-center py-5 dashboard-content">
-        <div class="mb-4">
-          <i class="fa-solid fa-fish fa-4xl text-info animate-bounce mb-3" style="font-size: 4rem; color: var(--ocean-aqua) !important;"></i>
-        </div>
-        <h1 class="display-4 fw-bold mb-3 animate__animated animate__fadeInDown" style="color: var(--ocean-deep);">Selamat Datang Para Penjelajah</h1>
+      
+      <div class="text-center py-5 content-front">
+        <h1 class="display-4 fw-bold mb-3" style="color: var(--ocean-deep);">Selamat Datang Para Penjelajah</h1>
         <h3 class="text-secondary fw-normal mb-4">Situs Absensi & Rekapitulasi Terpadu Panitia & Maba 2026</h3>
         <hr class="w-25 mx-auto border-info border-3">
-        <p class="text-muted mt-3 fs-5">Jelajahi ekosistem bawah laut, lakukan absensi harian, dan pantau rekapitulasi kehadiran dengan mudah.</p>
-        
-        <div class="mt-4">
-          <button class="btn btn-primary px-4 py-2 rounded-pill fw-bold shadow-sm me-2" onclick="showPage('absen')"><i class="fa-solid fa-clipboard-user me-2"></i>Mulai Absen</button>
-          <button class="btn btn-outline-info px-4 py-2 rounded-pill fw-bold shadow-sm text-dark" onclick="showPage('kelompok')"><i class="fa-solid fa-fish me-2"></i>Lihat Kelompok</button>
-        </div>
+        <p class="text-muted mt-3">Silakan jelajahi ekosistem kami melalui menu di atas untuk mengisi absensi, mengenal nama kelompok, atau membuka tabel rekap.</p>
       </div>
     </div>
 
     <!-- Kelompok Maba -->
     <div id="view-kelompok" class="page-view">
-      <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
-      <p class="text-muted mb-4">Klik kartu kelompok di bawah untuk melihat arti nama dan fun fact organisme!</p>
-      <div class="row g-4" id="grid-kelompok"></div>
+      <div class="content-front">
+        <h2 class="fw-bold mb-2" style="color: var(--ocean-deep);"><i class="fa-solid fa-water-ladder me-2"></i>Daftar Kelompok Maba</h2>
+        <p class="text-muted mb-4">Klik kartu kelompok untuk melihat arti nama dan fun fact organisme!</p>
+        <div class="row g-4" id="grid-kelompok"></div>
+      </div>
     </div>
 
     <!-- Pilihan Jalur Absen -->
@@ -320,6 +307,7 @@
 </div>
 
 <script>
+  // PASTIKAN SCRIPT URL ANDA BENAR DI SINI
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
   const dataPanitia = {
@@ -366,11 +354,11 @@
   let jalurAktif = "Panitia";
   let jenisAbsenAktif = "Kedatangan";
 
-  document.addEventListener("DOMContentLoaded", () => {
+  window.onload = () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
     inisialisasiKelompokMaba();
     inisialisasiDropdownRekap();
-  });
+  };
 
   function inisialisasiKelompokMaba() {
     let htmlCards = '';
