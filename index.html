@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Situs Resmi Sulam Jaring 2026</title>
   <base target="_top">
+  <!-- Preconnect untuk mempercepat tarikan data dari Google -->
+  <link rel="preconnect" href="https://script.google.com">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <style>
@@ -39,7 +43,7 @@
       border-radius: 20px;
       padding: 8px 15px !important;
       margin: 0 3px;
-      transition: all 0.3s ease;
+      transition: background-color 0.3s ease, transform 0.2s ease;
     }
     .nav-link:hover, .nav-link.active {
       background-color: var(--ocean-aqua);
@@ -53,24 +57,22 @@
       box-shadow: 0 10px 30px rgba(0,0,0,0.3);
       border: 2px solid var(--ocean-aqua);
       position: relative;
-      overflow: hidden; /* Penting untuk animasi laut agar tidak keluar kotak */
+      overflow: hidden;
     }
     .page-view { display: none; }
-    .active-view { display: block; animation: fadeIn 0.5s ease-in-out; }
+    .active-view { display: block; animation: fadeIn 0.4s ease-out; }
     
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* --- Animasi Bawah Laut Dashboard --- */
+    /* --- Animasi Bawah Laut Dashboard (Dioptimalkan menggunakan GPU) --- */
     .sea-bg {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      pointer-events: none;
-      z-index: 0;
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      pointer-events: none; z-index: 0;
     }
-    .sea-item { position: absolute; opacity: 0.7; }
+    .sea-item { position: absolute; opacity: 0.7; will-change: transform, left, right; }
     .fish-1 { top: 20%; left: -10%; font-size: 3rem; color: var(--ocean-aqua); animation: swimRight 15s linear infinite; }
     .fish-2 { top: 60%; right: -10%; font-size: 2.5rem; color: #ff6b6b; transform: scaleX(-1); animation: swimLeft 12s linear infinite; }
     .coral-1 { bottom: -15px; left: 10%; font-size: 5rem; color: #e74c3c; animation: sway 4s ease-in-out infinite alternate; }
@@ -87,13 +89,19 @@
     .card-kelompok, .card-absen-option {
       border: 2px solid var(--ocean-aqua);
       border-radius: 15px;
-      transition: all 0.3s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
       cursor: pointer;
       background: white;
     }
     .card-kelompok:hover, .card-absen-option:hover {
       transform: translateY(-5px);
       box-shadow: 0 8px 20px rgba(0, 180, 216, 0.3);
+    }
+    .btn-refresh {
+      transition: transform 0.3s ease;
+    }
+    .btn-refresh:active {
+      transform: scale(0.9);
     }
   </style>
 </head>
@@ -119,7 +127,7 @@
 <div class="container">
   <div class="content-wrapper">
     
-    <!-- Dashboard dengan Animasi Laut -->
+    <!-- Dashboard -->
     <div id="view-dashboard" class="page-view active-view" style="min-height: 400px;">
       <div class="sea-bg">
         <i class="fa-solid fa-fish sea-item fish-1"></i>
@@ -235,16 +243,20 @@
         <button class="btn btn-success px-4 fw-bold rounded-pill shadow-sm" onclick="gantiTabRekap('maba')">Rekap Maba</button>
       </div>
 
+      <!-- Rekap Panitia -->
       <div id="section-rekap-panitia">
         <div class="row justify-content-center mb-3">
-          <div class="col-md-6">
-            <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia()">
+          <div class="col-md-7 d-flex gap-2">
+            <select id="select-rekap-divisi" class="form-control border-info fw-bold text-center" onchange="muatRekapPanitia(false)">
               <option value="">-- Pilih Divisi Panitia --</option>
             </select>
+            <button class="btn btn-info text-white fw-bold shadow-sm btn-refresh" onclick="muatRekapPanitia(true)" title="Segarkan Data Terbaru">
+              <i class="fa-solid fa-rotate-right" id="icon-refresh-panitia"></i>
+            </button>
           </div>
         </div>
         <div class="table-responsive bg-white p-3 rounded shadow-sm border mb-3">
-          <table class="table table-bordered table-striped text-center align-middle">
+          <table class="table table-bordered table-striped text-center align-middle mb-0">
             <thead class="table-dark">
               <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>KEDATANGAN</th><th>KEPULANGAN</th><th>BUKTI</th></tr>
             </thead>
@@ -253,16 +265,20 @@
         </div>
       </div>
 
+      <!-- Rekap Maba -->
       <div id="section-rekap-maba" style="display: none;">
         <div class="row justify-content-center mb-3">
-          <div class="col-md-6">
-            <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba()">
+          <div class="col-md-7 d-flex gap-2">
+            <select id="select-rekap-kelompok" class="form-control border-info fw-bold text-center" onchange="muatRekapMaba(false)">
               <option value="">-- Pilih Kelompok Maba --</option>
             </select>
+            <button class="btn btn-info text-white fw-bold shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
+              <i class="fa-solid fa-rotate-right" id="icon-refresh-maba"></i>
+            </button>
           </div>
         </div>
         <div class="table-responsive bg-white p-3 rounded shadow-sm border mb-3">
-          <table class="table table-bordered table-striped text-center align-middle">
+          <table class="table table-bordered table-striped text-center align-middle mb-0">
             <thead class="table-dark">
               <tr><th>NO</th><th class="text-start">NAMA MAHASISWA BARU</th><th>KEDATANGAN</th><th>KEPULANGAN</th><th>BUKTI</th></tr>
             </thead>
@@ -275,7 +291,7 @@
   </div>
 </div>
 
-<!-- Modal Detail Kelompok Maba & Fun Fact -->
+<!-- Modal Detail Kelompok Maba -->
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
@@ -307,9 +323,10 @@
 </div>
 
 <script>
-  // PASTIKAN SCRIPT URL ANDA BENAR DI SINI
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyE3i1uIWLvRrAgvIRYRo_tEMqox7Nk8gqB3PBXdP9Kqi7MEDWvLHyAKl2vH8P9z52t/exec";
+  // PASTIKAN SCRIPT URL INI ADALAH URL YANG TERBARU DARI GOOGLE APPS SCRIPT
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw9PP6QWs6Hsk9OfpWpzYUPRh5GKxMi_-YiXooBUJX4T02K5BYhb1vC_HIQrjtUWg/exec";
 
+  // Data Panitia & Maba
   const dataPanitia = {
     "BADAN PENGURUS INTI (BPI)": ["AHMAD CHOIRUL ANAM", "ULIL ABSHOR ASHIDIQ", "SYIFA SETYA WAHYUNINGTYAS", "ARFAN ARDIANTA ROHMAN", "LUTHFIYAH ROBI’ATUL ADAWI", "FIRYAL MECCA SUTRISNO"],
     "DIVISI ACARA": ["RAFAEL PARNINGOTAN S", "MUHAMMAD AFFAN NASHWAN", "RAIHAN ANDIKA PUTRA", "AFFANDANI YOGA SAPUTRA", "AYLA FIRDA NURUSIYAH", "KHANZA MEIDY PUTRI AZZAHRA", "ANNISA YASYFA SYAH", "WIKA PUTRA NATHANAEL", "NOVEIA DWI INTAN PRAMITA", "PUTRI SANIA SALSABILA", "HILDA FRISKA NURIL R", "HANIFAH NADIANA", "PARIS IGNESIUS SINAGA", "AZRIL ARVINSYAH"],
@@ -353,6 +370,9 @@
 
   let jalurAktif = "Panitia";
   let jenisAbsenAktif = "Kedatangan";
+  
+  // Sistem Cache Memori untuk mempercepat loading tabel
+  let cacheDataRekap = {}; 
 
   window.onload = () => {
     document.getElementById('tgl-absen').valueAsDate = new Date();
@@ -475,25 +495,22 @@
 
     let kirimPayload = (base64Foto = "") => {
       let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
+      let idKel = prefix + kategori;
       let payload = {
-        action: "saveAttendance",
-        tgl: tgl,
-        nim: kategori,
-        nama: nama,
-        idKel: prefix + kategori,
+        action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
         status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
-        base64Foto: base64Foto,
-        jenisAbsen: `${jalurAktif}_${jenisAbsenAktif}`
+        base64Foto: base64Foto, jenisAbsen: `${jalurAktif}_${jenisAbsenAktif}`
       };
 
       fetch(SCRIPT_URL, {
-        method: "POST",
-        mode: "no-cors",
+        method: "POST", mode: "no-cors",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(payload)
       })
       .then(() => {
         alert("Absen berhasil dikirim!");
+        // Hapus cache agar data baru langsung muncul saat buka tabel rekap
+        delete cacheDataRekap[idKel]; 
         btn.disabled = false;
         btn.innerText = "Kirim Absensi";
         showPage('dashboard');
@@ -514,63 +531,82 @@
     }
   }
 
-  async function muatRekapPanitia() {
+  // --- FUNGSI OPTIMALISASI TABEL REKAP (Sangat Ringan & Cepat) ---
+  function renderTabel(kategori, dataServer, tipe, tbody) {
+    let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
+    let html = '';
+    
+    daftar.forEach((nama, index) => {
+      let targetNama = nama.toUpperCase().trim();
+      let records = dataServer.filter(r => r.nama.toUpperCase().includes(targetNama));
+      let h = '-', s = '-', bukti = '-';
+
+      records.forEach(rec => {
+        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
+        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
+        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold"><i class="fa-solid fa-eye me-1"></i>Lihat</a>`;
+      });
+
+      html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${nama}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
+    });
+    tbody.innerHTML = html;
+  }
+
+  async function muatRekapPanitia(isRefresh = false) {
     let divisi = document.getElementById('select-rekap-divisi').value;
     let tbody = document.getElementById('tabel-rekap-panitia-body');
+    let iconRefresh = document.getElementById('icon-refresh-panitia');
+    
     if (!divisi) return;
-    tbody.innerHTML = '<tr><td colspan="5">Memuat...</td></tr>';
+    let idKel = 'PANITIA_' + divisi;
+
+    // Ambil dari cache memori jika bukan refresh manual
+    if (!isRefresh && cacheDataRekap[idKel]) {
+      renderTabel(divisi, cacheDataRekap[idKel], 'panitia', tbody);
+      return;
+    }
+
+    tbody.innerHTML = '<tr><td colspan="5" class="text-info fw-bold py-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>Menyelam mengambil data...</td></tr>';
+    if(iconRefresh) iconRefresh.classList.add('fa-spin');
+
     try {
-      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=PANITIA_${divisi}`);
+      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
       let dataRes = await res.json();
-      let daftar = dataPanitia[divisi] || [];
-      let html = '';
-
-      daftar.forEach((namaPanitia, index) => {
-        let cleanTarget = namaPanitia.toUpperCase().trim();
-        let records = dataRes.filter(r => r.nama.toUpperCase().includes(cleanTarget));
-        let h = '-', s = '-', bukti = '-';
-
-        records.forEach(rec => {
-          if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
-          if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
-          if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
-        });
-
-        html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaPanitia}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
-      });
-      tbody.innerHTML = html;
+      cacheDataRekap[idKel] = dataRes; // Simpan ke cache
+      renderTabel(divisi, dataRes, 'panitia', tbody);
     } catch {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-3">Gagal memuat data. Periksa koneksi internet Anda.</td></tr>';
+    } finally {
+      if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
   }
 
-  async function muatRekapMaba() {
+  async function muatRekapMaba(isRefresh = false) {
     let kelompok = document.getElementById('select-rekap-kelompok').value;
     let tbody = document.getElementById('tabel-rekap-maba-body');
+    let iconRefresh = document.getElementById('icon-refresh-maba');
+    
     if (!kelompok) return;
-    tbody.innerHTML = '<tr><td colspan="5">Memuat...</td></tr>';
+    let idKel = 'MABA_' + kelompok;
+
+    // Ambil dari cache memori jika bukan refresh manual
+    if (!isRefresh && cacheDataRekap[idKel]) {
+      renderTabel(kelompok, cacheDataRekap[idKel], 'maba', tbody);
+      return;
+    }
+
+    tbody.innerHTML = '<tr><td colspan="5" class="text-info fw-bold py-3"><i class="fa-solid fa-spinner fa-spin me-2"></i>Menyelam mengambil data...</td></tr>';
+    if(iconRefresh) iconRefresh.classList.add('fa-spin');
+
     try {
-      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=MABA_${kelompok}`);
+      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
       let dataRes = await res.json();
-      let daftar = dataMaba[kelompok] || [];
-      let html = '';
-
-      daftar.forEach((namaMaba, index) => {
-        let cleanTarget = namaMaba.toUpperCase().trim();
-        let records = dataRes.filter(r => r.nama.toUpperCase().includes(cleanTarget));
-        let h = '-', s = '-', bukti = '-';
-
-        records.forEach(rec => {
-          if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5">H</strong>';
-          if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5">S</strong>';
-          if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="btn btn-sm btn-info text-white fw-bold">Lihat</a>`;
-        });
-
-        html += `<tr><td>${index + 1}</td><td class="text-start fw-bold">${namaMaba}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
-      });
-      tbody.innerHTML = html;
+      cacheDataRekap[idKel] = dataRes; // Simpan ke cache
+      renderTabel(kelompok, dataRes, 'maba', tbody);
     } catch {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger">Gagal memuat.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-3">Gagal memuat data. Periksa koneksi internet Anda.</td></tr>';
+    } finally {
+      if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
   }
 </script>
