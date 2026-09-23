@@ -548,7 +548,21 @@
     }
   }
 
-  function cekWaktuAbsen() {
+function cekWaktuAbsen() {
+  const tanggalHariIni = new Date().toDateString();
+  
+  if (localStorage.getItem('sudahAbsenDatang') === tanggalHariIni) {
+    let sandiBypass = prompt("Perangkat ini sudah digunakan untuk absen hari ini.\n\nJika tidak sengaja/salah, minta panitia inti untuk memasukkan Sandi Buka Kunci:");
+    
+    if (sandiBypass === "semangat") {
+      localStorage.removeItem('sudahAbsenDatang');
+      alert("Kunci berhasil dibuka! Silakan isi ulang absen.");
+    } else {
+      if (sandiBypass !== null) alert("Sandi Buka Kunci Salah!");
+      return; 
+    }
+  }
+
   const waktuLokal = new Date();
   const jam = waktuLokal.getHours();
   const menit = waktuLokal.getMinutes();
@@ -558,11 +572,11 @@
   const jamTutup = 12.0; 
 
   if (waktuSekarang < jamBuka) {
-    alert("Belum waktunya! Absen baru dibuka pukul 10.00 WIB.");
+    alert("Belum waktunya! Absen panitia baru dibuka pukul 06.00 WIB.");
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
     if (sandiTelat === "jangantelatlagi") { 
-      bukaFormulir('Kedatangan');
+      bukaFormulir('Kedatangan'); 
     } else if (sandiTelat !== null) {
       alert("Sandi Keterlambatan Salah!");
     }
