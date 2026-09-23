@@ -548,6 +548,29 @@
     }
   }
 
+  function cekWaktuAbsen() {
+  const waktuLokal = new Date();
+  const jam = waktuLokal.getHours();
+  const menit = waktuLokal.getMinutes();
+  const waktuSekarang = jam + (menit / 60);
+
+  const jamBuka = 8.0;  
+  const jamTutup = 9.5; 
+
+  if (waktuSekarang < jamBuka) {
+    alert("Belum waktunya! Absen panitia baru dibuka pukul 08.00 WIB.");
+  } else if (waktuSekarang > jamTutup) {
+    let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
+    if (sandiTelat === "jangantelatlagi") { 
+      bukaFormulir('Kehadiran');
+    } else if (sandiTelat !== null) {
+      alert("Sandi Keterlambatan Salah!");
+    }
+  } else {
+    bukaFormulir('Kehadiran'); 
+  }
+}
+  
   function bukaFormulir(jenis) {
     jenisAbsenAktif = jenis;
     document.getElementById('judul-formulir').innerText = `Formulir ${jenis} (${jalurAktif})`;
