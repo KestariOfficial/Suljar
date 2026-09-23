@@ -562,12 +562,12 @@
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
     if (sandiTelat === "jangantelatlagi") { 
-      bukaFormulir('Kehadiran');
+      bukaFormulir('Kedatangan');
     } else if (sandiTelat !== null) {
       alert("Sandi Keterlambatan Salah!");
     }
   } else {
-    bukaFormulir('Kehadiran'); 
+    bukaFormulir('Kedatangan'); 
   }
 }
   
