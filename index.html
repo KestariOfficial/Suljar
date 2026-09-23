@@ -678,6 +678,7 @@ function cekWaktuAbsen() {
       })
       .then(() => {
         alert("Absensi Anda telah tercatat dengan aman!");
+        localStorage.setItem('sudahAbsenDatang', new Date().toDateString());
         delete cacheDataRekap[idKel]; 
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
