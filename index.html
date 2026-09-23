@@ -549,19 +549,7 @@
   }
 
 function cekWaktuAbsen() {
-  const tanggalHariIni = new Date().toDateString();
-  
-  if (localStorage.getItem('sudahAbsenDatang') === tanggalHariIni) {
-    let sandiBypass = prompt("Perangkat ini sudah digunakan untuk absen hari ini.\n\nJika tidak sengaja/salah, minta panitia inti untuk memasukkan Sandi Buka Kunci:");
-    
-    if (sandiBypass === "semangat") {
-      localStorage.removeItem('sudahAbsenDatang');
-      alert("Kunci berhasil dibuka! Silakan isi ulang absen.");
-    } else {
-      if (sandiBypass !== null) alert("Sandi Buka Kunci Salah!");
-      return; 
-    }
-  }
+  const tanggalHariIni = new Date().toDateString();  
 
   const waktuLokal = new Date();
   const jam = waktuLokal.getHours();
