@@ -554,11 +554,11 @@
   const menit = waktuLokal.getMinutes();
   const waktuSekarang = jam + (menit / 60);
 
-  const jamBuka = 6.0;  
-  const jamTutup = 7.5; 
+  const jamBuka = 10.0;  
+  const jamTutup = 12.0; 
 
   if (waktuSekarang < jamBuka) {
-    alert("Belum waktunya! Absen panitia baru dibuka pukul 06.00 WIB.");
+    alert("Belum waktunya! Absen baru dibuka pukul 10.00 WIB.");
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
     if (sandiTelat === "jangantelatlagi") { 
