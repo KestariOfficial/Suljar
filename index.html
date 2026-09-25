@@ -650,7 +650,29 @@ function inisialisasiKelompokMaba() {
       document.getElementById('modalDesc').innerText = k.desc;
       document.getElementById('modalFunFact').innerText = k.funFact;
       
-      // Munculkan kembali bagian fun fact yang sebelumnya sempat disembunyikan di modal anggota
+      let funFactContainer = document.getElementById('modalFunFact').parentElement.parentElement;
+      if(funFactContainer) funFactContainer.style.display = 'block';
+
+      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
+    }
+  }
+
+  function tampilkanAnggotaKelompok(namaKelompok) {
+    let k = infoKelompok.find(item => item.nama === namaKelompok);
+    let daftarAnggota = dataMaba[namaKelompok] || [];
+    if (k) {
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-users me-2"></i>Anggota ${k.nama}`;
+      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
+      
+      let listHtml = '<ol class="text-start ps-3 mb-0">';
+      daftarAnggota.forEach(nama => {
+        listHtml += `<li class="py-1 fw-semibold text-secondary">${nama}</li>`;
+      });
+      listHtml += '</ol>';
+
+      document.getElementById('modalDesc').innerHTML = listHtml;
+      document.getElementById('modalFunFact').innerText = `Total anggota dalam kelompok ini adalah ${daftarAnggota.length} orang mahasiswa baru.`;
+      
       let funFactContainer = document.getElementById('modalFunFact').parentElement.parentElement;
       if(funFactContainer) funFactContainer.style.display = 'block';
 
