@@ -69,7 +69,7 @@
       transform: translateY(-2px);
     }
 
-   /* Kotak standar untuk halaman lain (Warna Putih, Teks Hitam) */
+   /* --- Kotak Konten Kaca (Glassmorphism) --- */
     .content-wrapper {
       background: var(--glass-bg);
       backdrop-filter: blur(16px);
@@ -80,20 +80,22 @@
       margin-bottom: 40px;
       box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       position: relative;
-      z-index: 10;
-      color: #333333 !important; /* Teks hitam */
+      z-index: 10; 
     }
 
-    /* Khusus kotak Dashboard menggunakan latar belakang foto (Teks Putih) */
+    /* TAMBAHKAN KODE INI TEPAT DI BAWAH .content-wrapper */
     .dashboard-wrapper {
       background: linear-gradient(rgba(2, 27, 51, 0.65), rgba(2, 27, 51, 0.65)), url('gacor.jfif');
       background-size: cover;
       background-position: center;
-      color: #ffffff !important; /* Teks putih */
+      color: #ffffff !important; 
     }
 
-    /* Memastikan teks deskripsi di dashboard ikut putih dan jelas */
-    .dashboard-wrapper p, .dashboard-wrapper h4, .dashboard-wrapper h1 {
+    .dashboard-wrapper h1, 
+    .dashboard-wrapper h4, 
+    .dashboard-wrapper p, 
+    .dashboard-wrapper .text-secondary, 
+    .dashboard-wrapper .text-muted {
       color: #ffffff !important;
       text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
