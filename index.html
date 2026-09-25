@@ -257,25 +257,32 @@
       }
     }
 
-   @media (max-width: 991px) {
-      /* Memastikan navbar menjadi satu baris horizontal (Satu di kiri, Satu di kanan) */
+  @media (max-width: 991px) {
+      /* Memaksa navbar menjadi satu baris horizontal berdampingan */
       .navbar .container-fluid {
         display: flex !important;
         flex-direction: row !important;
         justify-content: space-between !important;
         align-items: center !important;
         width: 100% !important;
+        padding-left: 15px !important;
+        padding-right: 15px !important;
       }
 
-      /* Memindahkan dan merapatkan tombol garis tiga ke pojok kanan sejajar logo */
+      /* Mengecilkan sedikit ukuran teks logo agar muat sejajar dengan tombol */
+      .navbar-brand {
+        font-size: 1.15rem !important;
+      }
+
+      /* Merapikan tombol garis tiga agar tingginya setara dan berada di pojok kanan */
       .navbar-toggler {
-        margin-left: auto !important;
-        margin-right: 0 !important;
-        padding: 6px 10px !important;
+        margin: 0 !important;
+        padding: 4px 8px !important;
+        font-size: 0.9rem !important;
       }
 
       body {
-        padding-top: 75px;
+        padding-top: 70px;
       }
       
       .content-wrapper, .dashboard-wrapper {
