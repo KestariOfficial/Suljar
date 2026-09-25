@@ -494,16 +494,26 @@
     gantiTabRekap('panitia');
   };
 
-  function inisialisasiKelompokMaba() {
+ function inisialisasiKelompokMaba() {
     let htmlCards = '';
     infoKelompok.forEach((k) => {
       htmlCards += `
         <div class="col-md-4 col-sm-6">
-          <div class="card card-kelompok p-4 h-100 text-center" onclick="tampilkanDetailKelompok('${k.nama}')">
-            <div class="card-body d-flex flex-column justify-content-center align-items-center p-0">
-              <div class="mb-3 bg-light rounded-circle p-3 shadow-sm border border-2 border-white"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
-              <h5 class="card-title fw-bold mb-1" style="color: var(--ocean-deep);">${k.nama}</h5>
-              <small class="text-muted mt-2 fw-semibold" style="font-size: 0.8rem;">Lihat Detail <i class="fa-solid fa-arrow-right-long ms-1"></i></small>
+          <div class="card card-kelompok p-4 h-100 text-center shadow-sm">
+            <div class="card-body d-flex flex-column justify-content-between align-items-center p-0">
+              <div>
+                <div class="mb-3 bg-light rounded-circle p-3 shadow-sm border border-2 border-white d-inline-block"><i class="fa-solid ${k.icon} fa-2x" style="color: ${k.color};"></i></div>
+                <h5 class="card-title fw-bold mb-1" style="color: var(--ocean-deep);">${k.nama}</h5>
+                <p class="text-muted small mt-2">${k.desc}</p>
+              </div>
+              <div class="d-flex gap-2 w-100 mt-3">
+                <button class="btn btn-outline-primary btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanDetailKelompok('${k.nama}')">
+                  <i class="fa-solid fa-info-circle me-1"></i> Info
+                </button>
+                <button class="btn btn-gradient btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanAnggotaKelompok('${k.nama}')">
+                  <i class="fa-solid fa-users me-1"></i> Anggota
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -512,15 +522,33 @@
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
-  function tampilkanDetailKelompok(namaKelompok) {
+  function tampilkanAnggotaKelompok(namaKelompok) {
     let k = infoKelompok.find(item => item.nama === namaKelompok);
-    if (k) {
-      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-water me-2"></i>${k.nama}`;
-      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
-      document.getElementById('modalDesc').innerText = k.desc;
-      document.getElementById('modalFunFact').innerText = k.funFact;
-      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
-    }
+    let daftarNama = dataMaba[namaKelompok] || [];
+    
+    let listAnggotaHtml = daftarNama.map((nama, idx) => `
+      <tr>
+        <td class="fw-bold text-center" style="width: 50px;">${idx + 1}</td>
+        <td class="fw-semibold text-start">${nama}</td>
+      </tr>
+    `).join('');
+
+    document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-users me-2"></i>Anggota ${k.nama}`;
+    document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
+    
+    document.getElementById('modalDesc').innerHTML = `
+      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+        <table class="table table-sm table-striped align-middle mb-0">
+          <thead class="table-dark sticky-top">
+            <tr><th class="text-center">NO</th><th class="text-start">NAMA LENGKAP MABA</th></tr>
+          </thead>
+          <tbody>${listAnggotaHtml}</tbody>
+        </table>
+      </div>
+    `;
+    
+    document.getElementById('modalFunFact').parentElement.parentElement.style.display = 'none';
+    new bootstrap.Modal(document.getElementById('modalKelompok')).show();
   }
 
   function inisialisasiDropdownRekap() {
