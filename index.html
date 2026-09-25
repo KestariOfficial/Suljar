@@ -628,11 +628,11 @@
                 </div>
                 <h5 class="card-title fw-bold mb-1" style="color: var(--ocean-deep);">${k.nama}</h5>
               </div>
-              <div class="d-flex gap-2 w-100 mt-3">
-                <button class="btn btn-outline-primary btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanDetailKelompok('${k.nama}')">
+              <div class="d-flex gap-2 w-100 mt-3 position-relative" style="z-index: 5;">
+                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanDetailKelompok('${k.nama}')">
                   <i class="fa-solid fa-info-circle me-1"></i> Info
                 </button>
-                <button class="btn btn-gradient btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanAnggotaKelompok('${k.nama}')">
+                <button type="button" class="btn btn-gradient btn-sm rounded-pill w-50 fw-bold" onclick="tampilkanAnggotaKelompok('${k.nama}')">
                   <i class="fa-solid fa-users me-1"></i> Anggota
                 </button>
               </div>
@@ -644,34 +644,20 @@
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
-  function tampilkanAnggotaKelompok(namaKelompok) {
+ function tampilkanDetailKelompok(namaKelompok) {
     let k = infoKelompok.find(item => item.nama === namaKelompok);
-    let daftarNama = dataMaba[namaKelompok] || [];
-    
-    let listAnggotaHtml = daftarNama.map((nama, idx) => `
-      <tr>
-        <td class="fw-bold text-center" style="width: 50px;">${idx + 1}</td>
-        <td class="fw-semibold text-start">${nama}</td>
-      </tr>
-    `).join('');
+    if (k) {
+      document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-water me-2"></i>${k.nama}`;
+      document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
+      document.getElementById('modalDesc').innerText = k.desc;
+      document.getElementById('modalFunFact').innerText = k.funFact;
+      
+      // Munculkan kembali bagian fun fact yang sebelumnya sempat disembunyikan di modal anggota
+      let funFactContainer = document.getElementById('modalFunFact').parentElement.parentElement;
+      if(funFactContainer) funFactContainer.style.display = 'block';
 
-    document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-users me-2"></i>Anggota ${k.nama}`;
-    document.getElementById('modalIconContainer').innerHTML = `<i class="fa-solid ${k.icon}" style="color: ${k.color};"></i>`;
-    
-    document.getElementById('modalDesc').innerHTML = `
-      <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
-        <table class="table table-sm table-striped align-middle mb-0">
-          <thead class="table-dark sticky-top">
-            <tr><th class="text-center">NO</th><th class="text-start">NAMA LENGKAP MABA</th></tr>
-          </thead>
-          <tbody>${listAnggotaHtml}</tbody>
-        </table>
-      </div>
-    `;
-    
-    document.getElementById('modalFunFact').parentElement.parentElement.style.display = 'none';
-    new bootstrap.Modal(document.getElementById('modalKelompok')).show();
-  }
+      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
+    }
 
   function inisialisasiDropdownRekap() {
     let opsiPanitia = '<option value="">-- Pilih Divisi Panitia --</option>';
