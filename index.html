@@ -257,6 +257,18 @@
       }
     }
 
+    /* Menggeser tombol menu garis tiga ke sebelah kanan khusus tampilan HP */
+    @media (max-width: 991px) {
+      .navbar .container-fluid {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .navbar-toggler {
+        margin-left: auto !important; /* Mendorong tombol menu ke ujung kanan */
+      }
+    }
+    
   </style>
 </head>
 <body>
