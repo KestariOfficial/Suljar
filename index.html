@@ -212,6 +212,51 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
+    .header-title {
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--ocean-deep), var(--ocean-aqua));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* --- TEMPELKAN KODE DI SINI (BARIS 214) --- */
+    @media (max-width: 768px) {
+      body {
+        padding-top: 80px;
+      }
+      
+      .content-wrapper, .dashboard-wrapper {
+        padding: 20px 15px !important;
+        border-radius: 20px;
+        margin-bottom: 20px;
+      }
+
+      .dashboard-wrapper h1 {
+        font-size: 1.8rem !important;
+      }
+
+      .dashboard-wrapper h4 {
+        font-size: 1rem !important;
+      }
+
+      .dashboard-wrapper p {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+      }
+
+      .dashboard-wrapper .d-flex {
+        flex-direction: column;
+        gap: 10px !important;
+      }
+
+      .dashboard-wrapper .btn {
+        width: 100% !important;
+        padding: 10px !important;
+        font-size: 0.95rem !important;
+      }
+    }
+
   </style>
 </head>
 <body>
