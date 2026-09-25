@@ -257,15 +257,56 @@
       }
     }
 
-    /* Menggeser tombol menu garis tiga ke sebelah kanan khusus tampilan HP */
     @media (max-width: 991px) {
+      /* Membuat navbar jadi satu baris sejajar (Logo di kiri, Tombol di kanan) */
       .navbar .container-fluid {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
+        display: flex !important;
+        flex-direction: row !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        padding-left: 20px !important;
+        padding-right: 20px !important;
       }
+
+      /* Memperkecil ukuran kotak tombol garis tiga agar pas di samping logo */
       .navbar-toggler {
-        margin-left: auto !important; /* Mendorong tombol menu ke ujung kanan */
+        padding: 4px 8px !important;
+        font-size: 1rem !important;
+        margin: 0 !important;
+      }
+
+      body {
+        padding-top: 75px;
+      }
+      
+      .content-wrapper, .dashboard-wrapper {
+        padding: 20px 15px !important;
+        border-radius: 20px;
+        margin-bottom: 20px;
+      }
+
+      .dashboard-wrapper h1 {
+        font-size: 1.8rem !important;
+      }
+
+      .dashboard-wrapper h4 {
+        font-size: 1rem !important;
+      }
+
+      .dashboard-wrapper p {
+        font-size: 0.85rem !important;
+        line-height: 1.4 !important;
+      }
+
+      .dashboard-wrapper .d-flex {
+        flex-direction: column;
+        gap: 10px !important;
+      }
+
+      .dashboard-wrapper .btn {
+        width: 100% !important;
+        padding: 10px !important;
+        font-size: 0.95rem !important;
       }
     }
     
