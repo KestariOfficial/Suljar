@@ -69,12 +69,11 @@
       transform: translateY(-2px);
     }
 
-   .content-wrapper {
-      /* Ganti URL di bawah dengan gambar pilihan Anda */
-      background: linear-gradient(rgba(2, 27, 51, 0.75), rgba(2, 27, 51, 0.75)), url('NAMA_FILE_GAMBAR.jpg');
-      background-size: cover;
-      background-position: center;
-      
+   /* Kotak standar untuk halaman lain (Warna Putih, Teks Hitam) */
+    .content-wrapper {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--glass-border);
       border-radius: 30px;
       padding: 40px;
@@ -82,14 +81,21 @@
       box-shadow: 0 20px 50px rgba(0,0,0,0.15);
       position: relative;
       z-index: 10;
-      
-      /* TAMBAHKAN BARIS DI BAWAH INI AGAR SEMUA TEKS JADI PUTIH */
-      color: #ffffff !important; 
+      color: #333333 !important; /* Teks hitam */
     }
 
-    /* Tambahan agar sub-teks deskripsi ikut berubah jadi putih terang */
-    .content-wrapper p, .content-wrapper h4 {
-      color: #f8f9fa !important;
+    /* Khusus kotak Dashboard menggunakan latar belakang foto (Teks Putih) */
+    .dashboard-wrapper {
+      background: linear-gradient(rgba(2, 27, 51, 0.65), rgba(2, 27, 51, 0.65)), url('gacor.jfif');
+      background-size: cover;
+      background-position: center;
+      color: #ffffff !important; /* Teks putih */
+    }
+
+    /* Memastikan teks deskripsi di dashboard ikut putih dan jelas */
+    .dashboard-wrapper p, .dashboard-wrapper h4, .dashboard-wrapper h1 {
+      color: #ffffff !important;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.8);
     }
 
     .page-view { display: none; }
