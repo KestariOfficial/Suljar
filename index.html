@@ -463,7 +463,7 @@
       </div>
     </div>
 
-    <!-- Tabel Rekap -->
+   <!-- Tabel Rekap -->
     <div id="view-rekap" class="page-view">
       <h2 class="header-title mb-4 text-center"><i class="fa-solid fa-server me-2"></i>Rekapitulasi Presensi</h2>
       
@@ -487,8 +487,6 @@
             </button>
           </div>
         </div>
-          </div>
-        </div>
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
           <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark">
@@ -497,18 +495,13 @@
             <tbody id="tabel-rekap-panitia-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
           </table>
         </div>
-        <div class="text-center mt-3 mb-4">
-          <button class="btn btn-primary px-4 py-2 fw-bold rounded-pill shadow-sm" onclick="downloadPDFPanitia()">
-            <i class="fa-solid fa-file-pdf me-2"></i>Download PDF Rekap Semua Panitia
-          </button>
-        </div>
       </div>
 
       <!-- Rekap Maba -->
       <div id="section-rekap-maba" style="display: none;">
         <div class="row justify-content-center mb-4">
           <div class="col-md-8 d-flex gap-2">
-            <select id="select-rekap-kelompok" class="form-select fw-bold border-2 border-success" onchange="muatRekapMaba(false)">
+            <select id="select-rekap-kelompok" class="form-select fw-bold border-2 border-success" onclick="" onchange="muatRekapMaba(false)">
               <option value="">-- Pilih Kelompok Maba --</option>
             </select>
             <button class="btn btn-success px-4 shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
@@ -516,6 +509,7 @@
             </button>
             <button class="btn btn-success px-3 shadow-sm text-nowrap fw-bold" onclick="downloadPDFMaba()" title="Download PDF Rekap Semua Maba">
               <i class="fa-solid fa-file-pdf"></i>
+            </button>
           </div>
         </div>
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
@@ -528,8 +522,6 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
 
 <!-- Modal Detail Kelompok Maba -->
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
