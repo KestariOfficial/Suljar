@@ -640,7 +640,16 @@ function inisialisasiKelompokMaba() {
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
- function tampilkanDetailKelompok(namaKelompok) {
+ let modalInstance = null;
+
+  function getModalInstance() {
+    if (!modalInstance) {
+      modalInstance = new bootstrap.Modal(document.getElementById('modalKelompok'));
+    }
+    return modalInstance;
+  }
+
+  function tampilkanDetailKelompok(namaKelompok) {
     let k = infoKelompok.find(item => item.nama === namaKelompok);
     if (k) {
       document.getElementById('modalTitle').innerHTML = `<i class="fa-solid fa-water me-2"></i>${k.nama}`;
@@ -651,7 +660,7 @@ function inisialisasiKelompokMaba() {
       let funFactContainer = document.getElementById('modalFunFact').parentElement.parentElement;
       if(funFactContainer) funFactContainer.style.display = 'block';
 
-      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
+      getModalInstance().show();
     }
   }
 
@@ -674,7 +683,7 @@ function inisialisasiKelompokMaba() {
       let funFactContainer = document.getElementById('modalFunFact').parentElement.parentElement;
       if(funFactContainer) funFactContainer.style.display = 'block';
 
-      new bootstrap.Modal(document.getElementById('modalKelompok')).show();
+      getModalInstance().show();
     }
   }
   
