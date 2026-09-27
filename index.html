@@ -6,6 +6,8 @@
   <title>Situs Absensi Sulam Jaring 2026</title>
   <link rel="icon" type="image/png" href="https://github.com/KestariOfficial/Suljar/raw/main/logo.png">
   <base target="_top">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   
   <!-- Optimasi Font & Koneksi -->
   <link rel="preconnect" href="https://script.google.com">
@@ -480,6 +482,11 @@
             <button class="btn btn-primary px-4 shadow-sm btn-refresh" onclick="muatRekapPanitia(true)" title="Segarkan Data Terbaru">
               <i class="fa-solid fa-rotate-right" id="icon-refresh-panitia"></i>
             </button>
+            <button class="btn btn-primary px-3 shadow-sm text-nowrap fw-bold" onclick="downloadPDFPanitia()" title="Download PDF Rekap Semua Panitia">
+              <i class="fa-solid fa-file-pdf"></i>
+            </button>
+          </div>
+        </div>
           </div>
         </div>
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
@@ -489,6 +496,11 @@
             </thead>
             <tbody id="tabel-rekap-panitia-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
           </table>
+        </div>
+        <div class="text-center mt-3 mb-4">
+          <button class="btn btn-primary px-4 py-2 fw-bold rounded-pill shadow-sm" onclick="downloadPDFPanitia()">
+            <i class="fa-solid fa-file-pdf me-2"></i>Download PDF Rekap Semua Panitia
+          </button>
         </div>
       </div>
 
@@ -502,6 +514,8 @@
             <button class="btn btn-success px-4 shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
               <i class="fa-solid fa-rotate-right" id="icon-refresh-maba"></i>
             </button>
+            <button class="btn btn-success px-3 shadow-sm text-nowrap fw-bold" onclick="downloadPDFMaba()" title="Download PDF Rekap Semua Maba">
+              <i class="fa-solid fa-file-pdf"></i>
           </div>
         </div>
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
@@ -514,7 +528,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 
@@ -897,6 +910,120 @@ function cekWaktuAbsen() {
     if (!kelompok) return;
     muatData('MABA_' + kelompok, kelompok, 'maba', document.getElementById('tabel-rekap-maba-body'), document.getElementById('icon-refresh-maba'), isRefresh);
   }
+  // --- FUNGSI DOWNLOAD PDF KHUSUS PANITIA ---
+  async function downloadPDFPanitia() {
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF('p', 'mm', 'a4');
+    
+    if(!confirm("Unduh rekap PDF untuk seluruh Divisi Panitia?")) return;
+    
+    let yPos = 15;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("REKAPITULASI PRESENSI PANITIA", 14, yPos);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
+    yPos += 15;
+
+    for (let divisi in dataPanitia) {
+      let idKel = 'PANITIA_' + divisi;
+      try {
+        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
+        let dataServer = await res.json();
+        
+        let tableData = [];
+        dataPanitia[divisi].forEach((nama, idx) => {
+          let target = nama.toUpperCase().trim();
+          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
+          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
+          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
+          tableData.push([idx + 1, nama, h, s]);
+        });
+
+        if (yPos > 250) { doc.addPage(); yPos = 15; }
+        
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(`Divisi: ${divisi}`, 14, yPos);
+        yPos += 4;
+
+        doc.autoTable({
+          startY: yPos,
+          head: [['No', 'Nama Panitia', 'Datang', 'Pulang']],
+          body: tableData,
+          theme: 'grid',
+          headStyles: { fillColor: [2, 27, 51] },
+          styles: { fontSize: 8 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 10;
+      } catch (e) {
+        console.error("Gagal memuat data panitia: " + divisi);
+      }
+    }
+
+    doc.save("Rekap_Absensi_Panitia_2026.pdf");
+    alert("PDF Panitia berhasil diunduh!");
+  }
+
+  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA ---
+  async function downloadPDFMaba() {
+    const { jsPDF } = window.jspdf;
+    let doc = new jsPDF('p', 'mm', 'a4');
+    
+    if(!confirm("Unduh rekap PDF untuk seluruh Kelompok Maba?")) return;
+    
+    let yPos = 15;
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(16);
+    doc.text("REKAPITULASI PRESENSI MAHASISWA BARU", 14, yPos);
+    doc.setFontSize(10);
+    doc.setFont("helvetica", "normal");
+    doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
+    yPos += 15;
+
+    for (let kelompok in dataMaba) {
+      let idKel = 'MABA_' + kelompok;
+      try {
+        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
+        let dataServer = await res.json();
+        
+        let tableData = [];
+        dataMaba[kelompok].forEach((nama, idx) => {
+          let target = nama.toUpperCase().trim();
+          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
+          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
+          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
+          tableData.push([idx + 1, nama, h, s]);
+        });
+
+        if (yPos > 250) { doc.addPage(); yPos = 15; }
+
+        doc.setFont("helvetica", "bold");
+        doc.setFontSize(12);
+        doc.text(`Kelompok: ${kelompok}`, 14, yPos);
+        yPos += 4;
+
+        doc.autoTable({
+          startY: yPos,
+          head: [['No', 'Nama Mahasiswa Baru', 'Datang', 'Pulang']],
+          body: tableData,
+          theme: 'grid',
+          headStyles: { fillColor: [0, 77, 102] },
+          styles: { fontSize: 8 }
+        });
+
+        yPos = doc.lastAutoTable.finalY + 10;
+      } catch (e) {
+        console.error("Gagal memuat data maba: " + kelompok);
+      }
+    }
+
+    doc.save("Rekap_Absensi_Maba_2026.pdf");
+    alert("PDF Maba berhasil diunduh!");
+  }
+  
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
