@@ -313,6 +313,22 @@
     .modal-backdrop.show {
       opacity: 0 !important;
     }
+    
+    @media (max-width: 768px) {
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+      }
+      .table th, .table td {
+        padding: 6px 8px !important; /* Memperkecil jarak dalam tabel */
+        font-size: 0.75rem !important; /* Mengecilkan ukuran huruf */
+      }
+      .table .badge {
+        padding: 4px 8px !important;
+        font-size: 0.7rem !important;
+      }
+    }
+    
   </style>
 </head>
 <body>
