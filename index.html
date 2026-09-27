@@ -615,7 +615,7 @@ let modalInstance = null;
   function getModalInstance() {
     let modalElement = document.getElementById('modalKelompok');
     if (!modalInstance) {
-      modalInstance = new bootstrap.Modal(modalElement, { backdrop: true });
+      modalInstance = new bootstrap.Modal(modalElement, { backdrop: false });
     }
     return modalInstance;
   }
