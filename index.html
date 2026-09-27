@@ -523,38 +523,6 @@
       </div>
     </div>
 
-<!-- Modal Detail Kelompok Maba -->
-<div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
-      <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)); padding: 20px 25px;">
-        <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
-        <!-- Ubah data-bs-dismiss menjadi onclick="tutupModalKelompok()" -->
-        <button type="button" class="btn-close btn-close-white" onclick="tutupModalKelompok()" aria-label="Close"></button>
-      </div>
-      <div class="modal-body p-4 bg-light">
-        <div class="text-center mb-4 mt-2">
-          <div id="modalIconContainer" class="display-1 text-info mb-3 drop-shadow"></div>
-        </div>
-        <div class="mb-4">
-          <h6 class="text-primary fw-bold text-uppercase small mb-2"><i class="fa-solid fa-book-open me-2"></i> Karakteristik Organisme</h6>
-          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.7;"></p>
-        </div>
-        <div>
-          <h6 class="text-success fw-bold text-uppercase small mb-2"><i class="fa-solid fa-lightbulb me-2"></i> Fakta Unik (Fun Fact)</h6>
-          <div class="p-3 rounded-3 bg-white border-start border-4 border-success shadow-sm">
-            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.6;"></p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer bg-light border-0 pt-0 pb-4 justify-content-center">
-        <!-- Ubah data-bs-dismiss menjadi onclick="tutupModalKelompok()" -->
-        <button type="button" class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" onclick="tutupModalKelompok()">Tutup</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
   // =========================================================================
   // PERHATIAN: HAPUS TULISAN DI BAWAH INI DAN GANTI DENGAN URL MILIK ANDA!!
@@ -642,30 +610,29 @@ function inisialisasiKelompokMaba() {
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
- let modalInstance = null;
+let modalInstance = null;
 
   function getModalInstance() {
     let modalElement = document.getElementById('modalKelompok');
     if (!modalInstance) {
-      modalInstance = new bootstrap.Modal(modalElement);
+      modalInstance = new bootstrap.Modal(modalElement, { backdrop: true });
     }
     return modalInstance;
   }
 
-  // Fungsi khusus untuk menutup modal dan membersihkan layar secara paksa
+  // Fungsi penutup modal manual untuk membersihkan kuncian layar secara instan
   function tutupModalKelompok() {
     let modalEl = document.getElementById('modalKelompok');
     let modal = bootstrap.Modal.getInstance(modalEl);
     if (modal) {
       modal.hide();
     }
-    // Pembersihan instan agar layar tidak pernah terkunci / meredup
     setTimeout(() => {
       document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
       document.body.classList.remove('modal-open');
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
-    }, 150);
+    }, 100);
   }
 
   function tampilkanDetailKelompok(namaKelompok) {
@@ -1043,6 +1010,36 @@ function cekWaktuAbsen() {
     doc.save("Rekap_Absensi_Maba_2026.pdf");
     alert("PDF Maba berhasil diunduh!");
   }
+
+  <!-- Pindahkan Modal Detail Kelompok Maba ke Sini (Di Luar Kontainer Utama) -->
+<div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
+      <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)); padding: 20px 25px;">
+        <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
+        <button type="button" class="btn-close btn-close-white" onclick="tutupModalKelompok()" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 bg-light">
+        <div class="text-center mb-4 mt-2">
+          <div id="modalIconContainer" class="display-1 text-info mb-3 drop-shadow"></div>
+        </div>
+        <div class="mb-4">
+          <h6 class="text-primary fw-bold text-uppercase small mb-2"><i class="fa-solid fa-book-open me-2"></i> Karakteristik Organisme</h6>
+          <p id="modalDesc" class="text-secondary" style="text-align: justify; line-height: 1.7;"></p>
+        </div>
+        <div>
+          <h6 class="text-success fw-bold text-uppercase small mb-2"><i class="fa-solid fa-lightbulb me-2"></i> Fakta Unik (Fun Fact)</h6>
+          <div class="p-3 rounded-3 bg-white border-start border-4 border-success shadow-sm">
+            <p id="modalFunFact" class="mb-0 text-dark fst-italic" style="line-height: 1.6;"></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer bg-light border-0 pt-0 pb-4 justify-content-center">
+        <button type="button" class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" onclick="tutupModalKelompok()">Tutup</button>
+      </div>
+    </div>
+  </div>
+</div>
   
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
