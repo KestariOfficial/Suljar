@@ -644,7 +644,16 @@ function inisialisasiKelompokMaba() {
 
   function getModalInstance() {
     if (!modalInstance) {
-      modalInstance = new bootstrap.Modal(document.getElementById('modalKelompok'));
+      let modalElement = document.getElementById('modalKelompok');
+      modalInstance = new bootstrap.Modal(modalElement);
+      
+      // Pembersih otomatis agar latar belakang dan kuncian layar langsung hilang saat modal ditutup
+      modalElement.addEventListener('hidden.bs.modal', function () {
+        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        document.body.classList.remove('modal-open');
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+      });
     }
     return modalInstance;
   }
