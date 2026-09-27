@@ -529,7 +529,8 @@
     <div class="modal-content border-0 shadow-lg" style="border-radius: 20px; overflow: hidden;">
       <div class="modal-header border-0 text-white" style="background: linear-gradient(135deg, var(--ocean-deep), var(--ocean-teal)); padding: 20px 25px;">
         <h5 class="modal-title fw-bold" id="modalTitle"><i class="fa-solid fa-fish me-2"></i>Kelompok</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        <!-- Ubah data-bs-dismiss menjadi onclick="tutupModalKelompok()" -->
+        <button type="button" class="btn-close btn-close-white" onclick="tutupModalKelompok()" aria-label="Close"></button>
       </div>
       <div class="modal-body p-4 bg-light">
         <div class="text-center mb-4 mt-2">
@@ -547,7 +548,8 @@
         </div>
       </div>
       <div class="modal-footer bg-light border-0 pt-0 pb-4 justify-content-center">
-        <button type="button" class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" data-bs-dismiss="modal">Tutup</button>
+        <!-- Ubah data-bs-dismiss menjadi onclick="tutupModalKelompok()" -->
+        <button type="button" class="btn btn-secondary px-5 fw-bold rounded-pill shadow-sm" onclick="tutupModalKelompok()">Tutup</button>
       </div>
     </div>
   </div>
@@ -643,19 +645,27 @@ function inisialisasiKelompokMaba() {
  let modalInstance = null;
 
   function getModalInstance() {
+    let modalElement = document.getElementById('modalKelompok');
     if (!modalInstance) {
-      let modalElement = document.getElementById('modalKelompok');
       modalInstance = new bootstrap.Modal(modalElement);
-      
-      // Pembersih otomatis agar latar belakang dan kuncian layar langsung hilang saat modal ditutup
-      modalElement.addEventListener('hidden.bs.modal', function () {
-        document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
-        document.body.classList.remove('modal-open');
-        document.body.style.overflow = '';
-        document.body.style.paddingRight = '';
-      });
     }
     return modalInstance;
+  }
+
+  // Fungsi khusus untuk menutup modal dan membersihkan layar secara paksa
+  function tutupModalKelompok() {
+    let modalEl = document.getElementById('modalKelompok');
+    let modal = bootstrap.Modal.getInstance(modalEl);
+    if (modal) {
+      modal.hide();
+    }
+    // Pembersihan instan agar layar tidak pernah terkunci / meredup
+    setTimeout(() => {
+      document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+      document.body.classList.remove('modal-open');
+      document.body.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }, 150);
   }
 
   function tampilkanDetailKelompok(namaKelompok) {
