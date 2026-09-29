@@ -508,9 +508,9 @@
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
           <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark">
-              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
+              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>STATUS</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
+            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="6" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -533,9 +533,9 @@
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
           <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark" style="background-color: var(--ocean-teal);">
-              <tr><th>NO</th><th class="text-start">NAMA MABA</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
+              <tr><th>NO</th><th class="text-start">NAMA MABA</th><th>STATUS</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-maba-body"><tr><td colspan="5" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih kelompok maba di atas.</td></tr></tbody>
+            <tbody id="tabel-rekap-maba-body"><tr><td colspan="6" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih kelompok maba di atas.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -594,6 +594,7 @@
 
   let jalurAktif = "Panitia";
   let jenisAbsenAktif = "Kedatangan";
+  let statusWaktuAktif = "Tepat Waktu";
   let cacheDataRekap = {}; 
 
   window.onload = () => {
@@ -705,7 +706,6 @@ let modalInstance = null;
 
 function cekWaktuAbsen() {
   const tanggalHariIni = new Date().toDateString();  
-
   const waktuLokal = new Date();
   const jam = waktuLokal.getHours();
   const menit = waktuLokal.getMinutes();
@@ -719,11 +719,13 @@ function cekWaktuAbsen() {
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
     if (sandiTelat === "jangantelatlagi") { 
+      statusWaktuAktif = "Terlambat"; 
       bukaFormulir('Kedatangan'); 
     } else if (sandiTelat !== null) {
       alert("Sandi Keterlambatan Salah!");
     }
   } else {
+    statusWaktuAktif = "Tepat Waktu"; 
     bukaFormulir('Kedatangan'); 
   }
 }
@@ -808,10 +810,16 @@ function cekWaktuAbsen() {
     let kirimPayload = (base64Foto = "") => {
       let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
       let idKel = prefix + kategori;
+      
+      let jenisAbsenKirim = `${jalurAktif}_${jenisAbsenAktif}`;
+      if (jenisAbsenAktif === 'Kedatangan') {
+        jenisAbsenKirim += `|${statusWaktuAktif}`; 
+      }
+
       let payload = {
         action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
         status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
-        base64Foto: base64Foto, jenisAbsen: `${jalurAktif}_${jenisAbsenAktif}`
+        base64Foto: base64Foto, jenisAbsen: jenisAbsenKirim
       };
 
       fetch(SCRIPT_URL, {
@@ -853,21 +861,29 @@ function cekWaktuAbsen() {
       let h = '<span class="text-secondary">-</span>';
       let s = '<span class="text-secondary">-</span>';
       let bukti = '<span class="text-secondary">-</span>';
+      let statusWaktu = '<span class="text-secondary">-</span>';
 
       records.forEach(rec => {
-        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
+        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") {
+          h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
+          if (rec.jenisAbsen.toLowerCase().includes("terlambat")) {
+             statusWaktu = '<span class="badge bg-danger rounded-pill px-2 py-1 shadow-sm">Terlambat</span>';
+          } else {
+             statusWaktu = '<span class="badge bg-success rounded-pill px-2 py-1 shadow-sm">Tepat Waktu</span>';
+          }
+        }
         if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
-        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-2 px-3 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Lihat Foto</a>`;
+        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-1 px-2 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Foto</a>`;
       });
 
-      html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
+      html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${statusWaktu}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
     });
     tbody.innerHTML = html;
   }
 
   async function muatData(idKel, divisi, tipe, tbody, iconRefresh, isRefresh) {
     if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
-       tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: Anda belum memasukkan link URL Google Apps Script Anda ke dalam file HTML.</td></tr>';
+       tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: URL belum dimasukkan.</td></tr>';
        return;
     }
 
@@ -876,7 +892,7 @@ function cekWaktuAbsen() {
       return;
     }
 
-    tbody.innerHTML = `<tr><td colspan="5" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
     if(iconRefresh) iconRefresh.classList.add('fa-spin');
 
     try {
@@ -885,7 +901,7 @@ function cekWaktuAbsen() {
       cacheDataRekap[idKel] = dataRes; 
       renderTabel(divisi, dataRes, tipe, tbody);
     } catch {
-      tbody.innerHTML = '<tr><td colspan="5" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database. Periksa koneksi internet Anda.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database.</td></tr>';
     } finally {
       if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
