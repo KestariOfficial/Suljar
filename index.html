@@ -805,8 +805,13 @@ function cekWaktuAbsen() {
     let targetNav = document.getElementById('nav-' + pageId);
     if(targetPage) targetPage.classList.add('active-view');
     if(targetNav) targetNav.classList.add('active');
+    // Menutup otomatis menu garis 3 (hamburger) di perangkat mobile
+    let menuCollapse = document.getElementById('navbarNav');
+    if (menuCollapse && menuCollapse.classList.contains('show')) {
+      document.querySelector('.navbar-toggler').click();
+    }
   }
-
+  
   function cekSandiRekap() {
     let sandi = prompt("Masukkan sandi rahasia:");
     if (sandi === "GSM2026") showPage('rekap');
