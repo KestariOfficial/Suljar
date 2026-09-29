@@ -353,6 +353,7 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" id="nav-kontak" href="javascript:void(0)" onclick="showPage('kontak')"><i class="fa-solid fa-address-book me-1"></i> Kontak</a></li>
         <li class="nav-item"><a class="nav-link active" id="nav-dashboard" href="javascript:void(0)" onclick="showPage('dashboard')"><i class="fa-solid fa-compass me-1"></i> Dashboard</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-kelompok" href="javascript:void(0)" onclick="showPage('kelompok')"><i class="fa-solid fa-water-ladder me-1"></i> Kelompok Maba</a></li>
         <li class="nav-item"><a class="nav-link" id="nav-absen" href="javascript:void(0)" onclick="showPage('absen')"><i class="fa-solid fa-user-check me-1"></i> Absen</a></li>
@@ -364,7 +365,47 @@
 
 <div class="container relative z-10">
   <div class="content-wrapper">
-    
+    <!-- Halaman Contact Person -->
+    <div id="view-kontak" class="page-view">
+      <div class="content-front">
+        <h2 class="header-title mb-2 text-center"><i class="fa-solid fa-headset me-2"></i>Contact Person</h2>
+        <p class="text-muted text-center mb-5" style="text-shadow: 0 1px 3px rgba(255,255,255,0.8);">Hubungi panitia jika Anda mengalami kendala saat melakukan absensi dan TERLAMBAT.</p>
+        
+        <div class="row justify-content-center g-4">
+          <!-- Kotak Contact 1 -->
+          <div class="col-md-4 col-sm-6">
+            <div class="card card-absen-option p-4 h-100 text-center shadow-sm">
+              <div class="card-body p-0 d-flex flex-column align-items-center">
+                <h5 class="fw-bold text-dark mb-3">King Aryo</h5>
+                <div class="mb-3">
+                  <img src="https://github.com/KestariOfficial/Suljar/raw/refs/heads/main/1756209f-c128-4c83-9e6e-71d36063b501.jfif" alt="Foto CP 1" class="rounded-circle border border-4 border-info shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                </div>
+                <p class="text-secondary fw-semibold mb-3"><i class="fa-solid fa-phone me-2"></i>0822-8768-5283</p>
+                <a href="https://wa.me/6282287685283" target="_blank" class="btn btn-success btn-sm rounded-pill w-100 mt-auto fw-bold shadow-sm">
+                  <i class="fa-brands fa-whatsapp me-2"></i>Chat WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Kotak Contact 2 -->
+          <div class="col-md-4 col-sm-6">
+            <div class="card card-absen-option p-4 h-100 text-center shadow-sm">
+              <div class="card-body p-0 d-flex flex-column align-items-center">
+                <h5 class="fw-bold text-dark mb-3">Kania Ayu Nurfalisha</h5>
+                <div class="mb-3">
+                  <img src="https://via.placeholder.com/150" alt="Foto CP 2" class="rounded-circle border border-4 border-info shadow-sm" style="width: 120px; height: 120px; object-fit: cover;">
+                </div>
+                <p class="text-secondary fw-semibold mb-3"><i class="fa-solid fa-phone me-2"></i>0898-7654-3210</p>
+                <a href="https://wa.me/6289876543210" target="_blank" class="btn btn-success btn-sm rounded-pill w-100 mt-auto fw-bold shadow-sm">
+                  <i class="fa-brands fa-whatsapp me-2"></i>Chat WhatsApp
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   <!-- Dashboard -->
     <div id="view-dashboard" class="page-view active-view">
       <div class="content-wrapper dashboard-wrapper text-center py-5 content-front" style="border: none;">
