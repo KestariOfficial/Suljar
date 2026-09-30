@@ -930,6 +930,8 @@ function cekWaktuAbsen() {
        return;
     }
 
+    // Jika data sudah tersimpan di cache dan bukan karena tombol refresh diklik, 
+    // data akan langsung dimunculkan seketika tanpa loading ulang ke server!
     if (!isRefresh && cacheDataRekap[idKel]) {
       renderTabel(divisi, cacheDataRekap[idKel], tipe, tbody);
       return;
@@ -941,6 +943,8 @@ function cekWaktuAbsen() {
     try {
       let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
       let dataRes = await res.json();
+      
+      // Simpan hasil data ke dalam cache memori browser
       cacheDataRekap[idKel] = dataRes; 
       renderTabel(divisi, dataRes, tipe, tbody);
     } catch {
@@ -949,7 +953,7 @@ function cekWaktuAbsen() {
       if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
   }
-
+  
   function muatRekapPanitia(isRefresh = false) {
     let divisi = document.getElementById('select-rekap-divisi').value;
     if (!divisi) return;
