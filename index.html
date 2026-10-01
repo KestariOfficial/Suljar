@@ -8,6 +8,7 @@
   <base target="_top">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   
   <!-- Optimasi Font & Koneksi -->
   <link rel="preconnect" href="https://script.google.com">
@@ -586,9 +587,11 @@
 
 <script>
   // =========================================================================
-  // PERHATIAN: HAPUS TULISAN DI BAWAH INI DAN GANTI DENGAN URL MILIK ANDA!!
+  // KONFIGURASI SUPABASE
   // =========================================================================
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwlKkw2QqvyQp5B_N7K9ShnmUqKtKxbI8my1h-DW86BFb2bPAaSidSpXpMIUdnWAbBV/exec";
+  const SUPABASE_URL = "https://gejmslszbskeuynczbtb.supabase.co";
+  const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imdlam1zbHN6YnNrZXV5bmN6YnRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA4NjMwNjgsImV4cCI6MjEwNjQzOTA2OH0.Dea8npzXVQG8tBZ2Zd3SM_QHnDtfY_4leKRGB5F5kY8";
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   // =========================================================================
 
   // Data Panitia & Maba
@@ -645,7 +648,7 @@
     gantiTabRekap('panitia');
   };
 
-function inisialisasiKelompokMaba() {
+  function inisialisasiKelompokMaba() {
     let htmlCards = '';
     infoKelompok.forEach((k) => {
       htmlCards += `
@@ -672,8 +675,7 @@ function inisialisasiKelompokMaba() {
     document.getElementById('grid-kelompok').innerHTML = htmlCards;
   }
 
-let modalInstance = null;
-
+  let modalInstance = null;
   function getModalInstance() {
     let modalElement = document.getElementById('modalKelompok');
     if (!modalInstance) {
@@ -738,38 +740,37 @@ let modalInstance = null;
 
   function cekSandiPulang() {
     let sandiInput = prompt("Masukkan Sandi Pulang:");
-    if (sandiInput === "selamattinggal") { // <-- Ganti tulisan "see you soon" ini dengan sandi baru yang Anda inginkan
+    if (sandiInput === "selamattinggal") {
       bukaFormulir('Kepulangan');
     } else if (sandiInput !== null) {
       alert("salah monyet yang bener");
     }
   }
 
-function cekWaktuAbsen() {
-  const tanggalHariIni = new Date().toDateString();  
-  const waktuLokal = new Date();
-  const jam = waktuLokal.getHours();
-  const menit = waktuLokal.getMinutes();
-  const waktuSekarang = jam + (menit / 60);
+  function cekWaktuAbsen() {
+    const waktuLokal = new Date();
+    const jam = waktuLokal.getHours();
+    const menit = waktuLokal.getMinutes();
+    const waktuSekarang = jam + (menit / 60);
 
-  const jamBuka = 18.00;  
-  const jamTutup = 24.00; 
+    const jamBuka = 18.00;  
+    const jamTutup = 24.00; 
 
-  if (waktuSekarang < jamBuka) {
-    alert("Belum waktunya! Absen panitia baru dibuka pukul 18.15 WIB.");
-  } else if (waktuSekarang > jamTutup) {
-    let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
-    if (sandiTelat === "jangantelatlagi") { 
-      statusWaktuAktif = "Terlambat"; 
+    if (waktuSekarang < jamBuka) {
+      alert("Belum waktunya! Absen panitia baru dibuka pukul 18.15 WIB.");
+    } else if (waktuSekarang > jamTutup) {
+      let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
+      if (sandiTelat === "jangantelatlagi") { 
+        statusWaktuAktif = "Terlambat"; 
+        bukaFormulir('Kedatangan'); 
+      } else if (sandiTelat !== null) {
+        alert("Sandi Keterlambatan Salah!");
+      }
+    } else {
+      statusWaktuAktif = "Tepat Waktu"; 
       bukaFormulir('Kedatangan'); 
-    } else if (sandiTelat !== null) {
-      alert("Sandi Keterlambatan Salah!");
     }
-  } else {
-    statusWaktuAktif = "Tepat Waktu"; 
-    bukaFormulir('Kedatangan'); 
   }
-}
   
   function bukaFormulir(jenis) {
     jenisAbsenAktif = jenis;
@@ -805,7 +806,6 @@ function cekWaktuAbsen() {
     let targetNav = document.getElementById('nav-' + pageId);
     if(targetPage) targetPage.classList.add('active-view');
     if(targetNav) targetNav.classList.add('active');
-    // Menutup otomatis menu garis 3 (hamburger) di perangkat mobile
     let menuCollapse = document.getElementById('navbarNav');
     if (menuCollapse && menuCollapse.classList.contains('show')) {
       document.querySelector('.navbar-toggler').click();
@@ -836,12 +836,10 @@ function cekWaktuAbsen() {
     }
   }
 
-  function kirimDataAbsen() {
-    if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
-      alert("ERROR SYSTEM: Anda belum memasukkan URL Google Script pada kode index.html.");
-      return;
-    }
-
+  // =========================================================================
+  // FUNGSI KIRIM DATA KE SUPABASE (MENGGANTIKAN GOOGLE APPS SCRIPT)
+  // =========================================================================
+  async function kirimDataAbsen() {
     let fileInput = document.getElementById('input-foto');
     let kategori = document.getElementById('select-kategori').value;
     let nama = document.getElementById('select-nama').value;
@@ -851,88 +849,95 @@ function cekWaktuAbsen() {
     if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) return alert('Wajib unggah foto!');
 
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data...';
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data ke Supabase...';
 
-    let kirimPayload = (base64Foto = "") => {
+    try {
       let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
       let idKel = prefix + kategori;
-      
       let jenisAbsenKirim = `${jalurAktif}_${jenisAbsenAktif}`;
       if (jenisAbsenAktif === 'Kedatangan') {
         jenisAbsenKirim += `|${statusWaktuAktif}`; 
       }
 
-      let payload = {
-        action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
-        status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
-        base64Foto: base64Foto, jenisAbsen: jenisAbsenKirim
-      };
+      let fotoUrl = "";
 
-      // 1. Kirim data ke Google Script di latar belakang secara diam-diam
-      fetch(SCRIPT_URL, {
-        method: "POST", mode: "no-cors",
-        headers: { "Content-Type": "text/plain;charset=utf-8" },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
+      // Jika ada foto, kompres lalu upload langsung ke Supabase Storage
+      if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
+        let file = fileInput.files[0];
+        let compressedBlob = await new Promise((resolve) => {
+          let reader = new FileReader();
+          reader.onload = function(e) {
+            let img = new Image();
+            img.src = e.target.result;
+            img.onload = function() {
+              let canvas = document.createElement('canvas');
+              let ctx = canvas.getContext('2d');
+              let MAX_WIDTH = 600;
+              let MAX_HEIGHT = 600;
+              let width = img.width;
+              let height = img.height;
+              
+              if (width > height) {
+                if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; }
+              } else {
+                if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; }
+              }
+              
+              canvas.width = width;
+              canvas.height = height;
+              ctx.drawImage(img, 0, 0, width, height);
+              canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.6);
+            }
+          };
+          reader.readAsDataURL(file);
+        });
 
-      // 2. Langsung berikan respon sukses secara instan kepada pengguna tanpa menunggu server
-      alert("Absensi Anda telah tercatat dengan aman!");
+        // Membersihkan nama file agar tidak ada karakter aneh saat masuk ke storage
+        let namaFile = `${idKel}_${nama.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.jpg`;
+        
+        let { data: uploadData, error: uploadError } = await _supabase.storage
+          .from('bukti-absen')
+          .upload(namaFile, compressedBlob);
+
+        if (uploadError) throw uploadError;
+
+        // Ambil Public URL dari foto yang di-upload
+        let { data: publicUrlData } = _supabase.storage
+          .from('bukti-absen')
+          .getPublicUrl(namaFile);
+          
+        fotoUrl = publicUrlData.publicUrl;
+      }
+
+      // Simpan data teks & URL foto ke tabel Supabase 'absensi'
+      let { error: dbError } = await _supabase
+        .from('absensi')
+        .insert([{
+          tgl: tgl,
+          divisi: kategori,
+          nama: nama,
+          id_kel: idKel,
+          status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
+          jenis_absen: jenisAbsenKirim,
+          foto_url: fotoUrl
+        }]);
+
+      if (dbError) throw dbError;
+
+      alert("Absensi Anda telah tercatat dengan aman di Supabase!");
       localStorage.setItem('sudahAbsenDatang', new Date().toDateString());
       delete cacheDataRekap[idKel]; 
       
+      showPage('dashboard');
+    } catch (err) {
+      console.error(err);
+      alert("Gagal mengirim data: " + err.message);
+    } finally {
       btn.disabled = false;
       btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
-      showPage('dashboard');
-    };
-
-    if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
-      let file = fileInput.files[0];
-      let reader = new FileReader();
-      
-      reader.onload = function(e) {
-        let img = new Image();
-        img.src = e.target.result;
-        
-        img.onload = function() {
-          let canvas = document.createElement('canvas');
-          let ctx = canvas.getContext('2d');
-          
-          // Batasi resolusi maksimal gambar agar ringan (600x600 px)
-          let MAX_WIDTH = 600;
-          let MAX_HEIGHT = 600;
-          let width = img.width;
-          let height = img.height;
-          
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
-          }
-          
-          canvas.width = width;
-          canvas.height = height;
-          
-          // Gambar ulang ke dalam ukuran canvas yang lebih kecil
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          // Kompres kualitas gambar menjadi 60% (0.6) agar ukurannya sangat kecil
-          let compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-          
-          // Kirim data dengan foto yang sudah dikompres
-          kirimPayload(compressedBase64);
-        }
-      };
-      reader.readAsDataURL(file);
-    } else {
-      kirimPayload("");
     }
   }
+
   function renderTabel(kategori, dataServer, tipe, tbody) {
     let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
     let html = '';
@@ -946,16 +951,18 @@ function cekWaktuAbsen() {
       let statusWaktu = '<span class="text-secondary">-</span>';
 
       records.forEach(rec => {
-        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") {
+        let jAbsen = rec.jenis_absen || "";
+        let stat = rec.status || "";
+        if (jAbsen.toLowerCase().includes("kedatangan") || stat === "H") {
           h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
-          if (rec.jenisAbsen.toLowerCase().includes("terlambat")) {
+          if (jAbsen.toLowerCase().includes("terlambat")) {
              statusWaktu = '<span class="badge bg-danger rounded-pill px-2 py-1 shadow-sm">Terlambat</span>';
           } else {
              statusWaktu = '<span class="badge bg-success rounded-pill px-2 py-1 shadow-sm">Tepat Waktu</span>';
           }
         }
-        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
-        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-1 px-2 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Foto</a>`;
+        if (jAbsen.toLowerCase().includes("kepulangan") || stat === "S") s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
+        if (rec.foto_url) bukti = `<a href="${rec.foto_url}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-1 px-2 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Foto</a>`;
       });
 
       html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${statusWaktu}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
@@ -963,31 +970,31 @@ function cekWaktuAbsen() {
     tbody.innerHTML = html;
   }
 
+  // =========================================================================
+  // FUNGSI MUAT REKAP DARI SUPABASE
+  // =========================================================================
   async function muatData(idKel, divisi, tipe, tbody, iconRefresh, isRefresh) {
-    if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
-       tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: URL belum dimasukkan.</td></tr>';
-       return;
-    }
-
-    // Jika data sudah tersimpan di cache dan bukan karena tombol refresh diklik, 
-    // data akan langsung dimunculkan seketika tanpa loading ulang ke server!
     if (!isRefresh && cacheDataRekap[idKel]) {
       renderTabel(divisi, cacheDataRekap[idKel], tipe, tbody);
       return;
     }
 
-    tbody.innerHTML = `<tr><td colspan="6" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="6" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data dari Supabase...</td></tr>`;
     if(iconRefresh) iconRefresh.classList.add('fa-spin');
 
     try {
-      let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
-      let dataRes = await res.json();
+      let { data: dataRes, error } = await _supabase
+        .from('absensi')
+        .select('*')
+        .eq('id_kel', idKel);
+
+      if (error) throw error;
       
-      // Simpan hasil data ke dalam cache memori browser
-      cacheDataRekap[idKel] = dataRes; 
-      renderTabel(divisi, dataRes, tipe, tbody);
-    } catch {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database.</td></tr>';
+      cacheDataRekap[idKel] = dataRes || []; 
+      renderTabel(divisi, dataRes || [], tipe, tbody);
+    } catch (err) {
+      console.error(err);
+      tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database Supabase.</td></tr>';
     } finally {
       if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
@@ -1004,11 +1011,10 @@ function cekWaktuAbsen() {
     if (!kelompok) return;
     muatData('MABA_' + kelompok, kelompok, 'maba', document.getElementById('tabel-rekap-maba-body'), document.getElementById('icon-refresh-maba'), isRefresh);
   }
-  // --- FUNGSI DOWNLOAD PDF KHUSUS PANITIA ---
+
   async function downloadPDFPanitia() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF('p', 'mm', 'a4');
-    
     if(!confirm("Unduh rekap PDF untuk seluruh Divisi Panitia?")) return;
     
     let yPos = 15;
@@ -1023,15 +1029,15 @@ function cekWaktuAbsen() {
     for (let divisi in dataPanitia) {
       let idKel = 'PANITIA_' + divisi;
       try {
-        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
-        let dataServer = await res.json();
+        let { data: dataServer } = await _supabase.from('absensi').select('*').eq('id_kel', idKel);
+        let dataRes = dataServer || [];
         
         let tableData = [];
         dataPanitia[divisi].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
-          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
-          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
-          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
+          let rec = dataRes.find(r => r.nama.toUpperCase().includes(target));
+          let h = (rec && (rec.jenis_absen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
+          let s = (rec && (rec.jenis_absen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
           tableData.push([idx + 1, nama, h, s]);
         });
 
@@ -1053,19 +1059,16 @@ function cekWaktuAbsen() {
 
         yPos = doc.lastAutoTable.finalY + 10;
       } catch (e) {
-        console.error("Gagal memuat data panitia: " + divisi);
+        console.error("Gagal memuat rekap PDF panitia: " + divisi);
       }
     }
-
     doc.save("Rekap_Absensi_Panitia_2026.pdf");
     alert("PDF Panitia berhasil diunduh!");
   }
 
-  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA ---
   async function downloadPDFMaba() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF('p', 'mm', 'a4');
-    
     if(!confirm("Unduh rekap PDF untuk seluruh Kelompok Maba?")) return;
     
     let yPos = 15;
@@ -1080,15 +1083,15 @@ function cekWaktuAbsen() {
     for (let kelompok in dataMaba) {
       let idKel = 'MABA_' + kelompok;
       try {
-        let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
-        let dataServer = await res.json();
+        let { data: dataServer } = await _supabase.from('absensi').select('*').eq('id_kel', idKel);
+        let dataRes = dataServer || [];
         
         let tableData = [];
         dataMaba[kelompok].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
-          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
-          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
-          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
+          let rec = dataRes.find(r => r.nama.toUpperCase().includes(target));
+          let h = (rec && (rec.jenis_absen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
+          let s = (rec && (rec.jenis_absen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
           tableData.push([idx + 1, nama, h, s]);
         });
 
@@ -1110,10 +1113,9 @@ function cekWaktuAbsen() {
 
         yPos = doc.lastAutoTable.finalY + 10;
       } catch (e) {
-        console.error("Gagal memuat data maba: " + kelompok);
+        console.error("Gagal memuat rekap PDF maba: " + kelompok);
       }
     }
-
     doc.save("Rekap_Absensi_Maba_2026.pdf");
     alert("PDF Maba berhasil diunduh!");
   }
