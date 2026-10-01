@@ -886,14 +886,53 @@ function cekWaktuAbsen() {
     };
 
     if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
+      let file = fileInput.files[0];
       let reader = new FileReader();
-      reader.onload = e => kirimPayload(e.target.result);
-      reader.readAsDataURL(fileInput.files[0]);
+      
+      reader.onload = function(e) {
+        let img = new Image();
+        img.src = e.target.result;
+        
+        img.onload = function() {
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          
+          // Batasi resolusi maksimal gambar agar ringan (600x600 px)
+          let MAX_WIDTH = 600;
+          let MAX_HEIGHT = 600;
+          let width = img.width;
+          let height = img.height;
+          
+          if (width > height) {
+            if (width > MAX_WIDTH) {
+              height *= MAX_WIDTH / width;
+              width = MAX_WIDTH;
+            }
+          } else {
+            if (height > MAX_HEIGHT) {
+              width *= MAX_HEIGHT / height;
+              height = MAX_HEIGHT;
+            }
+          }
+          
+          canvas.width = width;
+          canvas.height = height;
+          
+          // Gambar ulang ke dalam ukuran canvas yang lebih kecil
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          // Kompres kualitas gambar menjadi 60% (0.6) agar ukurannya sangat kecil
+          let compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+          
+          // Kirim data dengan foto yang sudah dikompres
+          kirimPayload(compressedBase64);
+        }
+      };
+      reader.readAsDataURL(file);
     } else {
       kirimPayload("");
     }
   }
-
   function renderTabel(kategori, dataServer, tipe, tbody) {
     let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
     let html = '';
