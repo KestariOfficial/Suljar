@@ -1003,13 +1003,14 @@
   function muatRekapPanitia(isRefresh = false) {
     let divisi = document.getElementById('select-rekap-divisi').value;
     if (!divisi) return;
-    muatData('PANITIA_' + divisi, divisi, 'panitia', document.getElementById('tabel-rekap-panitia-body'), document.getElementById('icon-refresh-panitia'), isRefresh);
+    // Menggunakan encodeURIComponent agar spasi aman dikirim ke URL Supabase
+    muatData('PANITIA_' + encodeURIComponent(divisi), divisi, 'panitia', document.getElementById('tabel-rekap-panitia-body'), document.getElementById('icon-refresh-panitia'), isRefresh);
   }
 
   function muatRekapMaba(isRefresh = false) {
     let kelompok = document.getElementById('select-rekap-kelompok').value;
     if (!kelompok) return;
-    muatData('MABA_' + kelompok, kelompok, 'maba', document.getElementById('tabel-rekap-maba-body'), document.getElementById('icon-refresh-maba'), isRefresh);
+    muatData('MABA_' + encodeURIComponent(kelompok), kelompok, 'maba', document.getElementById('tabel-rekap-maba-body'), document.getElementById('icon-refresh-maba'), isRefresh);
   }
 
   async function downloadPDFPanitia() {
