@@ -853,7 +853,7 @@ function cekWaktuAbsen() {
     btn.disabled = true;
     btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data...';
 
-    let kirimPayload = (base64Foto = "") => {
+    let kirimPayload = async (base64Foto = "") => {
       let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
       let idKel = prefix + kategori;
       
