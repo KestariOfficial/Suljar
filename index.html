@@ -752,13 +752,24 @@ function cekWaktuAbsen() {
   const menit = waktuLokal.getMinutes();
   const waktuSekarang = jam + (menit / 60);
 
-  const jamBuka = 16.00;  
-  const jamTutup = 18.20; 
+  let jamBuka, jamTutup, pesanBelumBuka;
+
+  // --- PENGATURAN WAKTU BERBEDA ---
+  if (jalurAktif === "Panitia") {
+    jamBuka = 4.50; // Jam 16:00 WIB
+    jamTutup = 6.00; // Jam 18:12 WIB (18 + 12/60 = 18.20)
+    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 4.30 WIB.";
+  } else if (jalurAktif === "Maba") {
+    jamBuka = 6.25; // Contoh: Jam 18:18 WIB (18 + 18/60 = 18.30) - UBAH SESUAI KEBUTUHAN
+    jamTutup = 6 + 55/60; // Contoh: Jam 19:00 WIB - UBAH SESUAI KEBUTUHAN
+    pesanBelumBuka = "Belum waktunya! Absen Maba baru dibuka pukul 6.15 WIB.";
+  }
+  // ---------------------------------
 
   if (waktuSekarang < jamBuka) {
-    alert("Belum waktunya! Absen panitia baru dibuka pukul 16.00 WIB.");
+    alert(pesanBelumBuka);
   } else if (waktuSekarang > jamTutup) {
-    let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
+    let sandiTelat = prompt(`Waktu absen normal ${jalurAktif} sudah habis! Masukkan Sandi Keterlambatan:`);
     if (sandiTelat === "jangantelatlagiyaadik") { 
       statusWaktuAktif = "Terlambat"; 
       bukaFormulir('Kedatangan'); 
