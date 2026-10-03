@@ -738,7 +738,7 @@ let modalInstance = null;
 
   function cekSandiPulang() {
     let sandiInput = prompt("Masukkan Sandi Pulang:");
-    if (sandiInput === "selamattinggal") { // <-- Ganti tulisan "see you soon" ini dengan sandi baru yang Anda inginkan
+    if (sandiInput === "SULJAR2026") { // <-- Ganti tulisan "see you soon" ini dengan sandi baru yang Anda inginkan
       bukaFormulir('Kepulangan');
     } else if (sandiInput !== null) {
       alert("Sandi Salah Coba Lagi");
@@ -759,7 +759,7 @@ function cekWaktuAbsen() {
     alert("Belum waktunya! Absen panitia baru dibuka pukul 16.00 WIB.");
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt("Waktu absen normal sudah habis! Masukkan Sandi Keterlambatan:");
-    if (sandiTelat === "jangantelatlagi") { 
+    if (sandiTelat === "jangantelatlagiyaadik") { 
       statusWaktuAktif = "Terlambat"; 
       bukaFormulir('Kedatangan'); 
     } else if (sandiTelat !== null) {
