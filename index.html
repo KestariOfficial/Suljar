@@ -756,12 +756,12 @@ function cekWaktuAbsen() {
 
   // --- PENGATURAN WAKTU BERBEDA ---
   if (jalurAktif === "Panitia") {
-    jamBuka = 4.50; // Jam 16:00 WIB
-    jamTutup = 6.00; // Jam 18:12 WIB (18 + 12/60 = 18.20)
+    jamBuka = 4.50;
+    jamTutup = 5 + 10/60; 
     pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 4.30 WIB.";
   } else if (jalurAktif === "Maba") {
-    jamBuka = 6.25; // Contoh: Jam 18:18 WIB (18 + 18/60 = 18.30) - UBAH SESUAI KEBUTUHAN
-    jamTutup = 6 + 55/60; // Contoh: Jam 19:00 WIB - UBAH SESUAI KEBUTUHAN
+    jamBuka = 24 + 0/60; 
+    jamTutup = 7 + 10/60; 
     pesanBelumBuka = "Belum waktunya! Absen Maba baru dibuka pukul 6.15 WIB.";
   }
   // ---------------------------------
