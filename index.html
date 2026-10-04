@@ -961,8 +961,10 @@ function cekWaktuAbsen() {
         if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
           if (stat === "Sakit") {
              ketBadge = '<span class="badge bg-warning text-dark rounded-pill px-3 py-1 shadow-sm">Sakit</span>';
+             h = '<span class="text-secondary">-</span>'; // Jika sakit, kolom datang di-strip
           } else if (stat === "Izin") {
              ketBadge = '<span class="badge bg-info text-dark rounded-pill px-3 py-1 shadow-sm">Izin</span>';
+             h = '<span class="text-secondary">-</span>'; // Jika izin, kolom datang di-strip
           } else {
              h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
              ketBadge = '<span class="badge bg-success rounded-pill px-3 py-1 shadow-sm">Hadir</span>';
@@ -1050,18 +1052,28 @@ function cekWaktuAbsen() {
         
         dataPanitia[divisi].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
-          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
+          let records = dataServer.filter(r => r.nama.toUpperCase().includes(target));
           let datang = "-", pulang = "-", keterangan = "-";
           
-          if (rec) {
-             let stat = rec.status || "";
-             if (stat === "Sakit") keterangan = "Sakit";
-             else if (stat === "Izin") keterangan = "Izin";
-             else if (stat === "H" || stat === "Hadir" || rec.jenisAbsen?.includes("Kedatangan")) keterangan = "Hadir";
+          records.forEach(rec => {
+            let stat = rec.status || "";
+            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
+               if (stat === "Sakit") {
+                  keterangan = "Sakit";
+                  datang = "-";
+               } else if (stat === "Izin") {
+                  keterangan = "Izin";
+                  datang = "-";
+               } else {
+                  keterangan = "Hadir";
+                  datang = "Hadir";
+               }
+            }
+            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || stat === "S") {
+               pulang = "Pulang";
+            }
+          });
 
-             if (keterangan === "Hadir") datang = "Hadir";
-             if (rec.jenisAbsen?.includes("Kepulangan") || stat === "S") pulang = "Pulang";
-          }
           tableData.push([idx + 1, nama, datang, pulang, keterangan]);
         });
 
@@ -1088,7 +1100,7 @@ function cekWaktuAbsen() {
     alert("PDF Panitia berhasil diunduh!");
   }
 
-  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA (DENGAN KOLOM KETERANGAN) ---
+  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA ---
   async function downloadPDFMaba() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF('p', 'mm', 'a4');
@@ -1115,18 +1127,28 @@ function cekWaktuAbsen() {
         
         dataMaba[kelompok].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
-          let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
+          let records = dataServer.filter(r => r.nama.toUpperCase().includes(target));
           let datang = "-", pulang = "-", keterangan = "-";
           
-          if (rec) {
-             let stat = rec.status || "";
-             if (stat === "Sakit") keterangan = "Sakit";
-             else if (stat === "Izin") keterangan = "Izin";
-             else if (stat === "H" || stat === "Hadir" || rec.jenisAbsen?.includes("Kedatangan")) keterangan = "Hadir";
+          records.forEach(rec => {
+            let stat = rec.status || "";
+            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
+               if (stat === "Sakit") {
+                  keterangan = "Sakit";
+                  datang = "-";
+               } else if (stat === "Izin") {
+                  keterangan = "Izin";
+                  datang = "-";
+               } else {
+                  keterangan = "Hadir";
+                  datang = "Hadir";
+               }
+            }
+            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || stat === "S") {
+               pulang = "Pulang";
+            }
+          });
 
-             if (keterangan === "Hadir") datang = "Hadir";
-             if (rec.jenisAbsen?.includes("Kepulangan") || stat === "S") pulang = "Pulang";
-          }
           tableData.push([idx + 1, nama, datang, pulang, keterangan]);
         });
 
@@ -1152,6 +1174,7 @@ function cekWaktuAbsen() {
     doc.save("Rekap_Absensi_Maba_2026.pdf");
     alert("PDF Maba berhasil diunduh!");
   }
+  
 </script>
   <!-- Pindahkan Modal Detail Kelompok Maba ke Sini (Di Luar Kontainer Utama) -->
 <div class="modal fade" id="modalKelompok" tabindex="-1" aria-hidden="true">
