@@ -939,6 +939,7 @@ function cekWaktuAbsen() {
       };
       reader.readAsDataURL(file);
     } else { eksekusiKirim(""); }
+  }
   
   function renderTabel(kategori, dataServer, tipe, tbody) {
     let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
