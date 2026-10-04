@@ -562,13 +562,13 @@
             <tbody id="tabel-rekap-panitia-body"><tr><td colspan="7" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
           </table>
         </div>
-      </div>
+      </div> <!-- Penutup section-rekap-panitia YANG BENAR -->
 
       <!-- Rekap Maba -->
       <div id="section-rekap-maba" style="display: none;">
         <div class="row justify-content-center mb-4">
           <div class="col-md-8 d-flex gap-2">
-            <select id="select-rekap-kelompok" class="form-select fw-bold border-2 border-success" onclick="" onchange="muatRekapMaba(false)">
+            <select id="select-rekap-kelompok" class="form-select fw-bold border-2 border-success" onchange="muatRekapMaba(false)">
               <option value="">-- Pilih Kelompok Maba --</option>
             </select>
             <button class="btn btn-success px-4 shadow-sm btn-refresh" onclick="muatRekapMaba(true)" title="Segarkan Data Terbaru">
@@ -588,9 +588,6 @@
           </table>
         </div>
       </div>
-    </div>
-  </div>
-</div>
 
 <script>
   // =========================================================================
