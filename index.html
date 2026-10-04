@@ -513,6 +513,14 @@
               <option value="">-- Pilih Kategori Terlebih Dahulu --</option>
             </select>
           </div>
+          <div class="mb-4" id="wrapper-keterangan">
+            <label class="fw-semibold text-secondary mb-2"><i class="fa-solid fa-info-circle me-2"></i>Keterangan Kehadiran</label>
+            <select id="select-keterangan" class="form-select bg-light">
+              <option value="Hadir">Hadir</option>
+              <option value="Sakit">Sakit</option>
+              <option value="Izin">Izin</option>
+            </select>
+          </div>
           <div class="mb-5" id="wrapper-foto">
             <label class="fw-semibold text-secondary mb-2"><i class="fa-solid fa-camera-retro me-2"></i>Bukti Foto / TTD (Wajib)</label>
             <input type="file" id="input-foto" class="form-control bg-light" accept="image/*" capture="environment">
@@ -549,10 +557,9 @@
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
           <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark">
-              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>STATUS</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
+              <tr><th>NO</th><th class="text-start">NAMA PANITIA</th><th>STATUS</th><th>DATANG</th><th>PULANG</th><th>KETERANGAN</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="6" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
-          </table>
+            <tbody id="tabel-rekap-panitia-body"><tr><td colspan="7" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih divisi panitia di atas.</td></tr></tbody>
         </div>
       </div>
 
@@ -574,9 +581,9 @@
         <div class="table-responsive bg-white p-2 rounded-4 shadow-sm">
           <table class="table table-hover table-striped text-center align-middle mb-0">
             <thead class="table-dark" style="background-color: var(--ocean-teal);">
-              <tr><th>NO</th><th class="text-start">NAMA MABA</th><th>STATUS</th><th>DATANG</th><th>PULANG</th><th>BUKTI</th></tr>
+              <tr><th>NO</th><th class="text-start">NAMA MABA</th><th>WAKTU</th><th>DATANG</th><th>PULANG</th><th>KETERANGAN</th><th>BUKTI</th></tr>
             </thead>
-            <tbody id="tabel-rekap-maba-body"><tr><td colspan="6" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih kelompok maba di atas.</td></tr></tbody>
+            <tbody id="tabel-rekap-maba-body"><tr><td colspan="7" class="text-muted py-4"><i class="fa-solid fa-magnifying-glass me-2"></i>Pilih kelompok maba di atas.</td></tr></tbody>
           </table>
         </div>
       </div>
@@ -787,6 +794,7 @@ function cekWaktuAbsen() {
     document.getElementById('judul-formulir').innerText = `Formulir ${jenis} (${jalurAktif})`;
     let selectKat = document.getElementById('select-kategori');
     let wrapperFoto = document.getElementById('wrapper-foto');
+    let wrapperKet = document.getElementById('wrapper-keterangan'); 
 
     let html = '<option value="">-- Pilih Kategori --</option>';
     let source = (jalurAktif === 'Panitia') ? dataPanitia : dataMaba;
@@ -794,7 +802,11 @@ function cekWaktuAbsen() {
     selectKat.innerHTML = html;
 
     document.getElementById('select-nama').innerHTML = '<option value="">-- Pilih Kategori Terlebih Dahulu --</option>';
+    
+    // Hanya tampilkan foto & keterangan saat kedatangan
     wrapperFoto.style.display = (jenis === 'Kepulangan') ? 'none' : 'block';
+    if(wrapperKet) wrapperKet.style.display = (jenis === 'Kepulangan') ? 'none' : 'block';
+    
     document.getElementById('input-foto').required = (jenis === 'Kedatangan');
     showPage('form');
   }
@@ -848,111 +860,84 @@ function cekWaktuAbsen() {
   }
 
   async function kirimDataAbsen() {
-  if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
-    alert("ERROR SYSTEM: Anda belum memasukkan URL Google Script pada kode index.html.");
-    return;
-  }
-
-  let fileInput = document.getElementById('input-foto');
-  let kategori = document.getElementById('select-kategori').value;
-  let nama = document.getElementById('select-nama').value;
-  let tgl = document.getElementById('tgl-absen').value;
-  let btn = document.getElementById('btn-kirim');
-
-  if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) return alert('Wajib unggah foto!');
-
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data...';
-
-  // Fungsi untuk mengeksekusi fetch
-  const eksekusiKirim = async (base64Data) => {
-    let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
-    let idKel = prefix + kategori;
-    
-    let jenisAbsenKirim = `${jalurAktif}_${jenisAbsenAktif}`;
-    if (jenisAbsenAktif === 'Kedatangan') {
-      jenisAbsenKirim += `|${statusWaktuAktif}`; 
+    if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
+      alert("ERROR SYSTEM: Anda belum memasukkan URL Google Script pada kode index.html.");
+      return;
     }
 
-    let payload = {
-      action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
-      status: (jenisAbsenAktif === 'Kedatangan') ? 'H' : 'S',
-      base64Foto: base64Data, jenisAbsen: jenisAbsenKirim
-    };
-
-    try {
-      const response = await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'cors',
-          headers: {
-              'Content-Type': 'text/plain;charset=utf-8',
-          },
-          body: JSON.stringify(payload)
-      });
-
-      const result = await response.json();
-
-      if (result.status === 'success' || result.result === 'success') {
-          alert("Absensi Anda telah tercatat dengan aman!");
-          localStorage.setItem('sudahAbsenDatang', new Date().toDateString());
-          delete cacheDataRekap[idKel];
-          showPage('dashboard');
-      } else {
-          alert("Gagal menyimpan: " + (result.message || "Terjadi kesalahan pada server."));
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Gagal terhubung ke server. Periksa koneksi Anda.");
-    } finally {
-      btn.disabled = false;
-      btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
-    }
-  };
-
-  // Proses Kompresi Gambar
-  if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
-    let file = fileInput.files[0];
-    let reader = new FileReader();
+    let fileInput = document.getElementById('input-foto');
+    let kategori = document.getElementById('select-kategori').value;
+    let nama = document.getElementById('select-nama').value;
+    let tgl = document.getElementById('tgl-absen').value;
+    let btn = document.getElementById('btn-kirim');
     
-    reader.onload = function(e) {
-      let img = new Image();
-      img.src = e.target.result;
+    // Ambil nilai opsi keterangan
+    let wrapperKet = document.getElementById('select-keterangan');
+    let keterangan = wrapperKet ? wrapperKet.value : "Hadir"; 
+
+    if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length === 0) return alert('Wajib unggah foto (Bukti Surat Izin/Selfie)!');
+
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Mengirim Data...';
+
+    const eksekusiKirim = async (base64Data) => {
+      let prefix = (jalurAktif === 'Panitia') ? 'PANITIA_' : 'MABA_';
+      let idKel = prefix + kategori;
       
-      img.onload = function() {
-        let canvas = document.createElement('canvas');
-        let ctx = canvas.getContext('2d');
-        
-        let MAX_WIDTH = 600;
-        let MAX_HEIGHT = 600;
-        let width = img.width;
-        let height = img.height;
-        
-        if (width > height) {
-          if (width > MAX_WIDTH) {
-            height *= MAX_WIDTH / width;
-            width = MAX_WIDTH;
-          }
+      let jenisAbsenKirim = `${jalurAktif}_${jenisAbsenAktif}`;
+      if (jenisAbsenAktif === 'Kedatangan') {
+        jenisAbsenKirim += `|${statusWaktuAktif}`; 
+      }
+
+      let payload = {
+        action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
+        // Status di database sekarang akan menyimpan 'Hadir', 'Sakit', atau 'Izin' saat kedatangan
+        status: (jenisAbsenAktif === 'Kedatangan') ? keterangan : 'S',
+        base64Foto: base64Data, jenisAbsen: jenisAbsenKirim
+      };
+
+      try {
+        const response = await fetch(SCRIPT_URL, { method: 'POST', mode: 'cors', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) });
+        const result = await response.json();
+
+        if (result.status === 'success' || result.result === 'success') {
+            alert("Absensi Anda telah tercatat dengan aman!");
+            localStorage.setItem('sudahAbsenDatang', new Date().toDateString());
+            delete cacheDataRekap[idKel];
+            showPage('dashboard');
         } else {
-          if (height > MAX_HEIGHT) {
-            width *= MAX_HEIGHT / height;
-            height = MAX_HEIGHT;
-          }
+            alert("Gagal menyimpan: " + (result.message || "Terjadi kesalahan pada server."));
         }
-        
-        canvas.width = width;
-        canvas.height = height;
-        
-        ctx.drawImage(img, 0, 0, width, height);
-        let compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
-        
-        eksekusiKirim(compressedBase64); // Panggil fetch setelah kompresi
+      } catch (error) {
+        console.error("Error:", error);
+        alert("Gagal terhubung ke server. Periksa koneksi Anda.");
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane me-2"></i>Kirim Data Kehadiran';
       }
     };
-    reader.readAsDataURL(file);
-  } else {
-    eksekusiKirim(""); // Panggil fetch langsung jika tanpa foto
-  }
-}
+
+    if (jenisAbsenAktif === 'Kedatangan' && fileInput.files.length > 0) {
+      let file = fileInput.files[0];
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        let img = new Image();
+        img.src = e.target.result;
+        img.onload = function() {
+          let canvas = document.createElement('canvas');
+          let ctx = canvas.getContext('2d');
+          let MAX_WIDTH = 600; let MAX_HEIGHT = 600;
+          let width = img.width; let height = img.height;
+          if (width > height) { if (width > MAX_WIDTH) { height *= MAX_WIDTH / width; width = MAX_WIDTH; } } 
+          else { if (height > MAX_HEIGHT) { width *= MAX_HEIGHT / height; height = MAX_HEIGHT; } }
+          canvas.width = width; canvas.height = height;
+          ctx.drawImage(img, 0, 0, width, height);
+          let compressedBase64 = canvas.toDataURL('image/jpeg', 0.6);
+          eksekusiKirim(compressedBase64);
+        }
+      };
+      reader.readAsDataURL(file);
+    } else { eksekusiKirim(""); }
   
   function renderTabel(kategori, dataServer, tipe, tbody) {
     let daftar = (tipe === 'panitia') ? dataPanitia[kategori] : dataMaba[kategori];
@@ -963,52 +948,63 @@ function cekWaktuAbsen() {
       let records = dataServer.filter(r => r.nama.toUpperCase().includes(targetNama));
       let h = '<span class="text-secondary">-</span>';
       let s = '<span class="text-secondary">-</span>';
+      let ketBadge = '<span class="text-secondary">-</span>';
       let bukti = '<span class="text-secondary">-</span>';
       let statusWaktu = '<span class="text-secondary">-</span>';
 
       records.forEach(rec => {
-        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || rec.status === "H") {
-          h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
+        let stat = rec.status || "";
+        
+        // Cek kedatangan (Hadir, Sakit, atau Izin)
+        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
+          if (stat === "Sakit") {
+             ketBadge = '<span class="badge bg-warning text-dark rounded-pill px-3 py-1 shadow-sm">Sakit</span>';
+          } else if (stat === "Izin") {
+             ketBadge = '<span class="badge bg-info text-dark rounded-pill px-3 py-1 shadow-sm">Izin</span>';
+          } else {
+             h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
+             ketBadge = '<span class="badge bg-success rounded-pill px-3 py-1 shadow-sm">Hadir</span>';
+          }
+
           if (rec.jenisAbsen.toLowerCase().includes("terlambat")) {
              statusWaktu = '<span class="badge bg-danger rounded-pill px-2 py-1 shadow-sm">Terlambat</span>';
           } else {
              statusWaktu = '<span class="badge bg-success rounded-pill px-2 py-1 shadow-sm">Tepat Waktu</span>';
           }
         }
-        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
-        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-1 px-2 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Foto</a>`;
+        
+        // Cek kepulangan
+        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || stat === "S") {
+            s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
+        }
+        
+        if (rec.foto && rec.foto.length > 0 && rec.foto[0]) {
+            bukti = `<a href="${rec.foto[0]}" target="_blank" class="badge rounded-pill bg-info text-dark text-decoration-none py-1 px-2 fw-bold shadow-sm"><i class="fa-solid fa-eye me-1"></i>Foto</a>`;
+        }
       });
 
-      html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${statusWaktu}</td><td>${h}</td><td>${s}</td><td>${bukti}</td></tr>`;
+      html += `<tr><td class="fw-bold">${index + 1}</td><td class="text-start fw-semibold">${nama}</td><td>${statusWaktu}</td><td>${h}</td><td>${s}</td><td>${ketBadge}</td><td>${bukti}</td></tr>`;
     });
     tbody.innerHTML = html;
   }
-
-  async function muatData(idKel, divisi, tipe, tbody, iconRefresh, isRefresh) {
+    
+ async function muatData(idKel, divisi, tipe, tbody, iconRefresh, isRefresh) {
     if (SCRIPT_URL === "MASUKKAN_LINK_URL_WEB_APP_ANDA_DI_SINI") {
-       tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: URL belum dimasukkan.</td></tr>';
+       tbody.innerHTML = '<tr><td colspan="7" class="text-danger fw-bold py-4 bg-danger-subtle"><i class="fa-solid fa-triangle-exclamation me-2"></i>ERROR: URL belum dimasukkan.</td></tr>';
        return;
     }
-
-    // Jika data sudah tersimpan di cache dan bukan karena tombol refresh diklik, 
-    // data akan langsung dimunculkan seketika tanpa loading ulang ke server!
     if (!isRefresh && cacheDataRekap[idKel]) {
-      renderTabel(divisi, cacheDataRekap[idKel], tipe, tbody);
-      return;
+      renderTabel(divisi, cacheDataRekap[idKel], tipe, tbody); return;
     }
-
-    tbody.innerHTML = `<tr><td colspan="6" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7" class="text-primary fw-bold py-5"><div class="spinner-border text-primary me-3 mb-1" role="status"></div> Mengumpulkan Data...</td></tr>`;
     if(iconRefresh) iconRefresh.classList.add('fa-spin');
-
     try {
       let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
       let dataRes = await res.json();
-      
-      // Simpan hasil data ke dalam cache memori browser
       cacheDataRekap[idKel] = dataRes; 
       renderTabel(divisi, dataRes, tipe, tbody);
     } catch {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="7" class="text-danger fw-bold py-4"><i class="fa-solid fa-wifi me-2"></i>Gagal terhubung ke database.</td></tr>';
     } finally {
       if(iconRefresh) iconRefresh.classList.remove('fa-spin');
     }
@@ -1031,110 +1027,126 @@ function cekWaktuAbsen() {
     let doc = new jsPDF('p', 'mm', 'a4');
     
     if(!confirm("Unduh rekap PDF untuk seluruh Divisi Panitia?")) return;
-    
-    let yPos = 15;
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text("REKAPITULASI PRESENSI PANITIA", 14, yPos);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
-    yPos += 15;
+    let isFirstPage = true;
 
     for (let divisi in dataPanitia) {
+      if (!isFirstPage) doc.addPage();
+      isFirstPage = false;
+      
+      let yPos = 15;
+      doc.setFont("helvetica", "bold"); doc.setFontSize(16);
+      doc.text("REKAPITULASI PRESENSI PANITIA", 14, yPos);
+      doc.setFontSize(10); doc.setFont("helvetica", "normal");
+      doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
+      yPos += 15;
+
       let idKel = 'PANITIA_' + divisi;
       try {
         let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
         let dataServer = await res.json();
-        
         let tableData = [];
+        
         dataPanitia[divisi].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
           let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
-          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
-          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
-          tableData.push([idx + 1, nama, h, s]);
+          let datang = "-", pulang = "-", keterangan = "-";
+          
+          if (rec) {
+             let stat = rec.status || "";
+             if (stat === "Sakit") keterangan = "Sakit";
+             else if (stat === "Izin") keterangan = "Izin";
+             else if (stat === "H" || stat === "Hadir" || rec.jenisAbsen?.includes("Kedatangan")) keterangan = "Hadir";
+
+             if (keterangan === "Hadir") datang = "Hadir";
+             if (rec.jenisAbsen?.includes("Kepulangan") || stat === "S") pulang = "Pulang";
+          }
+          tableData.push([idx + 1, nama, datang, pulang, keterangan]);
         });
 
-        if (yPos > 250) { doc.addPage(); yPos = 15; }
-        
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(12);
-        doc.text(`Divisi: ${divisi}`, 14, yPos);
-        yPos += 4;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(14);
+        doc.text(`Divisi: ${divisi}`, 14, yPos); yPos += 6;
 
         doc.autoTable({
           startY: yPos,
-          head: [['No', 'Nama Panitia', 'Datang', 'Pulang']],
-          body: tableData,
-          theme: 'grid',
-          headStyles: { fillColor: [2, 27, 51] },
-          styles: { fontSize: 8 }
+          head: [['No', 'Nama Panitia', 'Datang', 'Pulang', 'Keterangan']],
+          body: tableData, theme: 'grid',
+          headStyles: { fillColor: [2, 27, 51], halign: 'center', fontSize: 11 },
+          columnStyles: {
+            0: { halign: 'center', cellWidth: 10 }, 
+            1: { cellWidth: 80 },                  
+            2: { halign: 'center', cellWidth: 30 }, 
+            3: { halign: 'center', cellWidth: 30 },
+            4: { halign: 'center', cellWidth: 30 }
+          },
+          styles: { fontSize: 10, cellPadding: 4 }
         });
-
-        yPos = doc.lastAutoTable.finalY + 10;
-      } catch (e) {
-        console.error("Gagal memuat data panitia: " + divisi);
-      }
+      } catch (e) { console.error("Gagal memuat data panitia: " + divisi); }
     }
-
     doc.save("Rekap_Absensi_Panitia_2026.pdf");
     alert("PDF Panitia berhasil diunduh!");
   }
 
-  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA ---
+  // --- FUNGSI DOWNLOAD PDF KHUSUS MABA (DENGAN KOLOM KETERANGAN) ---
   async function downloadPDFMaba() {
     const { jsPDF } = window.jspdf;
     let doc = new jsPDF('p', 'mm', 'a4');
     
     if(!confirm("Unduh rekap PDF untuk seluruh Kelompok Maba?")) return;
-    
-    let yPos = 15;
-    doc.setFont("helvetica", "bold");
-    doc.setFontSize(16);
-    doc.text("REKAPITULASI PRESENSI MAHASISWA BARU", 14, yPos);
-    doc.setFontSize(10);
-    doc.setFont("helvetica", "normal");
-    doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
-    yPos += 15;
+    let isFirstPage = true;
 
     for (let kelompok in dataMaba) {
+      if (!isFirstPage) doc.addPage();
+      isFirstPage = false;
+      
+      let yPos = 15;
+      doc.setFont("helvetica", "bold"); doc.setFontSize(16);
+      doc.text("REKAPITULASI PRESENSI MAHASISWA BARU", 14, yPos);
+      doc.setFontSize(10); doc.setFont("helvetica", "normal");
+      doc.text("Situs Absensi Sulam Jaring 2026", 14, yPos + 6);
+      yPos += 15;
+
       let idKel = 'MABA_' + kelompok;
       try {
         let res = await fetch(`${SCRIPT_URL}?action=getRecap&idKel=${idKel}`);
         let dataServer = await res.json();
-        
         let tableData = [];
+        
         dataMaba[kelompok].forEach((nama, idx) => {
           let target = nama.toUpperCase().trim();
           let rec = dataServer.find(r => r.nama.toUpperCase().includes(target));
-          let h = (rec && (rec.jenisAbsen?.includes("Kedatangan") || rec.status === "H")) ? "Hadir" : "-";
-          let s = (rec && (rec.jenisAbsen?.includes("Kepulangan") || rec.status === "S")) ? "Pulang" : "-";
-          tableData.push([idx + 1, nama, h, s]);
+          let datang = "-", pulang = "-", keterangan = "-";
+          
+          if (rec) {
+             let stat = rec.status || "";
+             if (stat === "Sakit") keterangan = "Sakit";
+             else if (stat === "Izin") keterangan = "Izin";
+             else if (stat === "H" || stat === "Hadir" || rec.jenisAbsen?.includes("Kedatangan")) keterangan = "Hadir";
+
+             if (keterangan === "Hadir") datang = "Hadir";
+             if (rec.jenisAbsen?.includes("Kepulangan") || stat === "S") pulang = "Pulang";
+          }
+          tableData.push([idx + 1, nama, datang, pulang, keterangan]);
         });
 
-        if (yPos > 250) { doc.addPage(); yPos = 15; }
-
-        doc.setFont("helvetica", "bold");
-        doc.setFontSize(12);
-        doc.text(`Kelompok: ${kelompok}`, 14, yPos);
-        yPos += 4;
+        doc.setFont("helvetica", "bold"); doc.setFontSize(14);
+        doc.text(`Kelompok: ${kelompok}`, 14, yPos); yPos += 6;
 
         doc.autoTable({
           startY: yPos,
-          head: [['No', 'Nama Mahasiswa Baru', 'Datang', 'Pulang']],
-          body: tableData,
-          theme: 'grid',
-          headStyles: { fillColor: [0, 77, 102] },
-          styles: { fontSize: 8 }
+          head: [['No', 'Nama Mahasiswa Baru', 'Datang', 'Pulang', 'Keterangan']],
+          body: tableData, theme: 'grid',
+          headStyles: { fillColor: [0, 77, 102], halign: 'center', fontSize: 11 },
+          columnStyles: {
+            0: { halign: 'center', cellWidth: 10 }, 
+            1: { cellWidth: 80 },                  
+            2: { halign: 'center', cellWidth: 30 }, 
+            3: { halign: 'center', cellWidth: 30 },
+            4: { halign: 'center', cellWidth: 30 }
+          },
+          styles: { fontSize: 10, cellPadding: 4 }
         });
-
-        yPos = doc.lastAutoTable.finalY + 10;
-      } catch (e) {
-        console.error("Gagal memuat data maba: " + kelompok);
-      }
+      } catch (e) { console.error("Gagal memuat data maba: " + kelompok); }
     }
-
     doc.save("Rekap_Absensi_Maba_2026.pdf");
     alert("PDF Maba berhasil diunduh!");
   }
