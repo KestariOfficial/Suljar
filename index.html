@@ -872,7 +872,6 @@ function cekWaktuAbsen() {
     let tgl = document.getElementById('tgl-absen').value;
     let btn = document.getElementById('btn-kirim');
     
-    // Ambil nilai opsi keterangan
     let wrapperKet = document.getElementById('select-keterangan');
     let keterangan = wrapperKet ? wrapperKet.value : "Hadir"; 
 
@@ -892,7 +891,7 @@ function cekWaktuAbsen() {
 
       let payload = {
         action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
-        // Status di database sekarang akan menyimpan 'Hadir', 'Sakit', atau 'Izin' saat kedatangan
+        // Menyimpan persis teks pilihan dropdown (Hadir, Sakit, atau Izin) ke database
         status: (jenisAbsenAktif === 'Kedatangan') ? keterangan : 'S',
         base64Foto: base64Data, jenisAbsen: jenisAbsenKirim
       };
@@ -955,30 +954,33 @@ function cekWaktuAbsen() {
       let statusWaktu = '<span class="text-secondary">-</span>';
 
       records.forEach(rec => {
-        let stat = rec.status || "";
+        let stat = (rec.status || "").trim().toLowerCase();
         
-        // Cek kedatangan (Hadir, Sakit, atau Izin)
-        if (rec.jenisAbsen.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
-          if (stat === "Sakit") {
+        // Cek sesi kedatangan berdasarkan teks status database
+        if (rec.jenisAbsen.toLowerCase().includes("kedatangan")) {
+          if (stat === "sakit") {
              ketBadge = '<span class="badge bg-warning text-dark rounded-pill px-3 py-1 shadow-sm">Sakit</span>';
-             h = '<span class="text-secondary">-</span>'; // Jika sakit, kolom datang di-strip
-          } else if (stat === "Izin") {
+             h = '<span class="text-secondary">-</span>';
+             statusWaktu = '<span class="text-secondary">-</span>';
+          } else if (stat === "izin") {
              ketBadge = '<span class="badge bg-info text-dark rounded-pill px-3 py-1 shadow-sm">Izin</span>';
-             h = '<span class="text-secondary">-</span>'; // Jika izin, kolom datang di-strip
+             h = '<span class="text-secondary">-</span>';
+             statusWaktu = '<span class="text-secondary">-</span>';
           } else {
+             // Dianggap Hadir
              h = '<strong class="text-success fs-5"><i class="fa-solid fa-check"></i></strong>';
              ketBadge = '<span class="badge bg-success rounded-pill px-3 py-1 shadow-sm">Hadir</span>';
-          }
 
-          if (rec.jenisAbsen.toLowerCase().includes("terlambat")) {
-             statusWaktu = '<span class="badge bg-danger rounded-pill px-2 py-1 shadow-sm">Terlambat</span>';
-          } else {
-             statusWaktu = '<span class="badge bg-success rounded-pill px-2 py-1 shadow-sm">Tepat Waktu</span>';
+             if (rec.jenisAbsen.toLowerCase().includes("terlambat")) {
+                statusWaktu = '<span class="badge bg-danger rounded-pill px-2 py-1 shadow-sm">Terlambat</span>';
+             } else {
+                statusWaktu = '<span class="badge bg-success rounded-pill px-2 py-1 shadow-sm">Tepat Waktu</span>';
+             }
           }
         }
         
-        // Cek kepulangan
-        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || stat === "S") {
+        // Cek sesi kepulangan (hanya diisi jika status S atau ada record kepulangan)
+        if (rec.jenisAbsen.toLowerCase().includes("kepulangan") || rec.status === "S") {
             s = '<strong class="text-primary fs-5"><i class="fa-solid fa-check-double"></i></strong>';
         }
         
@@ -1056,12 +1058,12 @@ function cekWaktuAbsen() {
           let datang = "-", pulang = "-", keterangan = "-";
           
           records.forEach(rec => {
-            let stat = rec.status || "";
-            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
-               if (stat === "Sakit") {
+            let stat = (rec.status || "").trim().toLowerCase();
+            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan")) {
+               if (stat === "sakit") {
                   keterangan = "Sakit";
                   datang = "-";
-               } else if (stat === "Izin") {
+               } else if (stat === "izin") {
                   keterangan = "Izin";
                   datang = "-";
                } else {
@@ -1069,7 +1071,7 @@ function cekWaktuAbsen() {
                   datang = "Hadir";
                }
             }
-            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || stat === "S") {
+            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || rec.status === "S") {
                pulang = "Pulang";
             }
           });
@@ -1131,12 +1133,12 @@ function cekWaktuAbsen() {
           let datang = "-", pulang = "-", keterangan = "-";
           
           records.forEach(rec => {
-            let stat = rec.status || "";
-            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan") || ["H", "Hadir", "Sakit", "Izin"].includes(stat)) {
-               if (stat === "Sakit") {
+            let stat = (rec.status || "").trim().toLowerCase();
+            if (rec.jenisAbsen?.toLowerCase().includes("kedatangan")) {
+               if (stat === "sakit") {
                   keterangan = "Sakit";
                   datang = "-";
-               } else if (stat === "Izin") {
+               } else if (stat === "izin") {
                   keterangan = "Izin";
                   datang = "-";
                } else {
@@ -1144,7 +1146,7 @@ function cekWaktuAbsen() {
                   datang = "Hadir";
                }
             }
-            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || stat === "S") {
+            if (rec.jenisAbsen?.toLowerCase().includes("kepulangan") || rec.status === "S") {
                pulang = "Pulang";
             }
           });
