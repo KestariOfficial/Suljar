@@ -589,28 +589,22 @@ let modalInstance = null;
     document.getElementById('judul-sesi').innerText = `Pilih Sesi Kehadiran (${jalur})`;
   }
 
-    let sandiKepulanganAktif = "";
-async function cekSandiPulang() {
+  // Sandi kepulangan diatur di frontend agar dapat diganti langsung dari repo.
+  // Catatan: repo publik membuat nilai sandi dapat dilihat dari source code.
+  const SANDI_KEPULANGAN = Object.freeze({
+    Maba: "SEMANGATSULJAR2026",
+    Panitia: "SEMANGATPANIT2026"
+  });
+
+  function cekSandiPulang() {
     const sandiInput = prompt(`Masukkan Sandi Pulang ${jalurAktif}:`);
     if (sandiInput === null) return;
 
-    try {
-      const response = await fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'cors',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ action: 'verifyDeparture', jalur: jalurAktif, sandi: sandiInput })
-      });
-      const result = await response.json();
-      if (result.status === 'success') {
-        sandiKepulanganAktif = sandiInput;
-        bukaFormulir('Kepulangan');
-      } else {
-        alert(result.message || 'Sandi kepulangan salah.');
-      }
-    } catch (error) {
-      console.error('Verifikasi kepulangan gagal:', error);
-      alert('Gagal memverifikasi sandi. Periksa koneksi internet.');
+    const sandiBenar = SANDI_KEPULANGAN[jalurAktif];
+    if (sandiInput === sandiBenar) {
+      bukaFormulir('Kepulangan');
+    } else {
+      alert("Sandi Salah Coba Lagi");
     }
   }
 
@@ -754,7 +748,7 @@ function cekWaktuAbsen() {
         action: "saveAttendance", tgl: tgl, nim: kategori, nama: nama, idKel: idKel,
         // Menyimpan persis teks pilihan dropdown (Hadir, Sakit, atau Izin) ke database
         status: (jenisAbsenAktif === 'Kedatangan') ? keterangan : 'S',
-        base64Foto: base64Data, jenisAbsen: jenisAbsenKirim, departurePassword: jenisAbsenAktif === "Kepulangan" ? sandiKepulanganAktif : ""
+        base64Foto: base64Data, jenisAbsen: jenisAbsenKirim
       };
 
       try {
@@ -766,7 +760,6 @@ function cekWaktuAbsen() {
             localStorage.setItem('sudahAbsenDatang', new Date().toDateString());
             delete cacheDataRekap[idKel];
             showPage('dashboard');
-                      sandiKepulanganAktif = "";
         } else {
             alert("Gagal menyimpan: " + (result.message || "Terjadi kesalahan pada server."));
         }
