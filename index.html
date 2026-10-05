@@ -152,6 +152,17 @@ html{scroll-behavior:auto}
 .btn,.nav-link,.quick-card,.quick-arrow,.card-kelompok,.card-absen-option,.form-control,.form-select{transition:none!important}
 }
 
+/* Static ocean backdrop: SVG and color only, no animation or pointer effects. */
+body{isolation:isolate;background:#d7e9ed;background-image:radial-gradient(ellipse at 20% 0%,#f1f9f8 0,transparent 62%),linear-gradient(165deg,#dceef0 0%,#c9e2e7 55%,#aed1da 100%)}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%201440%201000%22%20fill%3D%22none%22%3E%0A%3Cg%20stroke%3D%22%23548e9b%22%20stroke-width%3D%221.3%22%20opacity%3D%22.16%22%3E%3Cpath%20d%3D%22M-80%20220Q100%20140%20280%20220T640%20220T1000%20220T1520%20220%22%2F%3E%3Cpath%20d%3D%22M-80%20240Q100%20160%20280%20240T640%20240T1000%20240T1520%20240%22%2F%3E%3C%2Fg%3E%0A%3Cg%20fill%3D%22%232f7182%22%20opacity%3D%22.12%22%3E%3Cpath%20d%3D%22M60%20330q26-22%2056%200-30%2022-56%200l-17%2014v-28z%22%2F%3E%3Cpath%20d%3D%22M1310%20180q20-17%2044%200-24%2017-44%200l-14%2011v-22z%22%2F%3E%3Cpath%20d%3D%22M1248%20212q15-12%2032%200-17%2012-32%200l-10%208v-16z%22%2F%3E%3Cpath%20d%3D%22M124%20570q18-15%2040%200-22%2015-40%200l-12%2010v-20z%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke%3D%22%234f91a0%22%20opacity%3D%22.17%22%3E%3Ccircle%20cx%3D%2291%22%20cy%3D%22400%22%20r%3D%227%22%2F%3E%3Ccircle%20cx%3D%22122%22%20cy%3D%22430%22%20r%3D%224%22%2F%3E%3Ccircle%20cx%3D%221352%22%20cy%3D%22500%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%221327%22%20cy%3D%22464%22%20r%3D%224%22%2F%3E%3C%2Fg%3E%0A%3Cpath%20d%3D%22M0%20790Q180%20720%20360%20800T720%20810T1080%20780T1440%20800V1000H0Z%22%20fill%3D%22%2379b6c0%22%20opacity%3D%22.14%22%2F%3E%0A%3Cpath%20d%3D%22M0%20900Q210%20805%20430%20885T880%20915T1440%20855V1000H0Z%22%20fill%3D%22%234f9cac%22%20opacity%3D%22.12%22%2F%3E%0A%3Cg%20stroke%3D%22%23357989%22%20stroke-linecap%3D%22round%22%20opacity%3D%22.16%22%3E%0A%3Cg%20stroke-width%3D%228%22%3E%3Cpath%20d%3D%22M35%201030q35-80%206-153t8-144%22%2F%3E%3Cpath%20d%3D%22M83%201030q-27-70-3-133t-4-106%22%2F%3E%3Cpath%20d%3D%22M1381%201030q-36-85-9-150t-6-141%22%2F%3E%3Cpath%20d%3D%22M1420%201030q22-65-3-114t4-106%22%2F%3E%3C%2Fg%3E%0A%3Cg%20stroke-width%3D%224%22%3E%3Cpath%20d%3D%22M114%201020V916m0%2062-20-19m20-3%2024-26m-24%203-13-15%22%2F%3E%3Cpath%20d%3D%22M1330%201020V900m0%2065-24-26m24-1%2020-22%22%2F%3E%3C%2Fg%3E%0A%3C%2Fg%3E%3C%2Fsvg%3E");background-position:center bottom;background-repeat:no-repeat;background-size:cover}
+.dashboard-wrapper{background:#eff7f3;border-color:#c5dcd4}
+.overview-copy span,.workspace-label,.workspace-date{color:#405f68}
+.overview-item+.overview-item:before{background:#9cbec5}
+.guide-strip,.app-footer{border-color:#a7c5ca}
+.guide-heading strong,.guide-steps,.app-footer,.footer-right button{color:#395e65}
+.section-head p{color:#486872}
+@media print{body{background:#fff}body::before{display:none}}
+
 </style>
 </head>
 <body>
