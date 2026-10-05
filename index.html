@@ -44,129 +44,122 @@
 @media(max-width:767px){.table td[colspan]{text-align:left;padding-left:24px!important}.table td[colspan] .spinner-border{width:17px;height:17px;border-width:2px;vertical-align:middle}.workspace-label{flex-wrap:wrap;row-gap:3px}.workspace-date{flex-shrink:0}}
 @media(max-width:575px){#grid-kelompok>.col-md-4{width:100%}.card-kelompok{padding:22px!important}.card-kelompok .card-body>div>div{float:left;margin-right:13px;margin-bottom:0!important;padding:12px!important}.card-kelompok .card-title{font-size:15px;padding-top:9px;padding-right:20px;line-height:1.5}.card-kelompok p{clear:both;padding-top:15px;font-size:12px;line-height:1.85}.card-kelompok .btn{font-size:11px;padding:10px}.card-kelompok .group-number{right:19px;top:20px;font-size:9px}}
 
-</style>
-<style id="living-ocean-style">
-/* Living ocean: decorative layers never intercept application controls. */
-body{background:#062b40;isolation:isolate}.ocean-scene{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict;background:linear-gradient(165deg,#031d34 0%,#074b60 51%,#073d52 74%,#04253b 100%)}
-.ocean-scene:before{content:'';position:absolute;inset:-12%;background:radial-gradient(ellipse at 78% 18%,#38c3b42e,transparent 47%),radial-gradient(ellipse at 15% 60%,#1988c429,transparent 47%);animation:ocean-breathe 19s ease-in-out infinite alternate}
-.ocean-scene:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,#00142b11,transparent 48%,#00172d5c);pointer-events:none}
-.ocean-haze{position:absolute;inset:-12%;background:radial-gradient(ellipse at 35% 20%,#a5ede212,transparent 55%);transform:translate3d(var(--sea-x,0px),var(--sea-y,0px),0);transition:transform 1.3s ease-out}
-.ocean-rays{position:absolute;inset:-30% -20%;transform-origin:50% 0;opacity:.28;background:repeating-conic-gradient(from 170deg at 55% 0%,transparent 0deg 13deg,#a4f4e727 14deg 19deg,transparent 22deg 39deg);mask-image:linear-gradient(#0009,#0000 80%);animation:ocean-rays-sway 24s ease-in-out infinite alternate}
-.ocean-glow{position:absolute;left:0;top:0;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#72e5d314,transparent 65%);transform:translate3d(calc(var(--cursor-x,70vw) - 300px),calc(var(--cursor-y,35vh) - 300px),0);transition:opacity .3s;opacity:.7}
-.ocean-school{position:absolute;left:0;top:var(--depth,24%);width:var(--school-size,250px);height:auto;color:var(--fish-color,#8dcac6);opacity:var(--fish-opacity,.26);animation:school-cross var(--journey,37s) var(--depart,-10s) linear infinite;will-change:transform}
-.ocean-school.swim-west{animation-name:school-return}.ocean-school>svg{width:100%;height:auto;overflow:visible;animation:fish-bob 5s ease-in-out infinite alternate}.ocean-school.swim-west>svg{transform:scaleX(-1);animation-name:fish-bob-west}.ocean-school .tail-fin{transform-box:fill-box;transform-origin:right center;animation:tail-flick .75s ease-in-out infinite alternate}.ocean-school .swimming-fin{transform-box:fill-box;transform-origin:top center;animation:fin-flick 1.4s ease-in-out infinite alternate}
-.ocean-school.school-a{--depth:20%;--school-size:260px;--journey:38s;--depart:-5s;--fish-opacity:.3}.ocean-school.school-b{--depth:53%;--school-size:205px;--journey:49s;--depart:-34s;--fish-opacity:.22}.ocean-school.school-c{--depth:82%;--school-size:330px;--journey:43s;--depart:-9s;--fish-opacity:.28;--fish-color:#72ccc3}.ocean-school.school-d{--depth:8%;--school-size:165px;--journey:54s;--depart:-41s;--fish-opacity:.18}.ocean-school.school-e{--depth:68%;--school-size:180px;--journey:32s;--depart:-24s;--fish-opacity:.25}
-.ocean-ray{position:absolute;left:0;top:30%;width:180px;color:#78b8c5;opacity:.17;animation:school-return 65s -46s linear infinite}.ocean-ray svg{width:100%;overflow:visible;animation:ray-glide 5s ease-in-out infinite alternate}.ocean-ray .ray-wing{transform-origin:center;transform-box:fill-box;animation:ray-wing 3.2s ease-in-out infinite alternate}
-.ocean-bubble{position:absolute;bottom:-70px;left:var(--left,15%);width:var(--size,18px);height:var(--size,18px);border-radius:50%;border:1px solid #b4f4ee66;background:radial-gradient(circle at 30% 25%,#d8ffff28,transparent 60%);box-shadow:inset 1px 1px 4px #bffbf021;animation:bubble-rise var(--rise,20s) var(--delay,-5s) linear infinite}.ocean-bubble:before{content:'';position:absolute;top:20%;left:23%;width:21%;height:12%;border-radius:50%;background:#d6ffff7a;transform:rotate(-35deg)}
-.ocean-particle{position:absolute;width:3px;height:3px;border-radius:50%;left:var(--left);top:var(--top);background:#a5e9d4;box-shadow:0 0 10px #7feddb77;opacity:.4;animation:plankton-drift var(--duration,12s) var(--delay,-3s) ease-in-out infinite alternate}
-.ocean-waves{position:absolute;bottom:-12px;left:0;width:200%;height:160px;opacity:.21;color:#27a9a1;animation:wave-slide 24s linear infinite}.ocean-waves.back-wave{bottom:7px;opacity:.09;animation-duration:37s;animation-direction:reverse;color:#87f2dc}.ocean-waves svg{width:100%;height:100%}
-.ocean-garden{position:absolute;bottom:-16px;width:230px;height:270px;color:#51afaa;opacity:.19;transform-origin:bottom center;animation:seaweed-sway 8s ease-in-out infinite alternate}.ocean-garden.garden-left{left:-25px}.ocean-garden.garden-right{right:-24px;width:250px;height:280px;animation-delay:-4s;animation-name:seaweed-sway-right;opacity:.16}.ocean-garden svg{width:100%;height:100%}.ocean-garden .seaweed{transform-box:fill-box;transform-origin:bottom;animation:seaweed-sway 5s ease-in-out infinite alternate}
-.app-shell{position:relative;z-index:1}.navbar{background:#061f32d9!important;border-bottom-color:#97e7dd24;box-shadow:0 6px 24px #0012221c;backdrop-filter:blur(20px)}.navbar-brand{color:#effcf8!important}.brand-mark{color:#acedd9;background:#226b6a66;border:1px solid #99ebd72e} .brand-mark img{filter:none}.brand-copy small{color:#91b9c4}.nav-link{color:#c1dbe1!important}.nav-link:hover{background:#6acdbb1c;color:#d4fff1!important}.nav-link.active{background:#81e5c921;color:#aff5de!important;box-shadow:inset 0 0 0 1px #99f0d921}.nav-link#nav-rekap{border-color:#8fd7d333;color:#d7f5ef!important}.navbar-toggler{background:#24677555;border-color:#98d9d92b}.navbar-toggler-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23b5eddf' stroke-linecap='round' stroke-width='2' d='M5 8h20M5 15h20M5 22h20'/%3E%3C/svg%3E")}.navbar-collapse{border-color:#98d9d929}
-.workspace-label{color:#b8dfe1}.workspace-label>span:first-child{background:#91e8cd;box-shadow:0 0 14px #91e8cd88}#ui-page-label{color:#8dbfc7!important}.workspace-date{color:#b6d3dc}.workspace-tools{display:flex;align-items:center;gap:18px}.motion-control{display:inline-flex;align-items:center;gap:8px;min-height:32px;padding:5px 12px;border:1px solid #8ce5d538;border-radius:30px;background:#72d6c114;color:#c2ede5;font-size:10px;white-space:nowrap;transition:background .2s,border-color .2s}.motion-control:hover{background:#7be4cb29;border-color:#8ce5d56b}.motion-control i{width:10px;font-size:10px}.motion-control:disabled{cursor:default;opacity:.75}
-.header-title{color:#f0fbfa!important;text-shadow:0 3px 20px #001a2c30}.header-title>i{color:#82dbc7}.page-kicker:not(.form-eyebrow){color:#9ce5d2}.page-intro.text-muted,.recap-caption{color:#b9d5df!important}.section-head h2{color:#effbf8}.section-head p{color:#b0d1da}.section-index{color:#8acbc9}.group-total,.table-scroll-hint{color:#acd2d8}.portal-note{color:#c2e1e4;background:#163f525e;border:1px solid #78cfc222;border-radius:12px}.portal-note i{color:#88d9c5}.app-footer{color:#94c1cb;border-color:#8cd9d328}.footer-signature i{color:#83dac7}.footer-right button{color:#bbe5e5}.footer-right button:hover{color:#fff}
-.dashboard-wrapper{border:1px solid #7bd8c93b;background:#073449ac;box-shadow:0 22px 60px #00122540,inset 0 1px 0 #c0ffe20c;backdrop-filter:blur(3px)}.dashboard-wrapper:before{background:radial-gradient(ellipse at 95% 100%,#22847a5c,transparent 60%),linear-gradient(105deg,#072b43e8,#103e5373);z-index:-2}.hero-seascape{position:absolute;inset:0;z-index:-1;pointer-events:none;overflow:hidden;border-radius:inherit}.hero-seascape:after{position:absolute;content:'';inset:0;background:linear-gradient(90deg,#032b415e,transparent 70%)}.hero-seascape .ocean-school{--depth:76%;--school-size:165px;--journey:26s;--depart:-11s;--fish-opacity:.19;animation-name:hero-school-cross}.hero-seascape .ocean-school.hero-school-two{--depth:17%;--school-size:110px;--journey:31s;--depart:-20s;--fish-opacity:.16;animation-name:hero-school-return}.hero-seascape .ocean-bubble{border-color:#c5ffff42;--rise:14s;animation-name:hero-bubble-rise}.hero-seascape .ocean-waves{height:85px;opacity:.17;bottom:-22px;animation-duration:19s}.hero-seascape .hero-caustic{position:absolute;inset:0;background:radial-gradient(ellipse at 72% 22%,#8ef0d312,transparent 45%);animation:ocean-breathe 8s ease-in-out infinite alternate}.hero-art{z-index:1;transform:translate3d(var(--art-x,0px),var(--art-y,0px),0);transition:transform .5s ease-out}.hero-art>svg{animation:lighthouse-float 7s ease-in-out infinite}.hero-light-beam{transform-origin:237px 126px;animation:lighthouse-beam 6s ease-in-out infinite alternate}.hero-star{transform-box:fill-box;transform-origin:center;animation:compass-turn 35s linear infinite}.hero-footnote{color:#a6d3d5}.hero-footnote i{color:#91e3cc}
-.overview-strip{background:#f6fffded;border-color:#b6f2df54;box-shadow:0 7px 22px #001b2e12}.quick-card,.card-kelompok,.card-absen-option{border-color:#b8deda80;box-shadow:0 8px 22px #001a2b16!important}.quick-card:after,.card-kelompok:after,.card-absen-option[role=button]:after{content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;opacity:0;background:radial-gradient(260px circle at var(--spot-x,50%) var(--spot-y,50%),#64d6b519,transparent 65%);transition:opacity .3s}.quick-card:hover:after,.card-kelompok:hover:after,.card-absen-option[role=button]:hover:after{opacity:1}.quick-icon,.overview-icon{transition:transform .3s}.quick-card:hover .quick-icon{transform:translateY(-3px) rotate(-7deg)}.overview-item:hover .overview-icon{transform:rotate(-8deg) scale(1.1)}.quick-card:active,.card-absen-option[role=button]:active{scale:.986}.guide-strip{background:#d6f0e6f2;border-color:#b9eddd7d}.hero-primary{box-shadow:0 5px 22px #7fe9cc24}.hero-primary:hover{box-shadow:0 6px 32px #7fe9cc55}.hero-primary i{transition:transform .2s}.hero-primary:hover i{transform:translateX(3px)}.btn:active{scale:.98}
-.ocean-effects{position:fixed;inset:0;z-index:1020;overflow:hidden;pointer-events:none}.water-ripple{position:absolute;left:var(--ripple-x);top:var(--ripple-y);width:12px;height:12px;border-radius:50%;border:1px solid #c1fdf7;box-shadow:0 0 9px #9deed74d;animation:water-touch 1s ease-out forwards}.water-ripple.ripple-echo{animation-delay:.13s;opacity:0}.touch-bubble{position:absolute;left:var(--ripple-x);top:var(--ripple-y);width:var(--touch-size,6px);height:var(--touch-size,6px);border-radius:50%;border:1px solid #c0fff0;animation:touch-bubble 1s ease-out forwards}
-body.ocean-paused .ocean-scene *,body.ocean-paused .ocean-scene:before,body.ocean-paused .hero-seascape *,body.ocean-paused .hero-art>svg,body.ocean-paused .hero-light-beam,body.ocean-paused .hero-star,body.ocean-hidden .ocean-scene *,body.ocean-hidden .ocean-scene:before,body.ocean-hidden .hero-seascape *,body.ocean-hidden .hero-art>svg,body.ocean-hidden .hero-light-beam,body.ocean-hidden .hero-star{animation-play-state:paused!important}body.ocean-paused .hero-art{transform:none}body.ocean-paused .ocean-effects{display:none}
-@keyframes ocean-breathe{from{transform:translate3d(-2%,0,0) scale(1);opacity:.7}to{transform:translate3d(3%,3%,0) scale(1.08);opacity:1}}
-@keyframes ocean-rays-sway{from{transform:rotate(-5deg)}to{transform:rotate(7deg)}}
-@keyframes school-cross{from{transform:translate3d(-360px,0,0)}to{transform:translate3d(calc(100vw + 360px),-35px,0)}}
-@keyframes school-return{from{transform:translate3d(calc(100vw + 330px),0,0)}to{transform:translate3d(-350px,30px,0)}}
-@keyframes fish-bob{from{transform:translateY(-8px) rotate(-2deg)}to{transform:translateY(8px) rotate(2deg)}}
-@keyframes fish-bob-west{from{transform:scaleX(-1) translateY(-7px) rotate(-2deg)}to{transform:scaleX(-1) translateY(7px) rotate(2deg)}}
-@keyframes tail-flick{from{transform:scaleX(.66)}to{transform:scaleX(1)}}
-@keyframes fin-flick{from{transform:rotate(-10deg)}to{transform:rotate(12deg)}}
-@keyframes ray-glide{from{transform:translateY(-12px) rotate(-7deg)}to{transform:translateY(12px) rotate(3deg)}}
-@keyframes ray-wing{from{transform:scaleY(.75)}to{transform:scaleY(1)}}
-@keyframes bubble-rise{0%{transform:translate3d(0,0,0) scale(.72);opacity:0}8%{opacity:.58}85%{opacity:.5}100%{transform:translate3d(var(--drift,35px),calc(-100vh - 150px),0) scale(1.15);opacity:0}}
-@keyframes plankton-drift{from{transform:translate3d(0,0,0);opacity:.18}to{transform:translate3d(25px,-45px,0);opacity:.6}}
-@keyframes wave-slide{to{transform:translateX(-50%)}}
-@keyframes seaweed-sway{from{transform:rotate(-4deg) skewX(-2deg)}to{transform:rotate(4deg) skewX(3deg)}}
-@keyframes seaweed-sway-right{from{transform:scaleX(-1) rotate(-3deg)}to{transform:scaleX(-1) rotate(4deg)}}
-@keyframes hero-school-cross{from{transform:translate3d(-220px,0,0)}to{transform:translate3d(1300px,-40px,0)}}
-@keyframes hero-school-return{from{transform:translate3d(1300px,0,0)}to{transform:translate3d(-200px,30px,0)}}
-@keyframes hero-bubble-rise{0%{transform:translate3d(0,0,0);opacity:0}10%{opacity:.65}80%{opacity:.5}100%{transform:translate3d(var(--drift,25px),-700px,0);opacity:0}}
-@keyframes lighthouse-float{0%,100%{transform:translateY(0) rotate(-.7deg)}50%{transform:translateY(-9px) rotate(.7deg)}}
-@keyframes lighthouse-beam{from{transform:rotate(-9deg);opacity:.55}to{transform:rotate(10deg);opacity:1}}
-@keyframes compass-turn{to{transform:rotate(360deg)}}
-@keyframes water-touch{0%{transform:translate(-50%,-50%) scale(1);opacity:.75}100%{transform:translate(-50%,-50%) scale(12);opacity:0}}
-@keyframes touch-bubble{from{transform:translate(0,0);opacity:.8}to{transform:translate(var(--touch-drift,20px),-80px);opacity:0}}
-@media(hover:hover) and (pointer:fine){body:not(.ocean-paused) .quick-card:hover,body:not(.ocean-paused) .card-kelompok:hover,body:not(.ocean-paused) .card-absen-option[role=button]:hover{transform:perspective(900px) rotateX(var(--tilt-x,0deg)) rotateY(var(--tilt-y,0deg)) translateY(-5px);box-shadow:0 20px 35px #001d3430!important;border-color:#8fe6c9}.card-kelompok:focus-within{border-color:#83cbb6;box-shadow:0 0 0 3px #92e7c934!important}}
-@media(max-width:991px){.navbar-collapse{background:transparent}.hero-art{transform:none}.ocean-school.school-d,.ocean-school.school-e{display:none}}
-@media(max-width:767px){.workspace-top{flex-wrap:wrap;row-gap:12px}.workspace-tools{width:100%;justify-content:space-between;gap:12px}.motion-control{min-height:29px;font-size:9px;padding:5px 11px}.ocean-glow{display:none}.ocean-school{max-width:170px}.ocean-school.school-a{--depth:18%}.ocean-school.school-b{--depth:63%}.ocean-school.school-c{--depth:87%}.ocean-ray{width:120px;top:42%}.ocean-garden{width:150px;height:200px}.ocean-garden.garden-right{width:155px;height:220px}.ocean-waves{height:110px}.ocean-bubble:nth-of-type(n+11){display:none}.ocean-particle:nth-of-type(n+17){display:none}.dashboard-wrapper{backdrop-filter:none}.hero-seascape .ocean-school{--school-size:125px;--journey:18s;--depart:-6s;--depth:80%}.hero-seascape .ocean-school.hero-school-two{--depth:50%;--journey:20s;--depart:-13s;--school-size:100px}.hero-seascape .ocean-bubble{--rise:17s}.hero-art>svg{animation-duration:9s}.hero-footnote{font-size:9px;line-height:1.8}.portal-note{padding:13px 14px;margin-top:19px}.quick-card:after,.card-kelompok:after{display:none}.hero-primary{box-shadow:0 5px 20px #7fe9cc20}}
-@media(prefers-reduced-motion:reduce){
- body.ocean-soft-motion .ocean-school{animation-duration:70s}
- body.ocean-soft-motion .ocean-bubble{animation-duration:40s}
- body.ocean-soft-motion .ocean-particle{animation-duration:25s}
- body.ocean-soft-motion .ocean-rays{animation-duration:42s}
- body.ocean-soft-motion .ocean-waves{animation-duration:48s}
- body.ocean-soft-motion .ocean-garden{animation-duration:18s}
- body.ocean-soft-motion .hero-art>svg{animation-duration:14s}
- body.ocean-soft-motion .hero-light-beam{animation-duration:12s}
- body.ocean-soft-motion .hero-star{animation-duration:60s}
- body.ocean-soft-motion .ocean-haze{transition-duration:2.5s}
+
+/* Simple portal: calm surfaces, compact hierarchy, no ambient animation. */
+body{background:#f7f9f8}
+.navbar{background:#fff!important;backdrop-filter:none;min-height:74px;padding:12px 0}
+.navbar .container-fluid{max-width:1176px}
+.navbar-brand{font-size:16px;letter-spacing:-.025em}
+.brand-mark{background:#edf4f1;border-radius:10px;width:42px;height:42px}
+.brand-copy small{font-size:11px;letter-spacing:0;font-weight:400}
+.nav-link{font-size:13px;padding:10px 13px!important}
+.app-shell{max-width:1144px;padding-top:20px}
+.workspace-top{margin-bottom:20px}
+.workspace-label{letter-spacing:.035em;text-transform:none;font-size:12px}
+.workspace-label b{color:#58716b!important}
+.workspace-tools{display:flex;align-items:center}
+.workspace-date{color:#657970;font-size:12px}
+.dashboard-wrapper{display:block;min-height:0;padding:36px!important;border:1px solid #dce8e1;border-radius:16px;background:#edf5ef;color:var(--ink)}
+.dashboard-wrapper:before{display:none}
+.eyebrow{color:#467163;font-size:11px;letter-spacing:.08em}
+.eyebrow:before{display:none}
+.hero-title{font-size:38px;line-height:1.22;letter-spacing:-.035em;word-spacing:normal;color:#183e34;margin:14px 0}
+.hero-title span{color:#087f72}
+.hero-description{color:#586f66;font-size:14px;line-height:1.75;max-width:520px;margin-bottom:23px}
+.hero-actions{gap:10px}
+.hero-actions .btn{font-size:13px;padding:11px 17px;border-radius:8px;min-height:44px}
+.hero-primary{background:#087f72;border-color:#087f72;color:white;box-shadow:none}
+.hero-primary:hover,.hero-primary:focus{background:#066b60;border-color:#066b60;color:white;transform:none}
+.hero-secondary{background:#fff;border-color:#c6d8ce;color:#285b4a}
+.hero-secondary:hover,.hero-secondary:focus{background:#f6faf7;border-color:#85ae9a;color:#214e3e;transform:none}
+.overview-strip{background:transparent;border:0;border-radius:0;margin-top:16px}
+.overview-item{justify-content:center;padding:12px 18px;gap:10px}
+.overview-icon{display:none}
+.overview-copy{gap:8px}
+.overview-copy strong{font-size:20px;letter-spacing:-.02em}
+.overview-copy span{font-size:12px;font-weight:400;color:#61746a}
+.overview-item+.overview-item:before{height:26px;top:12px}
+.section-head{margin:28px 0 15px}
+.section-head h2{font-size:18px}
+.section-head p{font-size:13px}
+.quick-grid{gap:12px}
+.quick-card{min-height:138px;border-radius:12px;padding:22px 38px 22px 70px;justify-content:center;box-shadow:none;transition:border-color .15s,background .15s}
+.quick-top{position:static;margin:0}
+.quick-icon{position:absolute;left:20px;top:26px;width:34px;height:34px;border-radius:9px;font-size:15px}
+.quick-card:nth-child(n) .quick-icon{background:#edf5ef;color:#28735e}
+.quick-arrow{position:absolute;right:17px;top:32px;font-size:11px}
+.quick-card h3{font-size:14px;margin-bottom:7px}
+.quick-card p{font-size:12px;line-height:1.7}
+.quick-card:hover{transform:none;box-shadow:none;border-color:#96b9a6;background:#fcfefd}
+.quick-card:hover .quick-arrow{transform:none}
+.guide-strip{background:transparent;border:0;border-top:1px solid var(--line);border-radius:0;padding:20px 0 0;margin-top:24px;gap:16px}
+.guide-heading{min-width:160px}
+.guide-heading>i,.guide-heading span{display:none}
+.guide-heading strong{font-weight:500;font-size:12px}
+.guide-steps{gap:22px;font-size:12px}
+.guide-steps b{border:0;background:#e8eeea;font-size:10px}
+.card-kelompok,.card-absen-option{border-radius:12px;box-shadow:none!important;transition:border-color .15s,background .15s}
+.card-kelompok:hover,.card-absen-option[onclick]:hover{transform:none;box-shadow:none!important;border-color:#96b9a6}
+.header-title{font-size:28px;letter-spacing:-.03em}
+.page-kicker{letter-spacing:.08em}
+.page-intro{line-height:1.75}
+#view-absen .card-absen-option,#view-sesi .card-absen-option{padding:28px!important}
+#view-absen .fa-4x,#view-sesi .fa-4x{width:48px;height:48px;font-size:23px;border-radius:11px;margin-bottom:20px!important}
+#view-form>.bg-white{border-radius:12px!important;box-shadow:none!important}
+.app-footer{font-size:11px;margin-top:26px;color:#687c72}
+.footer-right,.footer-right button{font-size:11px}
+.active-view{animation:none}
+@media(max-width:991px){
+.navbar{min-height:72px}
+.navbar-nav{align-items:stretch}
+.guide-strip{align-items:flex-start;gap:12px}
+.guide-steps{justify-content:flex-start;gap:20px}
 }
-@media print{body{background:#fff}.ocean-scene,.ocean-effects,.hero-seascape,.motion-control{display:none!important}.header-title,.section-head h2{color:#183442!important}.page-intro.text-muted,.page-kicker,.recap-caption,.section-head p{color:#536b76!important}}
+@media(max-width:767px){
+body{padding-top:77px}
+.app-shell{padding:16px 18px 0}
+.navbar .container-fluid{padding:0 18px!important}
+.workspace-top{gap:10px;margin-bottom:17px}
+.workspace-label,.workspace-date{font-size:10px}
+.workspace-label{letter-spacing:0;gap:6px}
+.dashboard-wrapper{padding:25px 23px!important;border-radius:13px}
+.hero-title{font-size:31px;margin:13px 0}
+.hero-description{font-size:13px;margin-bottom:20px}
+.hero-actions{gap:8px}
+.hero-actions .btn{font-size:12px;padding:11px 13px}
+.overview-strip{margin-top:12px}
+.overview-item{display:block;padding:10px 6px;text-align:center}
+.overview-copy{display:block}
+.overview-copy strong{font-size:20px;margin:0 0 4px}
+.overview-copy span{font-size:10px}
+.overview-item+.overview-item:before{top:14px;height:30px}
+.section-head{margin:23px 0 13px}
+.section-head p{font-size:12px}
+.quick-grid{grid-template-columns:1fr;gap:10px}
+.quick-card{min-height:98px;padding:18px 38px 18px 67px}
+.quick-icon{left:18px;top:23px}
+.quick-arrow{top:32px}
+.quick-card h3{font-size:14px}
+.quick-card p{font-size:12px;max-width:none}
+.guide-strip{margin-top:22px;padding-top:17px}
+.guide-steps{flex-direction:column;gap:10px}
+.header-title{font-size:25px}
+.app-footer{font-size:10px;line-height:1.7}
+.footer-right,.footer-right button{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+.btn,.nav-link,.quick-card,.quick-arrow,.card-kelompok,.card-absen-option,.form-control,.form-select{transition:none!important}
+}
 
 </style>
 </head>
 <body>
-<div class="ocean-scene" id="ocean-scene" aria-hidden="true"><div class="ocean-haze"></div><div class="ocean-rays"></div><div class="ocean-glow"></div>
-<div class="ocean-school school-a"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div>
-<div class="ocean-school school-b swim-west"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div>
-<div class="ocean-school school-c"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div>
-<div class="ocean-school school-d swim-west"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div>
-<div class="ocean-school school-e"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div>
-<div class="ocean-ray"><svg viewBox="0 0 220 170" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path class="ray-wing" d="M107 25c-18 20-39 16-72 12L4 15C6 52 30 89 83 92l22 31 20-31c51-3 83-38 90-74l-35 21c-32 3-49 5-62-14z"/><path d="M104 111c-8 28 6 38-13 59 29-15 25-34 22-59z"/><path d="m102 31 3-10 5 9 5-9 5 11z"/><path d="m103 70 7 43 7-43" fill="#103d4f" opacity=".35"/></svg></div>
-<span class="ocean-bubble" style="--left:4%;--size:24px;--rise:18s;--delay:-7s;--drift:25px"></span>
-<span class="ocean-bubble" style="--left:12%;--size:12px;--rise:22s;--delay:-16s;--drift:-18px"></span>
-<span class="ocean-bubble" style="--left:23%;--size:19px;--rise:25s;--delay:-4s;--drift:32px"></span>
-<span class="ocean-bubble" style="--left:34%;--size:8px;--rise:16s;--delay:-10s;--drift:-35px"></span>
-<span class="ocean-bubble" style="--left:46%;--size:21px;--rise:23s;--delay:-19s;--drift:22px"></span>
-<span class="ocean-bubble" style="--left:56%;--size:11px;--rise:18s;--delay:-5s;--drift:-21px"></span>
-<span class="ocean-bubble" style="--left:66%;--size:27px;--rise:26s;--delay:-12s;--drift:40px"></span>
-<span class="ocean-bubble" style="--left:75%;--size:14px;--rise:21s;--delay:-18s;--drift:15px"></span>
-<span class="ocean-bubble" style="--left:85%;--size:20px;--rise:19s;--delay:-6s;--drift:-25px"></span>
-<span class="ocean-bubble" style="--left:94%;--size:28px;--rise:24s;--delay:-18s;--drift:30px"></span>
-<span class="ocean-bubble" style="--left:18%;--size:7px;--rise:17s;--delay:-6s;--drift:20px"></span>
-<span class="ocean-bubble" style="--left:39%;--size:12px;--rise:20s;--delay:-14s;--drift:-30px"></span>
-<span class="ocean-bubble" style="--left:62%;--size:8px;--rise:16s;--delay:-12s;--drift:25px"></span>
-<span class="ocean-bubble" style="--left:91%;--size:10px;--rise:17s;--delay:-3s;--drift:-20px"></span>
-<span class="ocean-bubble" style="--left:7%;--size:15px;--rise:23s;--delay:-20s;--drift:20px"></span>
-<span class="ocean-bubble" style="--left:80%;--size:9px;--rise:18s;--delay:-10s;--drift:-12px"></span>
-<span class="ocean-particle" style="--left:9%;--top:21%;--duration:9s;--delay:-0s"></span><span class="ocean-particle" style="--left:40%;--top:38%;--duration:10s;--delay:-1s"></span><span class="ocean-particle" style="--left:71%;--top:55%;--duration:11s;--delay:-2s"></span><span class="ocean-particle" style="--left:4%;--top:72%;--duration:12s;--delay:-3s"></span><span class="ocean-particle" style="--left:35%;--top:89%;--duration:13s;--delay:-4s"></span><span class="ocean-particle" style="--left:66%;--top:14%;--duration:14s;--delay:-5s"></span><span class="ocean-particle" style="--left:97%;--top:31%;--duration:15s;--delay:-6s"></span><span class="ocean-particle" style="--left:30%;--top:48%;--duration:16s;--delay:-7s"></span><span class="ocean-particle" style="--left:61%;--top:65%;--duration:9s;--delay:-8s"></span><span class="ocean-particle" style="--left:92%;--top:82%;--duration:10s;--delay:-9s"></span><span class="ocean-particle" style="--left:25%;--top:7%;--duration:11s;--delay:-10s"></span><span class="ocean-particle" style="--left:56%;--top:24%;--duration:12s;--delay:-0s"></span><span class="ocean-particle" style="--left:87%;--top:41%;--duration:13s;--delay:-1s"></span><span class="ocean-particle" style="--left:20%;--top:58%;--duration:14s;--delay:-2s"></span><span class="ocean-particle" style="--left:51%;--top:75%;--duration:15s;--delay:-3s"></span><span class="ocean-particle" style="--left:82%;--top:0%;--duration:16s;--delay:-4s"></span><div class="ocean-waves back-wave"><svg viewBox="0 0 1440 160" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66V160H0Z"/><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66" fill="none" stroke="#a2eddb" stroke-width="1"/></svg></div><div class="ocean-waves"><svg viewBox="0 0 1440 160" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66V160H0Z"/><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66" fill="none" stroke="#a2eddb" stroke-width="1"/></svg></div><div class="ocean-garden garden-left"><svg viewBox="0 0 240 300" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-linecap="round"><g class="seaweed" stroke-width="9"><path d="M77 304c-23-71 10-107-8-166S19 69 40 13"/><path d="M126 307c23-68-7-102 8-157s51-67 37-117"/><path d="M169 308c-11-37 11-55 22-91s-7-55 5-89"/></g><g stroke-width="5"><path d="M18 300V161m0 80-20-29m20 4 22-27m-22-1L2 171m16 3 17-30m54 159V197m0 46-16-20m16 45 18-25m-18-23 15-20m-15 32-15-28m-56-10 20-2"/><path d="M210 300v-54m0 25-17-17m17 0 18-19m-18 51 19-11"/></g></g><g fill="currentColor" opacity=".55"><path d="M0 300v-22c35-19 46 14 79 1s41-17 72-1 66-5 89 1v21z"/></g></svg></div><div class="ocean-garden garden-right"><svg viewBox="0 0 240 300" fill="none" xmlns="http://www.w3.org/2000/svg"><g stroke="currentColor" stroke-linecap="round"><g class="seaweed" stroke-width="9"><path d="M77 304c-23-71 10-107-8-166S19 69 40 13"/><path d="M126 307c23-68-7-102 8-157s51-67 37-117"/><path d="M169 308c-11-37 11-55 22-91s-7-55 5-89"/></g><g stroke-width="5"><path d="M18 300V161m0 80-20-29m20 4 22-27m-22-1L2 171m16 3 17-30m54 159V197m0 46-16-20m16 45 18-25m-18-23 15-20m-15 32-15-28m-56-10 20-2"/><path d="M210 300v-54m0 25-17-17m17 0 18-19m-18 51 19-11"/></g></g><g fill="currentColor" opacity=".55"><path d="M0 300v-22c35-19 46 14 79 1s41-17 72-1 66-5 89 1v21z"/></g></svg></div></div>
-<div class="ocean-effects" id="ocean-effects" aria-hidden="true"></div>
-
 <a class="skip-link" href="#main-content" target="_self">Langsung ke konten</a>
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
   <div class="container-fluid px-4">
-    <a class="navbar-brand" href="javascript:void(0)" onclick="showPage('dashboard')"><span class="brand-mark"><img src="https://raw.githubusercontent.com/KestariOfficial/Suljar/main/Favicon.png" alt="Logo Sulam Jaring" loading="eager" decoding="async"></span><span class="brand-copy">Sulam Jaring 2026<span class="visually-hidden"> 2026</span><small>CONNECTING OUR JOURNEY · 2026</small></span></a>
+    <a class="navbar-brand" href="javascript:void(0)" onclick="showPage('dashboard')"><span class="brand-mark"><img src="https://raw.githubusercontent.com/KestariOfficial/Suljar/main/Favicon.png" alt="Logo Sulam Jaring" loading="eager" decoding="async"></span><span class="brand-copy">Sulam Jaring 2026<span class="visually-hidden"> 2026</span><small>Portal kehadiran</small></span></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Buka menu navigasi">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -183,7 +176,7 @@ body.ocean-paused .ocean-scene *,body.ocean-paused .ocean-scene:before,body.ocea
 </nav>
 
 <main class="container app-shell" id="main-content" tabindex="-1">
-  <div class="workspace-top"><div class="workspace-label"><span aria-hidden="true"></span> Portal kehadiran <span style="width:auto;height:auto;background:none;color:#b0bfc3">/</span> <b id="ui-page-label" style="font-weight:500;color:#899b9f">Dashboard</b></div><div class="workspace-tools"><div class="workspace-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i><time id="ui-today"></time></div><button type="button" class="motion-control" id="motion-control" aria-pressed="true" aria-label="Jeda animasi laut"><i class="fa-solid fa-pause" aria-hidden="true"></i><span>Efek laut aktif</span></button></div></div>
+  <div class="workspace-top"><div class="workspace-label"><span aria-hidden="true"></span> Portal kehadiran <span style="width:auto;height:auto;background:none;color:#b0bfc3">/</span> <b id="ui-page-label" style="font-weight:500;color:#899b9f">Dashboard</b></div><div class="workspace-tools"><div class="workspace-date"><i class="fa-regular fa-calendar" aria-hidden="true"></i><time id="ui-today"></time></div></div></div>
   <div class="content-wrapper">
     <!-- Halaman Contact Person -->
     <div id="view-kontak" class="page-view">
@@ -231,89 +224,29 @@ body.ocean-paused .ocean-scene *,body.ocean-paused .ocean-scene:before,body.ocea
   <!-- Dashboard -->
     <div id="view-dashboard" class="page-view active-view">
       <section class="dashboard-wrapper" aria-labelledby="hero-heading">
-<div class="hero-seascape" aria-hidden="true"><div class="hero-caustic"></div><div class="ocean-school"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div><div class="ocean-school swim-west hero-school-two"><svg viewBox="0 0 280 112" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
- <g transform="translate(144 18)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".75"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(49 61) scale(.68)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17m-22 20 12 15 10-19" opacity=".7"/><circle cx="92" cy="27" r="2" fill="#063549"/></g>
- <g transform="translate(10 2) scale(.47)"><path class="tail-fin" d="M25 30 0 13l5 18-5 17 25-14z"/><path d="M20 31C45 5 78 7 106 29 80 51 48 55 20 31z"/><path class="swimming-fin" d="m56 16 10-13 15 17" opacity=".7"/></g>
- <g transform="translate(103 0) scale(.33)"><path d="M20 30 0 14l4 16-4 16 20-12C49 60 88 48 110 29 84 8 52 6 20 30z"/></g>
-</svg></div><span class="ocean-bubble" style="--left:5%;--size:12px;--delay:-2s"></span><span class="ocean-bubble" style="--left:24%;--size:8px;--delay:-9s"></span><span class="ocean-bubble" style="--left:53%;--size:18px;--delay:-5s"></span><span class="ocean-bubble" style="--left:75%;--size:10px;--delay:-12s"></span><span class="ocean-bubble" style="--left:88%;--size:15px;--delay:-3s"></span><span class="ocean-bubble" style="--left:95%;--size:7px;--delay:-10s"></span><div class="ocean-waves"><svg viewBox="0 0 1440 160" preserveAspectRatio="none" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66V160H0Z"/><path d="M0 66C120 0 240 132 360 66S600 0 720 66 960 132 1080 66 1320 0 1440 66" fill="none" stroke="#a2eddb" stroke-width="1"/></svg></div></div>
-        <div class="hero-copy">
+<div class="hero-copy">
           <div class="eyebrow">Sulam Jaring · 2026</div>
-          <h1 class="hero-title" id="hero-heading">Selamat datang,<br>para <span>penjelajah.</span></h1>
-          <p class="hero-description">Setiap perjalanan dimulai dari satu langkah.<br>Catat kehadiranmu, temukan kelompokmu, dan jadi bagian dari cerita Sulam Jaring.</p>
+          <h1 class="hero-title" id="hero-heading">Selamat datang di<br><span>Sulam Jaring.</span></h1>
+          <p class="hero-description">Absensi, kelompok, dan informasi panitia.<br>Semua dalam satu tempat.</p>
           <div class="hero-actions">
             <button type="button" class="btn hero-primary" onclick="showPage('absen')">Mulai absensi <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></button>
-            <button type="button" class="btn hero-secondary" onclick="showPage('kelompok')"><i class="fa-solid fa-users" aria-hidden="true"></i> Jelajahi kelompok</button>
+            <button type="button" class="btn hero-secondary" onclick="showPage('kelompok')"><i class="fa-solid fa-users" aria-hidden="true"></i> Lihat kelompok</button>
           </div>
-          <p class="hero-footnote"><i class="fa-regular fa-hand-pointer" aria-hidden="true"></i> Sentuh lautnya, lihat riaknya. Mulai ceritamu di sini.</p>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-          <div class="hero-art-label">THE JOURNEY<br>STARTS HERE</div>
-          <svg viewBox="0 0 480 390" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <pattern id="nautical-grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" stroke="#8BD0C1" stroke-opacity=".075" stroke-width=".7"/></pattern>
-              <linearGradient id="sea-disc" x1="85" y1="55" x2="350" y2="340" gradientUnits="userSpaceOnUse"><stop stop-color="#3B8D82" stop-opacity=".24"/><stop offset="1" stop-color="#388D87" stop-opacity=".04"/></linearGradient>
-              <linearGradient id="light-beam" x1="241" y1="125" x2="389" y2="99" gradientUnits="userSpaceOnUse"><stop stop-color="#E9D997" stop-opacity=".28"/><stop offset="1" stop-color="#E9D997" stop-opacity="0"/></linearGradient>
-            </defs>
-            <path fill="url(#nautical-grid)" d="M20 20h440v350H20z"/>
-            <circle cx="238" cy="197" r="158" fill="url(#sea-disc)" stroke="#92CCC2" stroke-opacity=".24"/>
-            <circle cx="238" cy="197" r="141" stroke="#9FD3C6" stroke-opacity=".19" stroke-dasharray="2 8"/>
-            <circle cx="238" cy="197" r="111" stroke="#9FD3C6" stroke-opacity=".11"/>
-            <path d="M238 25v18m0 309v18M65 197h20m307 0h20" stroke="#BFE2D3" stroke-opacity=".7"/>
-            <path d="M121 81l12 12m211 211 12 12M120 315l13-13m211-211 12-12" stroke="#86C3B5" stroke-opacity=".35"/>
-            <text x="238" y="18" fill="#B3D2CC" font-family="sans-serif" font-size="9" text-anchor="middle" letter-spacing="2">N</text>
-            <text x="238" y="386" fill="#779F9C" font-family="sans-serif" font-size="8" text-anchor="middle" letter-spacing="2">S</text>
-            <text x="48" y="200" fill="#779F9C" font-family="sans-serif" font-size="8">W</text>
-            <text x="421" y="200" fill="#779F9C" font-family="sans-serif" font-size="8">E</text>
-            <path d="M118 277c-24-20-11-47 17-48s38-21 24-43-33-7-40-29 24-51 53-52m116-36c-24 19-33 35-8 44s26 8 23 22" stroke="#67A797" stroke-opacity=".35" stroke-width="1.2"/>
-            <path d="M105 284c-24-23-13-63 22-67s30-16 20-25-38-15-40-38 24-54 58-62m133-36c-40 28-37 39-20 46s35 12 35 36" stroke="#67A797" stroke-opacity=".18"/>
-            <path d="M152 311c32 23 47 3 61-1s43 17 66 6 5-29 36-34 31-6 36-23" stroke="#9BCEBA" stroke-opacity=".3"/>
-            <path d="M146 322c40 28 46 0 72 2s47 18 67 2 10-28 33-33 36-10 39-26" stroke="#9BCEBA" stroke-opacity=".16"/>
-            <path class="hero-light-beam" d="M237 118l155-36v96l-155-45z" fill="url(#light-beam)"/>
-            <ellipse cx="236" cy="265" rx="84" ry="13" fill="#062F3A" fill-opacity=".55"/>
-            <path d="M160 258l19-14 24-1 15-11 35 5 10 8 25 1 26 15-59 9-71-4z" fill="#609D88"/>
-            <path d="M174 256l30-5 17 3 30-6 32 9" stroke="#B4D4AC" stroke-opacity=".55" stroke-linecap="round"/>
-            <path d="M217 147h33l10 96h-53z" fill="#E4E2C5"/>
-            <path d="M239 147h11l10 96h-13z" fill="#B4C7B2"/>
-            <path d="M214 177h39l3 23h-44z" fill="#438E81"/>
-            <path d="M242 177h11l3 23h-11z" fill="#36786E"/>
-            <path d="M229 151h8v15h-8z" fill="#2A6060"/>
-            <path d="M228 226a7 7 0 0 1 14 0v17h-14z" fill="#255560"/>
-            <path d="M206 143h55v7h-55z" fill="#8AB2A1"/>
-            <path d="M207 137v7m9-7v7m9-7v7m9-7v7m9-7v7m9-7v7m9-7v7m-54-7h54" stroke="#BDD3B9" stroke-width="2"/>
-            <path d="M219 112h29v25h-29z" fill="#BFE8D0"/>
-            <path d="M230 113h7v24h-7z" fill="#F2E4A8"/>
-            <path d="M218 112h32l-16-16z" fill="#79B29C"/>
-            <path d="M233 89v8" stroke="#B7D3B7" stroke-width="2" stroke-linecap="round"/>
-            <path d="M162 204c16-3 30 0 38 2m65 1c14-5 29-6 42-3M170 221l26 1m73 2 28-3" stroke="#81B6AC" stroke-opacity=".36" stroke-linecap="round"/>
-            <path d="M132 296c-15-42 46-12 45-38" stroke="#EDD59A" stroke-width="1.3" stroke-dasharray="3 6" stroke-linecap="round"/>
-            <circle cx="134" cy="298" r="4" fill="#E9D18F"/><circle cx="134" cy="298" r="9" stroke="#E9D18F" stroke-opacity=".28"/>
-            <path d="M300 175c28 16 58 32 46 69" stroke="#EDD59A" stroke-opacity=".65" stroke-width="1.2" stroke-dasharray="3 6"/>
-            <g transform="translate(294 163) rotate(-21)"><path d="M0 9h26l-6 9H6z" fill="#A9D7C0"/><path d="M12-10v17H2z" fill="#E9E2BA"/><path d="M15-5v12h9z" fill="#89BBA7"/><path d="M-3 22c4-3 8 3 12 0s8 3 12 0 8 3 11 0" stroke="#94BDB4" stroke-opacity=".4"/></g>
-            <path d="M273 87q6-6 11 0 5-6 11 0m-135 64q5-5 9 0 4-5 9 0" stroke="#ACCAB9" stroke-width="1.3" stroke-linecap="round" opacity=".75"/>
-            <g transform="translate(344 257)"><circle r="19" fill="#184D53" stroke="#7EB5A3" stroke-opacity=".5"/><path class="hero-star" d="M0-10 3-2 10 0 3 2 0 10-3 2-10 0-3-2z" fill="#E3D49E"/><path d="m0-10 0 10 10 0-7-2z" fill="#F4E6B6"/></g>
-            <text x="235" y="292" fill="#B3CEBC" font-family="sans-serif" font-size="7" letter-spacing="3" text-anchor="middle">FIND YOUR NORTH</text>
-          </svg>
-          <div class="hero-art-caption">TERHUBUNG DALAM<strong>SATU JARING</strong></div>
+          
         </div>
       </section>
       <div class="overview-strip" aria-label="Ringkasan Sulam Jaring">
-        <div class="overview-item"><div class="overview-icon"><i class="fa-solid fa-users" aria-hidden="true"></i></div><div class="overview-copy"><strong id="ui-group-count">10</strong><span>Kelompok maba</span><small>Kenali teman seperjalanan</small></div></div>
-        <div class="overview-item"><div class="overview-icon"><i class="fa-solid fa-anchor" aria-hidden="true"></i></div><div class="overview-copy"><strong id="ui-division-count">12</strong><span>Divisi panitia</span><small>Bersama di balik perjalanan</small></div></div>
-        <div class="overview-item"><div class="overview-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></div><div class="overview-copy"><strong>02</strong><span>Sesi kehadiran</span><small>Kedatangan &amp; kepulangan</small></div></div>
+        <div class="overview-item"><div class="overview-icon"><i class="fa-solid fa-users" aria-hidden="true"></i></div><div class="overview-copy"><strong id="ui-group-count">10</strong><span>Kelompok maba</span></div></div>
+        <div class="overview-item"><div class="overview-icon"><i class="fa-solid fa-people-group" aria-hidden="true"></i></div><div class="overview-copy"><strong id="ui-division-count">12</strong><span>Divisi panitia</span></div></div>
+        <div class="overview-item"><div class="overview-icon"><i class="fa-regular fa-clock" aria-hidden="true"></i></div><div class="overview-copy"><strong>2</strong><span>Sesi kehadiran</span></div></div>
       </div>
-      <div class="section-head"><div><h2>Mau ke mana hari ini?</h2><p>Semua yang kamu perlukan, dalam satu tempat.</p></div><span class="section-index">Navigasi cepat ↗</span></div>
+      <div class="section-head"><div><h2>Akses cepat</h2><p>Pilih menu yang kamu butuhkan.</p></div></div>
       <div class="quick-grid">
         <button type="button" class="quick-card" onclick="showPage('absen')"><span class="quick-top"><span class="quick-icon"><i class="fa-solid fa-clipboard-check" aria-hidden="true"></i></span><i class="quick-arrow fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span><h3>Catat kehadiran</h3><p>Isi absensi kedatangan dan kepulangan sesuai jalurmu.</p></button>
         <button type="button" class="quick-card" onclick="showPage('kelompok')"><span class="quick-top"><span class="quick-icon"><i class="fa-solid fa-water" aria-hidden="true"></i></span><i class="quick-arrow fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span><h3>Kenali kelompokmu</h3><p>Temukan anggota dan cerita ekosistem di balik nama kelompok.</p></button>
         <button type="button" class="quick-card" onclick="showPage('kontak')"><span class="quick-top"><span class="quick-icon"><i class="fa-regular fa-comments" aria-hidden="true"></i></span><i class="quick-arrow fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span><h3>Butuh bantuan?</h3><p>Hubungi panitia untuk kendala absensi atau keterlambatan.</p></button>
       </div>
-      <div class="guide-strip"><div class="guide-heading"><i class="fa-regular fa-circle-check" aria-hidden="true"></i><div><strong>Siap memulai perjalanan?</strong><span>Absensi dalam tiga langkah mudah.</span></div></div><div class="guide-steps"><span><b>01</b> Pilih jalur &amp; sesi</span><span><b>02</b> Lengkapi identitas</span><span><b>03</b> Kirim kehadiran</span></div></div>
+      <div class="guide-strip"><div class="guide-heading"><i class="fa-regular fa-circle-check" aria-hidden="true"></i><div><strong>Cara mengisi absensi</strong><span>Absensi dalam tiga langkah mudah.</span></div></div><div class="guide-steps"><span><b>01</b> Pilih jalur &amp; sesi</span><span><b>02</b> Lengkapi identitas</span><span><b>03</b> Kirim kehadiran</span></div></div>
     </div>
 
 
@@ -1162,121 +1095,6 @@ function cekWaktuAbsen() {
     syncPage();
   });
 })();
-</script>
-<script id="living-ocean-interactions">
-/* Presentation only. No attendance data, endpoint, validation, or app handlers are changed. */
-(() => {
-  'use strict';
-  const start = () => {
-    const body = document.body;
-    const scene = document.getElementById('ocean-scene');
-    const effectLayer = document.getElementById('ocean-effects');
-    const toggle = document.getElementById('motion-control');
-    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-    let manuallyPaused = false;
-    try { manuallyPaused = localStorage.getItem('suljar-ocean-motion') === 'paused'; } catch (_) {}
-    // Reduced-motion browsers receive slower movement instead of a frozen ocean.
-    // Only the user's pause button (or a hidden tab) stops the animations entirely.
-    const isPaused = () => manuallyPaused || document.hidden;
-    const syncMotion = () => {
-      body.classList.toggle('ocean-paused', manuallyPaused);
-      body.classList.toggle('ocean-soft-motion', reduced.matches);
-      body.classList.toggle('ocean-hidden', document.hidden);
-      toggle.disabled = false;
-      toggle.setAttribute('aria-pressed', String(!manuallyPaused));
-      toggle.setAttribute('aria-label', manuallyPaused ? 'Aktifkan animasi laut' : 'Jeda animasi laut');
-      toggle.querySelector('i').className = manuallyPaused ? 'fa-solid fa-play' : 'fa-solid fa-pause';
-      toggle.querySelector('span').textContent = manuallyPaused ? 'Efek laut dijeda' : reduced.matches ? 'Gerak diperlambat' : 'Efek laut aktif';
-      if (isPaused()) {
-        effectLayer.replaceChildren();
-        document.querySelectorAll('[data-sea-interactive]').forEach(card => {
-          card.style.removeProperty('--tilt-x'); card.style.removeProperty('--tilt-y');
-        });
-      }
-    };
-    toggle.addEventListener('click', () => {
-      manuallyPaused = !manuallyPaused;
-      try { localStorage.setItem('suljar-ocean-motion', manuallyPaused ? 'paused' : 'active'); } catch (_) {}
-      syncMotion();
-    });
-    reduced.addEventListener('change', syncMotion);
-    document.addEventListener('visibilitychange', syncMotion);
-    syncMotion();
-
-    const cards = [...document.querySelectorAll('.quick-card, .card-kelompok, .card-absen-option[role="button"]')];
-    const art = document.querySelector('.hero-art');
-    const hero = document.querySelector('.dashboard-wrapper');
-    let pendingFrame = 0;
-    let pointer = null;
-    let lastCard = null;
-    cards.forEach(card => {
-      card.dataset.seaInteractive = '';
-      card.addEventListener('pointerleave', () => {
-        card.style.removeProperty('--tilt-x'); card.style.removeProperty('--tilt-y');
-      });
-    });
-    const resetCard = card => {
-      if (!card) return;
-      card.style.removeProperty('--tilt-x'); card.style.removeProperty('--tilt-y');
-    };
-    const renderPointer = () => {
-      pendingFrame = 0;
-      if (!pointer || isPaused() || !finePointer.matches) return;
-      const {x, y, target} = pointer;
-      scene.style.setProperty('--cursor-x', x + 'px');
-      scene.style.setProperty('--cursor-y', y + 'px');
-      scene.style.setProperty('--sea-x', ((x / innerWidth - .5) * 24).toFixed(2) + 'px');
-      scene.style.setProperty('--sea-y', ((y / innerHeight - .5) * 18).toFixed(2) + 'px');
-      const card = target.closest('[data-sea-interactive]');
-      if (lastCard !== card) resetCard(lastCard);
-      lastCard = card;
-      if (card) {
-        const r = card.getBoundingClientRect();
-        const localX = (x - r.left) / r.width;
-        const localY = (y - r.top) / r.height;
-        card.style.setProperty('--tilt-x', ((.5 - localY) * 4).toFixed(2) + 'deg');
-        card.style.setProperty('--tilt-y', ((localX - .5) * 4).toFixed(2) + 'deg');
-        card.style.setProperty('--spot-x', (localX * 100).toFixed(1) + '%');
-        card.style.setProperty('--spot-y', (localY * 100).toFixed(1) + '%');
-      }
-      if (art && hero) {
-        const r = hero.getBoundingClientRect();
-        const inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
-        art.style.setProperty('--art-x', inside ? ((x - r.left - r.width / 2) / r.width * 16).toFixed(2) + 'px' : '0px');
-        art.style.setProperty('--art-y', inside ? ((y - r.top - r.height / 2) / r.height * 12).toFixed(2) + 'px' : '0px');
-      }
-    };
-    document.addEventListener('pointermove', event => {
-      if (isPaused() || !finePointer.matches || event.pointerType === 'touch') return;
-      pointer = {x:event.clientX, y:event.clientY, target:event.target};
-      if (!pendingFrame) pendingFrame = requestAnimationFrame(renderPointer);
-    }, {passive:true});
-    document.documentElement.addEventListener('pointerleave', () => {
-      pointer = null; resetCard(lastCard); lastCard = null;
-      if (art) { art.style.removeProperty('--art-x'); art.style.removeProperty('--art-y'); }
-    });
-    document.addEventListener('pointerdown', event => {
-      if (isPaused() || event.button > 0 || event.target.closest('input, select, textarea, label, .modal, .navbar, .motion-control, #form-absensi')) return;
-      // Decorative ripple is passive, bounded, and cannot consume clicks or keyboard focus.
-      if (effectLayer.childElementCount > 25) return;
-      for (let index=0; index<5; index++) {
-        const particle = document.createElement('span');
-        particle.className = index < 2 ? 'water-ripple' + (index === 1 ? ' ripple-echo' : '') : 'touch-bubble';
-        particle.style.setProperty('--ripple-x', event.clientX + 'px');
-        particle.style.setProperty('--ripple-y', event.clientY + 'px');
-        particle.style.setProperty('--touch-drift', ((index-3)*24) + 'px');
-        particle.style.setProperty('--touch-size', (4+index) + 'px');
-        particle.addEventListener('animationend', () => particle.remove(), {once:true});
-        effectLayer.append(particle);
-        setTimeout(() => particle.remove(), 1400);
-      }
-    }, {passive:true});
-  };
-  if (document.readyState === 'complete') start();
-  else window.addEventListener('load', start, {once:true});
-})();
-
 </script>
 </body>
 </html>
