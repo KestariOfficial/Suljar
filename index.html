@@ -611,9 +611,23 @@ let modalInstance = null;
     document.getElementById('judul-sesi').innerText = `Pilih Sesi Kehadiran (${jalur})`;
   }
 
-  // Kredensial tidak disimpan pada frontend publik.
+  // Sandi kepulangan diatur di frontend agar dapat diganti langsung dari repo.
+  // Catatan: kredensial frontend dapat dibaca oleh siapa pun yang menerima halaman ini.
+  const SANDI_KEPULANGAN = Object.freeze({
+    Maba: "SEMANGATSULJAR2026",
+    Panitia: "SEMANGATPANIT2026"
+  });
+
   function cekSandiPulang() {
-    alert("Akses kepulangan belum dikonfigurasi. Hubungi panitia.");
+    const sandiInput = prompt(`Masukkan Sandi Pulang ${jalurAktif}:`);
+    if (sandiInput === null) return;
+
+    const sandiBenar = SANDI_KEPULANGAN[jalurAktif];
+    if (sandiInput === sandiBenar) {
+      bukaFormulir('Kepulangan');
+    } else {
+      alert("Sandi Salah Coba Lagi");
+    }
   }
 
   function cekWaktuAbsen() {
@@ -640,7 +654,13 @@ let modalInstance = null;
   if (waktuSekarang < jamBuka) {
     alert(pesanBelumBuka);
   } else if (waktuSekarang > jamTutup) {
-    alert("Waktu absensi telah berakhir. Hubungi panitia.");
+    let sandiTelat = prompt(`Waktu absen normal ${jalurAktif} sudah habis! Masukkan Sandi Keterlambatan:`);
+    if (sandiTelat === "jangantelatlagiyaadik") {
+      statusWaktuAktif = "Terlambat";
+      bukaFormulir('Kedatangan');
+    } else if (sandiTelat !== null) {
+      alert("Sandi Keterlambatan Salah!");
+    }
   } else {
     statusWaktuAktif = "Tepat Waktu"; 
     bukaFormulir('Kedatangan'); 
@@ -694,7 +714,9 @@ let modalInstance = null;
   }
   
   function cekSandiRekap() {
-    alert("Akses rekap belum dikonfigurasi. Hubungi panitia.");
+    let sandi = prompt("Masukkan sandi rahasia:");
+    if (sandi === "GSM2026") showPage('rekap');
+    else if (sandi !== null) alert("Sandi salah!");
   }
 
   function gantiTabRekap(tipe) {
