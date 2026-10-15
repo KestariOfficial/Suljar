@@ -1139,5 +1139,618 @@ let modalInstance = null;
   });
 })();
 </script>
+  <!-- JUMLAH ABSENSI REALTIME - KHUSUS TABEL REKAP -->
+<style>
+.rekap-stat-layout {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  align-items: center;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.rekap-stat-title {
+  text-align: center;
+}
+
+#view-rekap .rekap-stat-title .header-title {
+  margin-bottom: 12px !important;
+}
+
+.rekap-stat-title .recap-caption {
+  margin: 0;
+}
+
+.rekap-stat-box {
+  background: rgba(255,255,255,.95);
+  border: 1px solid #ded9f0;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 5px 20px #30276012;
+}
+
+.rekap-stat-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.rekap-stat-heading h3 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: #302b62;
+}
+
+.rekap-stat-refresh {
+  background: #6459d9;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.rekap-stat-refresh:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.rekap-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.rekap-stat-card {
+  padding: 13px 10px;
+  background: #f3f0ff;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.rekap-stat-card:nth-child(2) {
+  background: #e8f8f5;
+}
+
+.rekap-stat-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+  color: #48406e;
+}
+
+.rekap-stat-number {
+  display: block;
+  font-size: 32px;
+  font-weight: 900;
+  color: #6459d9;
+  line-height: 1.4;
+}
+
+.rekap-stat-card:nth-child(2) .rekap-stat-number {
+  color: #168b80;
+}
+
+.rekap-stat-detail {
+  font-size: 10px;
+  color: #666;
+  line-height: 1.8;
+}
+
+.rekap-stat-status {
+  font-size: 10px;
+  margin: 12px 0 0;
+  color: #677;
+}
+
+@media(max-width: 900px) {
+  .rekap-stat-layout {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .rekap-stat-box {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+  }
+}
+</style>
+
+<script>
+(function () {
+  "use strict";
+
+  const halaman = document.getElementById("view-rekap");
+
+  if (!halaman) return;
+
+  // Cegah pemasangan penghitung dua kali
+  if (document.getElementById("rekap-stat-box")) return;
+
+  // ========================================
+  // 1. MEMBUAT TAMPILAN DI TABEL REKAP
+  // ========================================
+
+  const judul = halaman.querySelector(".header-title");
+  const keterangan = halaman.querySelector(".recap-caption");
+  const kicker = halaman.querySelector(".page-kicker");
+
+  if (!judul || !keterangan) return;
+
+  const layout = document.createElement("div");
+  layout.className = "rekap-stat-layout";
+
+  const judulBox = document.createElement("div");
+  judulBox.className = "rekap-stat-title";
+
+  const statistikBox = document.createElement("div");
+  statistikBox.id = "rekap-stat-box";
+  statistikBox.className = "rekap-stat-box";
+
+  statistikBox.innerHTML = `
+    <div class="rekap-stat-heading">
+      <h3>
+        <i class="fa-solid fa-users"></i>
+        Jumlah Kehadiran
+      </h3>
+
+      <button
+        type="button"
+        id="btn-refresh-jumlah"
+        class="rekap-stat-refresh">
+        <i class="fa-solid fa-rotate-right"></i>
+        Refresh
+      </button>
+    </div>
+
+    <div class="rekap-stat-grid">
+
+      <div class="rekap-stat-card">
+        <span class="rekap-stat-label">
+          Panitia
+        </span>
+
+        <strong
+          class="rekap-stat-number"
+          id="jumlah-hadir-panitia">
+          -
+        </strong>
+
+        <div class="rekap-stat-detail">
+          Hadir dari
+          <b id="total-panitia">-</b> orang
+          <div>Sudah Absen: <b id="absen-panitia">-</b></div>
+          <div>Izin: <b id="izin-panitia">-</b></div>
+          <div>Sakit: <b id="sakit-panitia">-</b></div>
+        </div>
+      </div>
+
+      <div class="rekap-stat-card">
+        <span class="rekap-stat-label">
+          Mahasiswa Baru
+        </span>
+
+        <strong
+          class="rekap-stat-number"
+          id="jumlah-hadir-maba">
+          -
+        </strong>
+
+        <div class="rekap-stat-detail">
+          Hadir dari
+          <b id="total-maba">-</b> orang
+          <div>Sudah Absen: <b id="absen-maba">-</b></div>
+          <div>Izin: <b id="izin-maba">-</b></div>
+          <div>Sakit: <b id="sakit-maba">-</b></div>
+        </div>
+      </div>
+
+    </div>
+
+    <p
+      class="rekap-stat-status"
+      id="status-jumlah">
+      Menunggu data...
+    </p>
+  `;
+
+  judul.parentNode.insertBefore(layout, kicker || judul);
+
+  layout.appendChild(statistikBox);
+  layout.appendChild(judulBox);
+
+  if (kicker) judulBox.appendChild(kicker);
+  judulBox.appendChild(judul);
+  judulBox.appendChild(keterangan);
+
+  // ========================================
+  // 2. KONFIGURASI REALTIME
+  // ========================================
+
+  const INTERVAL_REFRESH = 60000;
+  const BATAS_REQUEST = 4;
+
+  let sedangRefresh = false;
+  let refreshTertunda = false;
+
+  const el = id => document.getElementById(id);
+
+  function normalisasiNama(nama) {
+    return String(nama || "")
+      .normalize("NFKC")
+      .replace(/[‘’`´]/g, "'")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toUpperCase();
+  }
+
+  function daftarKelompok() {
+    return [
+      ...Object.entries(dataPanitia).map(
+        ([nama, anggota]) => ({
+          tipe: "panitia",
+          idKel: "PANITIA_" + nama,
+          anggota
+        })
+      ),
+
+      ...Object.entries(dataMaba).map(
+        ([nama, anggota]) => ({
+          tipe: "maba",
+          idKel: "MABA_" + nama,
+          anggota
+        })
+      )
+    ];
+  }
+
+  function totalAnggota(data) {
+    return Object.values(data).reduce(
+      (total, anggota) => {
+        return total + new Set(
+          anggota.map(normalisasiNama)
+        ).size;
+      }, 0
+    );
+  }
+
+  el("total-panitia").textContent = totalAnggota(dataPanitia);
+  el("total-maba").textContent = totalAnggota(dataMaba);
+
+  // ========================================
+  // 3. AMBIL DATA GOOGLE APPS SCRIPT
+  // ========================================
+
+  async function ambilRekap(grup) {
+    const controller = new AbortController();
+
+    const timeout = setTimeout(
+      () => controller.abort(),
+      20000
+    );
+
+    try {
+      const params = new URLSearchParams({
+        action: "getRecap",
+        idKel: grup.idKel,
+        _: Date.now().toString()
+      });
+
+      const response = await fetch(
+        SCRIPT_URL + "?" + params.toString(),
+        {
+          method: "GET",
+          cache: "no-store",
+          signal: controller.signal
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Gagal membaca " + grup.idKel);
+      }
+
+      const data = await response.json();
+
+      if (!Array.isArray(data)) {
+        throw new Error("Format data tidak valid");
+      }
+
+      return {
+        ...grup,
+        data
+      };
+
+    } finally {
+      clearTimeout(timeout);
+    }
+  }
+
+  async function ambilSemuaRekap() {
+    const grup = daftarKelompok();
+    const hasil = new Array(grup.length);
+
+    let indeks = 0;
+
+    async function pekerja() {
+      while (indeks < grup.length) {
+        const posisi = indeks++;
+
+        hasil[posisi] = await ambilRekap(
+          grup[posisi]
+        );
+      }
+    }
+
+    await Promise.all(
+      Array.from(
+        {
+          length: Math.min(
+            BATAS_REQUEST,
+            grup.length
+          )
+        },
+        pekerja
+      )
+    );
+
+    return hasil;
+  }
+
+  // ========================================
+  // 4. HITUNG ABSEN KEDATANGAN SAJA
+  // ========================================
+
+  function hitungKehadiran(semuaData) {
+    const hasil = {
+      panitia: {
+        hadir: 0,
+        izin: 0,
+        sakit: 0,
+        absen: 0
+      },
+
+      maba: {
+        hadir: 0,
+        izin: 0,
+        sakit: 0,
+        absen: 0
+      }
+    };
+
+    semuaData.forEach(grup => {
+      const anggotaValid = new Set(
+        grup.anggota.map(normalisasiNama)
+      );
+
+      const absenUnik = new Map();
+
+      grup.data.forEach(record => {
+        const jenis = String(
+          record.jenisAbsen || ""
+        ).toLowerCase();
+
+        // HANYA KEDATANGAN
+        if (!jenis.includes("kedatangan")) return;
+
+        const nama = normalisasiNama(record.nama);
+
+        if (!anggotaValid.has(nama)) return;
+
+        const status = String(
+          record.status || ""
+        ).trim().toLowerCase();
+
+        if (
+          status !== "hadir" &&
+          status !== "izin" &&
+          status !== "sakit"
+        ) return;
+
+        // Mencegah satu orang dihitung berkali-kali
+        absenUnik.set(nama, status);
+      });
+
+      absenUnik.forEach(status => {
+        hasil[grup.tipe].absen++;
+        hasil[grup.tipe][status]++;
+      });
+    });
+
+    return hasil;
+  }
+
+  // ========================================
+  // 5. TAMPILKAN JUMLAH
+  // ========================================
+
+  function tampilkanJumlah(data) {
+    el("jumlah-hadir-panitia").textContent =
+      data.panitia.hadir;
+
+    el("jumlah-hadir-maba").textContent =
+      data.maba.hadir;
+
+    el("absen-panitia").textContent =
+      data.panitia.absen;
+
+    el("absen-maba").textContent =
+      data.maba.absen;
+
+    el("izin-panitia").textContent =
+      data.panitia.izin;
+
+    el("izin-maba").textContent =
+      data.maba.izin;
+
+    el("sakit-panitia").textContent =
+      data.panitia.sakit;
+
+    el("sakit-maba").textContent =
+      data.maba.sakit;
+  }
+
+  // ========================================
+  // 6. FUNGSI REFRESH REALTIME
+  // ========================================
+
+  async function refreshJumlah() {
+    if (sedangRefresh) {
+      refreshTertunda = true;
+      return;
+    }
+
+    sedangRefresh = true;
+
+    const tombol = el("btn-refresh-jumlah");
+
+    tombol.disabled = true;
+
+    el("status-jumlah").textContent =
+      "Memperbarui data kedatangan...";
+
+    try {
+      const data = await ambilSemuaRekap();
+
+      const hasil = hitungKehadiran(data);
+
+      tampilkanJumlah(hasil);
+
+      const waktu = new Intl.DateTimeFormat(
+        "id-ID",
+        {
+          timeZone: "Asia/Jakarta",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: false
+        }
+      ).format(new Date());
+
+      el("status-jumlah").textContent =
+        "Diperbarui " + waktu +
+        " WIB | Otomatis setiap 60 detik";
+
+    } catch (error) {
+      console.error(error);
+
+      el("status-jumlah").textContent =
+        "Gagal mengambil data. Tekan Refresh untuk mencoba lagi.";
+
+    } finally {
+      sedangRefresh = false;
+      tombol.disabled = false;
+
+      if (refreshTertunda) {
+        refreshTertunda = false;
+        refreshJumlah();
+      }
+    }
+  }
+
+  // ========================================
+  // 7. HUBUNGKAN TOMBOL REFRESH REKAP
+  // ========================================
+
+  function refreshTabelAktif() {
+    const rekapMaba = el("section-rekap-maba");
+    const mabaAktif =
+      rekapMaba &&
+      rekapMaba.style.display === "block";
+
+    if (mabaAktif) {
+      const select = el("select-rekap-kelompok");
+
+      if (select && select.value) {
+        muatRekapMaba(true);
+      }
+    } else {
+      const select = el("select-rekap-divisi");
+
+      if (select && select.value) {
+        muatRekapPanitia(true);
+      }
+    }
+  }
+
+  // Refresh utama: tabel + jumlah hadir
+  el("btn-refresh-jumlah").addEventListener(
+    "click",
+    () => {
+      refreshTabelAktif();
+      refreshJumlah();
+    }
+  );
+
+  // Tombol refresh ungu pada rekap panitia
+  const refreshPanitia = el("icon-refresh-panitia");
+
+  if (refreshPanitia) {
+    refreshPanitia.closest("button")
+      .addEventListener("click", refreshJumlah);
+  }
+
+  // Tombol refresh pada rekap maba
+  const refreshMaba = el("icon-refresh-maba");
+
+  if (refreshMaba) {
+    refreshMaba.closest("button")
+      .addEventListener("click", refreshJumlah);
+  }
+
+  // ========================================
+  // 8. UPDATE OTOMATIS SAAT REKAP DIBUKA
+  // ========================================
+
+  function rekapTerbuka() {
+    return halaman.classList.contains(
+      "active-view"
+    );
+  }
+
+  const pengamat = new MutationObserver(() => {
+    if (rekapTerbuka()) {
+      refreshJumlah();
+    }
+  });
+
+  pengamat.observe(halaman, {
+    attributes: true,
+    attributeFilter: ["class"]
+  });
+
+  // Update setiap 60 detik
+  setInterval(() => {
+    if (
+      rekapTerbuka() &&
+      document.visibilityState === "visible"
+    ) {
+      refreshJumlah();
+    }
+  }, INTERVAL_REFRESH);
+
+  // Update ketika kembali ke tab browser
+  document.addEventListener(
+    "visibilitychange",
+    () => {
+      if (
+        document.visibilityState === "visible" &&
+        rekapTerbuka()
+      ) {
+        refreshJumlah();
+      }
+    }
+  );
+
+  if (rekapTerbuka()) {
+    refreshJumlah();
+  }
+
+})();
+</script>
+<!-- AKHIR JUMLAH ABSENSI REALTIME -->
 </body>
 </html>
