@@ -614,8 +614,8 @@ let modalInstance = null;
   // Sandi kepulangan diatur di frontend agar dapat diganti langsung dari repo.
   // Catatan: kredensial frontend dapat dibaca oleh siapa pun yang menerima halaman ini.
   const SANDI_KEPULANGAN = Object.freeze({
-    Maba: "SEMANGATSULJAR2026",
-    Panitia: "PANITHARUSSEMANGAT"
+    Maba: "semangatsuljar2026",
+    Panitia: "panitkokcape"
   });
 
   function cekSandiPulang() {
@@ -641,9 +641,9 @@ let modalInstance = null;
 
   // --- PENGATURAN WAKTU BERBEDA ---
   if (jalurAktif === "Panitia") {
-    jamBuka = 17 + 50/60;
-    jamTutup = 18 + 40/60; 
-    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 17.50 WIB.";
+    jamBuka = 20 + 0/60;
+    jamTutup = 20 + 15/60; 
+    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 20.00 WIB.";
   } else if (jalurAktif === "Maba") {
     jamBuka = 5 + 50/60; 
     jamTutup = 6 + 10/60; 
@@ -715,7 +715,7 @@ let modalInstance = null;
   
   function cekSandiRekap() {
     let sandi = prompt("Masukkan sandi rahasia:");
-    if (sandi === "GSM2026") showPage('rekap');
+    if (sandi === "SULAR2026") showPage('rekap');
     else if (sandi !== null) alert("Sandi salah!");
   }
 
