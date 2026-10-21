@@ -615,7 +615,7 @@ let modalInstance = null;
   // Catatan: kredensial frontend dapat dibaca oleh siapa pun yang menerima halaman ini.
   const SANDI_KEPULANGAN = Object.freeze({
     Maba: "suljarserubanget",
-    Panitia: "panitkokcape"
+    Panitia: "rabesitupenting"
   });
 
   function cekSandiPulang() {
@@ -643,7 +643,7 @@ let modalInstance = null;
   if (jalurAktif === "Panitia") {
     jamBuka = 18 + 0/60;
     jamTutup = 18 + 30/60; 
-    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 10.30 WIB.";
+    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 18.00 WIB.";
   } else if (jalurAktif === "Maba") {
     jamBuka = 12 + 25/60; 
     jamTutup = 12 + 45/60; 
@@ -655,7 +655,7 @@ let modalInstance = null;
     alert(pesanBelumBuka);
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt(`Waktu absen normal ${jalurAktif} sudah habis! Masukkan Sandi Keterlambatan:`);
-    if (sandiTelat === "lainkaliharussemangat") {
+    if (sandiTelat === "koktelatbos") {
       statusWaktuAktif = "Terlambat";
       bukaFormulir('Kedatangan');
     } else if (sandiTelat !== null) {
