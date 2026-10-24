@@ -614,8 +614,8 @@ let modalInstance = null;
   // Sandi kepulangan diatur di frontend agar dapat diganti langsung dari repo.
   // Catatan: kredensial frontend dapat dibaca oleh siapa pun yang menerima halaman ini.
   const SANDI_KEPULANGAN = Object.freeze({
-    Maba: "suljarserubanget",
-    Panitia: "iniglaberrek"
+    Maba: "geloudahpuncak",
+    Panitia: "kalianhebatpanit"
   });
 
   function cekSandiPulang() {
@@ -641,9 +641,9 @@ let modalInstance = null;
 
   // --- PENGATURAN WAKTU BERBEDA ---
   if (jalurAktif === "Panitia") {
-    jamBuka = 21 + 0/60;
-    jamTutup = 21 + 55/60; 
-    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 18.00 WIB.";
+    jamBuka = 11 + 20/60;
+    jamTutup = 12 + 0/60; 
+    pesanBelumBuka = "Belum waktunya! Absen Panitia baru dibuka pukul 11.20 WIB.";
   } else if (jalurAktif === "Maba") {
     jamBuka = 12 + 25/60; 
     jamTutup = 12 + 45/60; 
@@ -655,7 +655,7 @@ let modalInstance = null;
     alert(pesanBelumBuka);
   } else if (waktuSekarang > jamTutup) {
     let sandiTelat = prompt(`Waktu absen normal ${jalurAktif} sudah habis! Masukkan Sandi Keterlambatan:`);
-    if (sandiTelat === "koktelatbos") {
+    if (sandiTelat === "masatelat") {
       statusWaktuAktif = "Terlambat";
       bukaFormulir('Kedatangan');
     } else if (sandiTelat !== null) {
